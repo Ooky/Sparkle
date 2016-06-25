@@ -9,8 +9,9 @@ public class Main extends Game {
 //==============================================================================
 //Initialization
 //==============================================================================   
-
     public SpriteBatch batch;
+    public static final int V_Width =Constants.WINDOW_WIDTH;
+    public static final int V_Height=Constants.WINDOW_HEIGTH;
 
 //==============================================================================
 //Methods

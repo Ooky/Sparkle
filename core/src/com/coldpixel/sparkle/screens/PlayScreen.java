@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Constants;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.scenes.Hud;
 
 /**
  *
@@ -23,6 +24,7 @@ public class PlayScreen implements Screen {
     Texture texture;
     private OrthographicCamera cam;
     private Viewport gamePort;
+    private Hud hud;
     
 //==============================================================================
 //Methods
@@ -32,6 +34,7 @@ public class PlayScreen implements Screen {
         texture = new Texture("Graphics/Character/Character.png");
         cam = new OrthographicCamera();
         gamePort = new StretchViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGTH,cam);
+        hud = new Hud(main.batch);
     }
 
     @Override
@@ -43,7 +46,8 @@ public class PlayScreen implements Screen {
         cam.update();
         Gdx.gl.glClearColor(42/255f, 47/255f, 48/255f, 1);//0-1, Float.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        main.batch.setProjectionMatrix(cam.combined);
+        main.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
         main.batch.begin();
         main.batch.draw(texture, 0, 0);
         main.batch.end();
