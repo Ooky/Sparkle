@@ -6,8 +6,13 @@ package com.coldpixel.sparkle;
  */
 public class Constants {
 
-    public static final int WINDOW_WIDTH = 1024;
-    public static final int WINDOW_HEIGTH = 512 + 128;
+//==============================================================================
+//Desktoplauncher
+//==============================================================================  
+    public static final int WINDOW_WIDTH = 1280;
+    public static final int WINDOW_HEIGTH = 720;
+    public static final boolean fullscreen = false;
+    public static final boolean borderlessWindow = false;
     public static final String GAMENAME = "Coldpixel - Sparkle";
     public static final boolean RESZIABLE = false;
     public static final String FAVICON = "Graphics/Icon/Icon.png";

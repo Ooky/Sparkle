@@ -11,10 +11,16 @@ import com.coldpixel.sparkle.Main;
  * @author Coldpixel
  */
 public class PlayScreen implements Screen {
-
+    
+//==============================================================================
+//Initialization
+//==============================================================================   
     private Main main;
     Texture texture;
-
+    
+//==============================================================================
+//Methods
+//==============================================================================
     public PlayScreen(Main main) {
         this.main = main;
         texture = new Texture("Graphics/Terrain/Terrain.png");

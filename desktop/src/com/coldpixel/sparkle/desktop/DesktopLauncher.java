@@ -19,12 +19,22 @@ public class DesktopLauncher {
         config.resizable = Constants.RESZIABLE;
         config.addIcon(Constants.FAVICON, Files.FileType.Internal);
 
+        if (Constants.borderlessWindow) {
+            System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+        }
+
+        if (Constants.fullscreen) {
+            config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
+            config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;
+        }
+
         if (Constants.MAX_FPS) {
             //Shows the "real" fps, 0 disables throttling 
             config.vSyncEnabled = false;
             config.foregroundFPS = 0;
             config.backgroundFPS = 0;
         }
+
         new LwjglApplication(new Main(), config);
     }
 }

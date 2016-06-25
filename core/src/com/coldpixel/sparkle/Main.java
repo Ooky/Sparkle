@@ -5,9 +5,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.coldpixel.sparkle.screens.PlayScreen;
 
 public class Main extends Game {
+    
+//==============================================================================
+//Initialization
+//==============================================================================   
 
     public SpriteBatch batch;
 
+//==============================================================================
+//Methods
+//==============================================================================
     @Override
     public void create() {
         batch = new SpriteBatch();
