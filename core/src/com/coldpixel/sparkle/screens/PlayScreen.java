@@ -16,7 +16,7 @@ import com.coldpixel.sparkle.scenes.Hud;
  * @author Coldpixel
  */
 public class PlayScreen implements Screen {
-    
+
 //==============================================================================
 //Initialization
 //==============================================================================   
@@ -25,7 +25,7 @@ public class PlayScreen implements Screen {
     private OrthographicCamera cam;
     private Viewport gamePort;
     private Hud hud;
-    
+
 //==============================================================================
 //Methods
 //==============================================================================
@@ -33,7 +33,7 @@ public class PlayScreen implements Screen {
         this.main = main;
         texture = new Texture("Graphics/Character/Character.png");
         cam = new OrthographicCamera();
-        gamePort = new StretchViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGTH,cam);
+        gamePort = new StretchViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGTH, cam);
         hud = new Hud(main.batch);
     }
 
@@ -44,10 +44,10 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float f) {
         cam.update();
-        Gdx.gl.glClearColor(42/255f, 47/255f, 48/255f, 1);//0-1, Float.
+        Gdx.gl.glClearColor(42 / 255f, 47 / 255f, 48 / 255f, 1);//0-1, Float.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        hud.drawHUD();
         main.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
         main.batch.begin();
         main.batch.draw(texture, 0, 0);
         main.batch.end();
@@ -56,6 +56,7 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height); //Adjust the Viewport
+        hud.stage.getViewport().update(width, height);
     }
 
     @Override
