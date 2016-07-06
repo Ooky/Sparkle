@@ -5,6 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Constants;
@@ -26,6 +32,15 @@ public class PlayScreen implements Screen {
     private Viewport gamePort;
     private Hud hud;
 
+    //Tiled variables
+    private TmxMapLoader mapLoader;
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
+    
+    //Box2d variables
+    private World world;
+    private Box2DDebugRenderer b2dr;
+
 //==============================================================================
 //Methods
 //==============================================================================
@@ -35,6 +50,28 @@ public class PlayScreen implements Screen {
         cam = new OrthographicCamera();
         gamePort = new StretchViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGTH, cam);
         hud = new Hud(main.batch);
+
+        
+        mapLoader = new TmxMapLoader();
+        map = mapLoader.load("tiledmap.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map);
+        cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        
+        world = new World(new Vector2(0,0), true);
+
+    }
+
+    public void handleInput(float dt) {
+        if (Gdx.input.isTouched()) {
+            cam.position.y += 100 * dt;
+        }
+
+    }
+
+    public void update(float dt) {
+        handleInput(dt);
+        cam.update();
+        renderer.setView(cam);
     }
 
     @Override
@@ -42,10 +79,11 @@ public class PlayScreen implements Screen {
     }
 
     @Override
-    public void render(float f) {
-        cam.update();
+    public void render(float delta) {
+        update(delta);
         Gdx.gl.glClearColor(42 / 255f, 47 / 255f, 48 / 255f, 1);//0-1, Float.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        renderer.render();
         hud.drawHUD();
         main.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         main.batch.begin();
