@@ -1,5 +1,6 @@
 package com.coldpixel.sparkle.screens;
 
+import Sprites.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -48,12 +49,15 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
 
+    //Character
+    private Player player;
+
 //==============================================================================
 //Methods
 //==============================================================================
     public PlayScreen(Main main) {
         this.main = main;
-        texture = new Texture("Graphics/Character/Character.png");
+//        texture = new Texture("Graphics/Character/Character48x64.png");
         cam = new OrthographicCamera();
         gamePort = new StretchViewport(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGTH, cam);
         hud = new Hud(main.batch);
@@ -63,8 +67,11 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
         cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2dr = new Box2DDebugRenderer();
+
+        //Player
+        player = new Player(world);
 
         BodyDef bDef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -122,6 +129,9 @@ public class PlayScreen implements Screen {
 
     public void update(float dt) {
         handleInput(dt);
+
+        world.step(1 / 60f, 6, 2);//60 times a second
+
         cam.update();
         renderer.setView(cam);
     }
@@ -142,7 +152,7 @@ public class PlayScreen implements Screen {
         hud.drawHUD();
         main.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         main.batch.begin();
-        main.batch.draw(texture, 0, 0);
+//        main.batch.draw(texture, 0, 0);
         main.batch.end();
     }
 
