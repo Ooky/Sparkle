@@ -10,9 +10,9 @@ public class Main extends Game {
 //Initialization
 //==============================================================================   
     public SpriteBatch batch;
-    public static final int V_Width =Constants.WINDOW_WIDTH;
-    public static final int V_Height=Constants.WINDOW_HEIGTH;
-    public static final int PPM = 100; //PixelPerMeter
+    public static final int V_WIDTH =Constants.WINDOW_WIDTH;
+    public static final int V_HEIGHT=Constants.WINDOW_HEIGTH;
+    public static final float PPM = Constants.PPM; //PixelPerMeter
 
 //==============================================================================
 //Methods

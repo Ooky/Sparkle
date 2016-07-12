@@ -12,6 +12,7 @@ import com.coldpixel.sparkle.Constants;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.coldpixel.sparkle.Main;
 
 /**
  *
@@ -55,7 +56,7 @@ public class Hud {
         timeValue = 0;
         gap = Gdx.graphics.getHeight() / 48;
         shaperenderer = new ShapeRenderer();
-        switch (Constants.WINDOW_WIDTH) {
+        switch (Main.V_WIDTH) {
             case 3840:
                 lifebarWidth = 440;
                 break;

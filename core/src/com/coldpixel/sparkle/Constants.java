@@ -11,6 +11,7 @@ public class Constants {
 //==============================================================================  
     public static int WINDOW_WIDTH = 1280;
     public static int WINDOW_HEIGTH = 768;
+    public static int PPM = 100;//PixelPerMeter
     public static final boolean fullscreen = false;
     public static final boolean borderlessWindow = false;
     public static final String GAMENAME = "Coldpixel - Sparkle";
