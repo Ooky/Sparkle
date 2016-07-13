@@ -63,18 +63,18 @@ public class PlayScreen implements Screen {
         cam = new OrthographicCamera();
         gamePort = new StretchViewport(Main.V_WIDTH / Main.PPM, Main.V_HEIGHT / Main.PPM, cam);
         hud = new Hud(main.batch);
-
+        
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("tiledmap.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Main.PPM);
         cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-
+        
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2dr = new Box2DDebugRenderer();
 
         //Player
         player = new Player(world);
-
+        
         BodyDef bDef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fDef = new FixtureDef();
@@ -83,12 +83,12 @@ public class PlayScreen implements Screen {
         //Create Ground
         for (MapObject object : map.getLayers().get(0).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
+            
             bDef.type = BodyDef.BodyType.StaticBody;
             bDef.position.set((rect.getX() + rect.getWidth() / 2) / Main.PPM, (rect.getY() + rect.getHeight() / 2) / Main.PPM);
-
+            
             body = world.createBody(bDef);
-
+            
             shape.setAsBox((rect.getWidth() / 2) / Main.PPM, (rect.getHeight() / 2) / Main.PPM);
             fDef.shape = shape;
             body.createFixture(fDef);
@@ -96,12 +96,12 @@ public class PlayScreen implements Screen {
         //Create graphics
         for (MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
+            
             bDef.type = BodyDef.BodyType.StaticBody;
             bDef.position.set((rect.getX() + rect.getWidth() / 2) / Main.PPM, (rect.getY() + rect.getHeight() / 2) / Main.PPM);
-
+            
             body = world.createBody(bDef);
-
+            
             shape.setAsBox((rect.getWidth() / 2) / Main.PPM, (rect.getHeight() / 2) / Main.PPM);
             fDef.shape = shape;
             body.createFixture(fDef);
@@ -109,51 +109,51 @@ public class PlayScreen implements Screen {
         //Create hitbox
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
+            
             bDef.type = BodyDef.BodyType.StaticBody;
             bDef.position.set((rect.getX() + rect.getWidth() / 2) / Main.PPM, (rect.getY() + rect.getHeight() / 2) / Main.PPM);
-
+            
             body = world.createBody(bDef);
-
+            
             shape.setAsBox((rect.getWidth() / 2) / Main.PPM, (rect.getHeight() / 2) / Main.PPM);
             fDef.shape = shape;
             body.createFixture(fDef);
         }
-
+        
     }
-
+    
     public void handleInput(float dt) {
         //LinearImpulse:first:x/y,second: where to impulse from the body?->center!, third: will impulse awake obj?
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && player.b2Body.getLinearVelocity().y <= player.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) || (Gdx.input.isKeyPressed(Input.Keys.UP))) && player.b2Body.getLinearVelocity().y <= player.getMaxSpeed()) {
             //Check if Mario isnt moving faster than he is allowed to 
             player.b2Body.applyLinearImpulse(new Vector2(0, player.getMovementSpeed()), player.b2Body.getWorldCenter(), true);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && player.b2Body.getLinearVelocity().x >= -player.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) && player.b2Body.getLinearVelocity().x >= -player.getMaxSpeed()) {
             player.b2Body.applyLinearImpulse(new Vector2(-player.getMovementSpeed(), 0), player.b2Body.getWorldCenter(), true);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S) && player.b2Body.getLinearVelocity().y >= -player.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.S) || (Gdx.input.isKeyPressed(Input.Keys.DOWN))) && player.b2Body.getLinearVelocity().y >= -player.getMaxSpeed()) {
             player.b2Body.applyLinearImpulse(new Vector2(0, -player.getMovementSpeed()), player.b2Body.getWorldCenter(), true);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && player.b2Body.getLinearVelocity().x <= player.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) && player.b2Body.getLinearVelocity().x <= player.getMaxSpeed()) {
             player.b2Body.applyLinearImpulse(new Vector2(player.getMovementSpeed(), 0), player.b2Body.getWorldCenter(), true);
         }
 //        player.b2Body.setLinearVelocity(new Vector2(0,0));//Stop immediatly.
         player.b2Body.setLinearDamping(60.0f);//Slow down
     }
-
+    
     public void update(float dt) {
         handleInput(dt);
-
+        
         world.step(1 / 60f, 6, 2);//60 times a second
 
         cam.update();
         renderer.setView(cam);
     }
-
+    
     @Override
     public void show() {
     }
-
+    
     @Override
     public void render(float delta) {
         update(delta);
@@ -169,27 +169,27 @@ public class PlayScreen implements Screen {
 //        main.batch.draw(texture, 0, 0);
         main.batch.end();
     }
-
+    
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height); //Adjust the Viewport
         hud.stage.getViewport().update(width, height);
     }
-
+    
     @Override
     public void pause() {
     }
-
+    
     @Override
     public void resume() {
     }
-
+    
     @Override
     public void hide() {
     }
-
+    
     @Override
     public void dispose() {
     }
-
+    
 }
