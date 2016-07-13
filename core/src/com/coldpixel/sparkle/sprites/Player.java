@@ -1,4 +1,4 @@
-package Sprites;
+package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;

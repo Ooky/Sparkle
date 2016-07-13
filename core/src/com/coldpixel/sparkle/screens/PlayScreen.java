@@ -1,6 +1,6 @@
 package com.coldpixel.sparkle.screens;
 
-import Sprites.Player;
+import com.coldpixel.sparkle.sprites.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -26,6 +26,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
+import com.coldpixel.sparkle.tools.B2WorldCreator;
 
 /**
  *
@@ -50,6 +51,7 @@ public class PlayScreen implements Screen {
     //Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreator b2WorldCreator;
 
     //Character
     private Player player;
@@ -63,65 +65,22 @@ public class PlayScreen implements Screen {
         cam = new OrthographicCamera();
         gamePort = new StretchViewport(Main.V_WIDTH / Main.PPM, Main.V_HEIGHT / Main.PPM, cam);
         hud = new Hud(main.batch);
-        
+
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("tiledmap.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Main.PPM);
         cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-        
+
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2dr = new Box2DDebugRenderer();
 
+        b2WorldCreator = new B2WorldCreator(world, map);
+        
         //Player
         player = new Player(world);
-        
-        BodyDef bDef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fDef = new FixtureDef();
-        Body body;
 
-        //Create Ground
-        for (MapObject object : map.getLayers().get(0).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            
-            bDef.type = BodyDef.BodyType.StaticBody;
-            bDef.position.set((rect.getX() + rect.getWidth() / 2) / Main.PPM, (rect.getY() + rect.getHeight() / 2) / Main.PPM);
-            
-            body = world.createBody(bDef);
-            
-            shape.setAsBox((rect.getWidth() / 2) / Main.PPM, (rect.getHeight() / 2) / Main.PPM);
-            fDef.shape = shape;
-            body.createFixture(fDef);
-        }
-        //Create graphics
-        for (MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            
-            bDef.type = BodyDef.BodyType.StaticBody;
-            bDef.position.set((rect.getX() + rect.getWidth() / 2) / Main.PPM, (rect.getY() + rect.getHeight() / 2) / Main.PPM);
-            
-            body = world.createBody(bDef);
-            
-            shape.setAsBox((rect.getWidth() / 2) / Main.PPM, (rect.getHeight() / 2) / Main.PPM);
-            fDef.shape = shape;
-            body.createFixture(fDef);
-        }
-        //Create hitbox
-        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            
-            bDef.type = BodyDef.BodyType.StaticBody;
-            bDef.position.set((rect.getX() + rect.getWidth() / 2) / Main.PPM, (rect.getY() + rect.getHeight() / 2) / Main.PPM);
-            
-            body = world.createBody(bDef);
-            
-            shape.setAsBox((rect.getWidth() / 2) / Main.PPM, (rect.getHeight() / 2) / Main.PPM);
-            fDef.shape = shape;
-            body.createFixture(fDef);
-        }
-        
     }
-    
+
     public void handleInput(float dt) {
         //LinearImpulse:first:x/y,second: where to impulse from the body?->center!, third: will impulse awake obj?
         if ((Gdx.input.isKeyPressed(Input.Keys.W) || (Gdx.input.isKeyPressed(Input.Keys.UP))) && player.b2Body.getLinearVelocity().y <= player.getMaxSpeed()) {
@@ -140,20 +99,20 @@ public class PlayScreen implements Screen {
 //        player.b2Body.setLinearVelocity(new Vector2(0,0));//Stop immediatly.
         player.b2Body.setLinearDamping(60.0f);//Slow down
     }
-    
+
     public void update(float dt) {
         handleInput(dt);
-        
+
         world.step(1 / 60f, 6, 2);//60 times a second
 
         cam.update();
         renderer.setView(cam);
     }
-    
+
     @Override
     public void show() {
     }
-    
+
     @Override
     public void render(float delta) {
         update(delta);
@@ -169,27 +128,27 @@ public class PlayScreen implements Screen {
 //        main.batch.draw(texture, 0, 0);
         main.batch.end();
     }
-    
+
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height); //Adjust the Viewport
         hud.stage.getViewport().update(width, height);
     }
-    
+
     @Override
     public void pause() {
     }
-    
+
     @Override
     public void resume() {
     }
-    
+
     @Override
     public void hide() {
     }
-    
+
     @Override
     public void dispose() {
     }
-    
+
 }
