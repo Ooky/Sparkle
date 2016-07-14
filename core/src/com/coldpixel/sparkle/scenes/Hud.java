@@ -12,13 +12,14 @@ import com.coldpixel.sparkle.Constants;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Disposable;
 import com.coldpixel.sparkle.Main;
 
 /**
  *
  * @author Coldpixel
  */
-public class Hud {
+public class Hud implements Disposable {
 
 //==============================================================================
 //Initialization
@@ -123,13 +124,17 @@ public class Hud {
 
 //                System.out.println(playerLifeLabel.getMinWidth());
 //                System.out.println("Lifebar: " + lifebarWidth);
-
     }
 
     public void drawHUD() {
         //Make sure to draw first the lifebar
         drawLifebar();
         stage.draw();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
     }
 }
 

@@ -7,20 +7,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.PolylineMapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Polyline;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -50,7 +41,7 @@ public class PlayScreen implements Screen {
 
     //Box2d variables
     private World world;
-    private Box2DDebugRenderer b2dr;
+    private Box2DDebugRenderer b2DebugRenderer;
     private B2WorldCreator b2WorldCreator;
 
     //Character
@@ -72,7 +63,7 @@ public class PlayScreen implements Screen {
         cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
-        b2dr = new Box2DDebugRenderer();
+        b2DebugRenderer = new Box2DDebugRenderer();
 
         b2WorldCreator = new B2WorldCreator(world, map);
         
@@ -121,7 +112,7 @@ public class PlayScreen implements Screen {
         //render gamemap
         renderer.render();
         //render Box2DDebugLines
-        b2dr.render(world, cam.combined);
+        b2DebugRenderer.render(world, cam.combined);
         hud.drawHUD();
         main.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         main.batch.begin();
@@ -149,6 +140,11 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
+        map.dispose();
+        renderer.dispose();
+        world.dispose();
+        b2DebugRenderer.dispose();
+        hud.dispose();
     }
 
 }
