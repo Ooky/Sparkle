@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -29,7 +30,6 @@ public class PlayScreen implements Screen {
 //Initialization
 //==============================================================================   
     private Main main;
-    Texture texture;
     private OrthographicCamera cam;
     private Viewport gamePort;
     private Hud hud;
@@ -46,13 +46,15 @@ public class PlayScreen implements Screen {
 
     //Character
     private Player player;
+    private TextureAtlas atlas;
 
 //==============================================================================
 //Methods
 //==============================================================================
     public PlayScreen(Main main) {
+        atlas = new TextureAtlas("Player_and_Enemies.pack");
+
         this.main = main;
-//        texture = new Texture("Graphics/Character/Character48x64.png");
         cam = new OrthographicCamera();
         gamePort = new StretchViewport(Main.V_WIDTH / Main.PPM, Main.V_HEIGHT / Main.PPM, cam);
         hud = new Hud(main.batch);
@@ -66,9 +68,9 @@ public class PlayScreen implements Screen {
         b2DebugRenderer = new Box2DDebugRenderer();
 
         b2WorldCreator = new B2WorldCreator(world, map);
-        
+
         //Player
-        player = new Player(world);
+        player = new Player(world, this);
 
     }
 
@@ -96,6 +98,8 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2);//60 times a second
 
+        player.update(dt);
+
         cam.update();
         renderer.setView(cam);
     }
@@ -113,11 +117,13 @@ public class PlayScreen implements Screen {
         renderer.render();
         //render Box2DDebugLines
         b2DebugRenderer.render(world, cam.combined);
-        hud.drawHUD();
-        main.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+
+        main.batch.setProjectionMatrix(cam.combined);
         main.batch.begin();
-//        main.batch.draw(texture, 0, 0);
+        player.draw(main.batch);
         main.batch.end();
+
+        hud.drawHUD();
     }
 
     @Override
@@ -145,6 +151,14 @@ public class PlayScreen implements Screen {
         world.dispose();
         b2DebugRenderer.dispose();
         hud.dispose();
+    }
+
+//==============================================================================
+//Getter
+//==============================================================================
+    public TextureAtlas getAtlas() {
+        return atlas;
+
     }
 
 }
