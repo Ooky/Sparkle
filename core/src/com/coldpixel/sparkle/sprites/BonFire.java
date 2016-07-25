@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -29,7 +30,10 @@ import com.coldpixel.sparkle.Main;
 public class BonFire extends Sprite {
     private float posX;
     private float posY;
-    private float width;
+    private float radius;
+    private int width;
+    private int height;
+    private int scale;
     private Color color;
     private Ellipse e;
     private Body b2Body;
@@ -41,6 +45,7 @@ public class BonFire extends Sprite {
     private PointLight pointLight;
     private float currentDistance;
     private float previousDistance;
+    private float frameDuration;
 
     
     public BonFire(EllipseMapObject ellipse, World world) {
@@ -48,33 +53,35 @@ public class BonFire extends Sprite {
         e = ellipse.getEllipse();
         posX = e.x;
         posY = e.y;
-        width = e.width;
-        currentDistance = width/Main.PPM*6;
+        radius = e.width;
+        width = 32;
+        height=64;
+        scale=2;
+        frameDuration=0.15f;
+        currentDistance = radius/Main.PPM*4;
         previousDistance = currentDistance;
         defineBonFire();
         
-        fireBurning = new TextureRegion(new Texture("Graphics/Terrain/BonFire.png"), 0, 0, 32, 64);
-        setBounds(0, 0, 64/Main.PPM, 128/Main.PPM);
-        setRegion(fireBurning);
+        setBounds(0, 0, width/Main.PPM*scale, height/Main.PPM*scale);
         setPosition(b2Body.getPosition().x - (64/2/Main.PPM), b2Body.getPosition().y - (64/2/Main.PPM));
         stateTimer = 0;
         frames = new Array<TextureRegion>();
         //STANDING
-        for (int i = 0; i < 5; i++) {
-            frames.add(new TextureRegion(new Texture("Graphics/Terrain/BonFire.png"), i * 32, 0, 32, 64));
+        for (int i = 0; i < 10; i++) {
+            frames.add(new TextureRegion(new Texture("Graphics/Terrain/BonFire5.png"), i * 32, 0, 32, 64));
         }
-        burning = new Animation(0.16f, frames, LOOP);
+        burning = new Animation(frameDuration, frames, LOOP);
     }
 
     public void defineBonFire() {
         BodyDef bDef = new BodyDef();
-        bDef.position.set((posX+width/2) / Main.PPM, (posY+width/2) / Main.PPM);
+        bDef.position.set((posX+radius/2) / Main.PPM, (posY+radius/2) / Main.PPM);
         bDef.type = BodyDef.BodyType.StaticBody;
         b2Body = world.createBody(bDef);
 
         FixtureDef fDef = new FixtureDef();
-        PolygonShape rectangleShape = new PolygonShape();
-        rectangleShape.setAsBox(width / 2 / Main.PPM, width / 2 / Main.PPM); //Starts from the center
+        CircleShape rectangleShape = new CircleShape();
+        rectangleShape.setRadius(radius/200f);
         
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef);
@@ -90,13 +97,13 @@ public class BonFire extends Sprite {
     public void update(float dt) {
         setRegion(getFrame(dt));
         //light rays extend and shorten
-        if(previousDistance >= width/Main.PPM*6){
+        if(previousDistance >= radius/Main.PPM*4){
             currentDistance -= 1/Main.PPM;
-            if(currentDistance < width/Main.PPM*5)
+            if(currentDistance < radius/Main.PPM*3)
                 previousDistance = currentDistance;
-        }else if(previousDistance <= width/Main.PPM*5){
+        }else if(previousDistance <= radius/Main.PPM*4){
             currentDistance += 1/Main.PPM;
-            if(currentDistance > width/Main.PPM*6)
+            if(currentDistance > radius/Main.PPM*3)
                 previousDistance = currentDistance;
         }
         pointLight.setDistance(currentDistance);
@@ -111,7 +118,7 @@ public class BonFire extends Sprite {
     }
 
     public float getWidth() {
-        return width;
+        return radius;
     } 
     
     public Color getColor(){

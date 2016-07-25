@@ -206,13 +206,6 @@ public class Player extends Sprite {
                 Gdx.input.getX(),
                 Constants.WINDOW_HEIGTH - Gdx.input.getY());
         shapeRenderer.end();
-
-//        sr.begin(ShapeRenderer.ShapeType.Line);
-//        sr.line(new Vector2(Gdx.input.getX() - 500, Gdx.input.getY() - 50), new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-//        sr.rectLine(new Vector2(Gdx.input.getX() - 500, Gdx.input.getY() - 50), new Vector2(Gdx.input.getX(), Gdx.input.getY()), 20);
-//        sr.end();
-//
-//        Gdx.input.getX();
     }
 
 }

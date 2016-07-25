@@ -1,6 +1,5 @@
 package com.coldpixel.sparkle.sprites;
 
-import box2dLight.RayHandler;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
