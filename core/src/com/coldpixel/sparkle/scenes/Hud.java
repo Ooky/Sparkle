@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.coldpixel.sparkle.Main;
 
 /**
@@ -30,7 +31,7 @@ public class Hud implements Disposable {
     private final Table table;
 
     private int playerLife;
-    private int timeValue;
+    private short timeValue;
     private int scoreValue;
     private int maxLife;
     private final float gap;
@@ -47,6 +48,8 @@ public class Hud implements Disposable {
 
     private BitmapFont font;
 
+    private long startTime = 0;
+
 //==============================================================================
 //Methods
 //==============================================================================
@@ -57,6 +60,7 @@ public class Hud implements Disposable {
         timeValue = 0;
         gap = Gdx.graphics.getHeight() / 48;
         shaperenderer = new ShapeRenderer();
+        startTime = TimeUtils.nanoTime();
         switch (Main.V_WIDTH) {
             case 3840:
                 lifebarWidth = 440;
@@ -129,12 +133,25 @@ public class Hud implements Disposable {
     public void drawHUD() {
         //Make sure to draw first the lifebar
         drawLifebar();
+        timer();
         stage.draw();
     }
 
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public void timer() {
+        if (TimeUtils.timeSinceNanos(startTime) > 1000000000) {//Every second
+            if (timeValue < 9000) {
+                timeValue++;
+                timeValueLabel.setText(String.format("%04d", timeValue));
+            } else if (timeValue ==9000) {
+                timeValueLabel.setText("over 9000");
+            }
+            startTime = TimeUtils.nanoTime();
+        }
     }
 }
 
