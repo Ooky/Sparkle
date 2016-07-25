@@ -1,8 +1,10 @@
 package com.coldpixel.sparkle.tools;
 
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -11,7 +13,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.sprites.Dirt;
+import com.coldpixel.sparkle.sprites.EnvironmentObject;
 import com.coldpixel.sparkle.sprites.Grass;
+import java.util.ArrayList;
 
 /**
  *
@@ -29,11 +33,12 @@ public class B2WorldCreator {
 
     Grass grass;
     Dirt dirt;
-
+    EnvironmentObject environmentObject;
+    ArrayList<Ellipse> ellipses;
 //==============================================================================
 //Methods
 //==============================================================================  
-    public B2WorldCreator(World world, TiledMap map) {
+    public B2WorldCreator(World world, TiledMap map) {        
         bDef = new BodyDef();
         polygonShape = new PolygonShape();
         fDef = new FixtureDef();
@@ -49,11 +54,17 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             dirt = new Dirt(world, map, rect);
         }
-
-        //Create hitbox
+        
+        //Create Object
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            environmentObject = new EnvironmentObject(world, map, rect);
+        }
 
+        //Create hitbox
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            
             bDef.type = BodyDef.BodyType.StaticBody;
             bDef.position.set((rect.getX() + rect.getWidth() / 2) / Main.PPM, (rect.getY() + rect.getHeight() / 2) / Main.PPM);
 
@@ -63,5 +74,16 @@ public class B2WorldCreator {
             fDef.shape = polygonShape;
             body.createFixture(fDef);
         }
+        
+        //Create light
+        ellipses = new ArrayList<Ellipse>();
+        for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) {
+            Ellipse ellipse = ((EllipseMapObject) object).getEllipse();
+            ellipses.add(ellipse);
+        }
+    }
+    
+    public ArrayList<Ellipse> getLights(){
+        return ellipses;
     }
 }

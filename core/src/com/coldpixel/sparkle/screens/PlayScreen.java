@@ -1,14 +1,18 @@
 package com.coldpixel.sparkle.screens;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.coldpixel.sparkle.sprites.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -42,6 +46,12 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2DebugRenderer;
     private B2WorldCreator b2WorldCreator;
+    
+    //light
+    private RayHandler rayHandler;
+    private PointLight pointLight;
+            
+   // private PointLight myLight;
 
     //Character
     private Player player;
@@ -71,15 +81,28 @@ public class PlayScreen implements Screen {
         player = new Player(world, this);
 
         world.setContactListener(new WorldContactListener());
+        
+        rayHandler = new RayHandler(world);
+        rayHandler.setAmbientLight(.8f);
 
+        for (Ellipse object: b2WorldCreator.getLights()) {
+            pointLight = new PointLight(rayHandler, 200, Color.WHITE, object.width/Main.PPM*6, (object.x+(object.width/2))/Main.PPM, (object.y+(object.height/2))/Main.PPM);
+            pointLight.setSoftnessLength(0f);       
+        }
+      //  myLight = new PointLight(rayHandler, 200, Color.WHITE, 3, Main.V_WIDTH/2/Main.PPM, Main.V_HEIGHT/2/Main.PPM);
+       // myLight.setSoftnessLength(0f);
+       // myLight.attachToBody(player.b2Body);
+       //myLight.setXray(true);
     }
 
     public void update(float dt) {
         player.handleInput(dt);
         world.step(1 / 60f, 6, 2);//60 times a second
+        rayHandler.update();
         player.update(dt);
         cam.update();
         renderer.setView(cam);
+        
     }
 
     @Override
@@ -97,9 +120,11 @@ public class PlayScreen implements Screen {
         b2DebugRenderer.render(world, cam.combined);
 
         main.batch.setProjectionMatrix(cam.combined);
+        rayHandler.setCombinedMatrix(cam);
         main.batch.begin();
         player.draw(main.batch);
         main.batch.end();
+        rayHandler.render();
         player.targetLine();
 
         hud.drawHUD();
@@ -130,6 +155,7 @@ public class PlayScreen implements Screen {
         world.dispose();
         b2DebugRenderer.dispose();
         hud.dispose();
+        rayHandler.dispose();
     }
 
 //==============================================================================
