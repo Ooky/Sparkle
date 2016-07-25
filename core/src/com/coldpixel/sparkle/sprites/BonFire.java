@@ -5,6 +5,7 @@
  */
 package com.coldpixel.sparkle.sprites;
 
+import box2dLight.PointLight;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -37,6 +38,9 @@ public class BonFire extends Sprite {
     private float stateTimer;
     Array<TextureRegion> frames;
     private TextureRegion fireBurning;
+    private PointLight pointLight;
+    private float currentDistance;
+    private float previousDistance;
 
     
     public BonFire(EllipseMapObject ellipse, World world) {
@@ -45,6 +49,8 @@ public class BonFire extends Sprite {
         posX = e.x;
         posY = e.y;
         width = e.width;
+        currentDistance = width/Main.PPM*6;
+        previousDistance = currentDistance;
         defineBonFire();
         
         fireBurning = new TextureRegion(new Texture("Graphics/Terrain/BonFire.png"), 0, 0, 32, 64);
@@ -83,6 +89,17 @@ public class BonFire extends Sprite {
     
     public void update(float dt) {
         setRegion(getFrame(dt));
+        //light rays extend and shorten
+        if(previousDistance >= width/Main.PPM*6){
+            currentDistance -= 1/Main.PPM;
+            if(currentDistance < width/Main.PPM*5)
+                previousDistance = currentDistance;
+        }else if(previousDistance <= width/Main.PPM*5){
+            currentDistance += 1/Main.PPM;
+            if(currentDistance > width/Main.PPM*6)
+                previousDistance = currentDistance;
+        }
+        pointLight.setDistance(currentDistance);
     }
     
     public float getPosX() {
@@ -104,4 +121,8 @@ public class BonFire extends Sprite {
     public Body getBody(){
         return b2Body;
     }
+    
+   public void setPointLight(PointLight pLight){
+       pointLight = pLight;
+   }
 }
