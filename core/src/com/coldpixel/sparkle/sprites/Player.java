@@ -2,10 +2,13 @@ package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -13,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.coldpixel.sparkle.Constants;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.screens.PlayScreen;
 
@@ -47,6 +51,8 @@ public class Player extends Sprite {
 
     private TextureRegion playerStand;
 
+    private ShapeRenderer shapeRenderer;
+
 //==============================================================================
 //Methods
 //==============================================================================
@@ -59,6 +65,8 @@ public class Player extends Sprite {
         this.world = world;
         movementSpeed = 3.0f;
         maxSpeed = 4.0f;
+
+        shapeRenderer = new ShapeRenderer();
 
         definePlayer();
 
@@ -170,6 +178,7 @@ public class Player extends Sprite {
             return State.STANDING;
         }
     }
+
     public void handleInput(float dt) {
         //LinearImpulse:first:x/y,second: where to impulse from the body?->center!, third: will impulse awake obj?
         if ((Gdx.input.isKeyPressed(Input.Keys.W) || (Gdx.input.isKeyPressed(Input.Keys.UP))) && this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
@@ -187,6 +196,23 @@ public class Player extends Sprite {
         }
 //        player.b2Body.setLinearVelocity(new Vector2(0,0));//Stop immediatly.
         this.b2Body.setLinearDamping(60.0f);//Slow down
+    }
+
+    public void targetLine() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.line(b2Body.getPosition().x * Main.PPM,
+                b2Body.getPosition().y * Main.PPM,
+                Gdx.input.getX(),
+                Constants.WINDOW_HEIGTH - Gdx.input.getY());
+        shapeRenderer.end();
+
+//        sr.begin(ShapeRenderer.ShapeType.Line);
+//        sr.line(new Vector2(Gdx.input.getX() - 500, Gdx.input.getY() - 50), new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+//        sr.rectLine(new Vector2(Gdx.input.getX() - 500, Gdx.input.getY() - 50), new Vector2(Gdx.input.getX(), Gdx.input.getY()), 20);
+//        sr.end();
+//
+//        Gdx.input.getX();
     }
 
 }

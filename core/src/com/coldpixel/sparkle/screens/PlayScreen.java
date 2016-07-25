@@ -2,11 +2,9 @@ package com.coldpixel.sparkle.screens;
 
 import com.coldpixel.sparkle.sprites.Player;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -95,13 +93,14 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //render gamemap
         renderer.render();
-        //render Box2DDebugLines
-//        b2DebugRenderer.render(world, cam.combined);
+//        render Box2DDebugLines
+        b2DebugRenderer.render(world, cam.combined);
 
         main.batch.setProjectionMatrix(cam.combined);
         main.batch.begin();
         player.draw(main.batch);
         main.batch.end();
+        player.targetLine();
 
         hud.drawHUD();
     }

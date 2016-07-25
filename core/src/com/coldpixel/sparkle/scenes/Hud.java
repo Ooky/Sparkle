@@ -147,7 +147,7 @@ public class Hud implements Disposable {
             if (timeValue < 9000) {
                 timeValue++;
                 timeValueLabel.setText(String.format("%04d", timeValue));
-            } else if (timeValue ==9000) {
+            } else if (timeValue == 9000) {
                 timeValueLabel.setText("over 9000");
             }
             startTime = TimeUtils.nanoTime();
