@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -84,13 +85,16 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener());
         
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(.5f);
+        rayHandler.setAmbientLight(1f);
 
         for (BonFire boneFire: b2WorldCreator.getBonFires()) {
             pointLight = new PointLight(rayHandler, 200, Color.WHITE, boneFire.getWidth()/Main.PPM*6, 0, 0);
             pointLight.setSoftnessLength(0f);
             pointLight.attachToBody(boneFire.getBody(),0,15/Main.PPM);
+            pointLight.setIgnoreAttachedBody(true);            
             boneFire.setPointLight(pointLight);
+            
+            
         }
     }
 
@@ -125,12 +129,14 @@ public class PlayScreen implements Screen {
         main.batch.setProjectionMatrix(cam.combined);
         rayHandler.setCombinedMatrix(cam);
         main.batch.begin();
-        player.draw(main.batch);
+        player.draw(main.batch);        
+        main.batch.end();
+        rayHandler.render();
+        main.batch.begin();
         for (BonFire boneFire: b2WorldCreator.getBonFires()) {
             boneFire.draw(main.batch);
         }
         main.batch.end();
-        rayHandler.render();
         player.targetLine();
 
         hud.drawHUD();
