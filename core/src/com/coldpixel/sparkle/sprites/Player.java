@@ -1,9 +1,12 @@
 package com.coldpixel.sparkle.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -166,6 +169,24 @@ public class Player extends Sprite {
         } else {
             return State.STANDING;
         }
+    }
+    public void handleInput(float dt) {
+        //LinearImpulse:first:x/y,second: where to impulse from the body?->center!, third: will impulse awake obj?
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) || (Gdx.input.isKeyPressed(Input.Keys.UP))) && this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
+            //Check if Player isnt moving faster than he is allowed to 
+            this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+        }
+        if ((Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) && this.b2Body.getLinearVelocity().x >= -this.getMaxSpeed()) {
+            this.b2Body.applyLinearImpulse(new Vector2(-this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+        }
+        if ((Gdx.input.isKeyPressed(Input.Keys.S) || (Gdx.input.isKeyPressed(Input.Keys.DOWN))) && this.b2Body.getLinearVelocity().y >= -this.getMaxSpeed()) {
+            this.b2Body.applyLinearImpulse(new Vector2(0, -this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+        }
+        if ((Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) && this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()) {
+            this.b2Body.applyLinearImpulse(new Vector2(this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+        }
+//        player.b2Body.setLinearVelocity(new Vector2(0,0));//Stop immediatly.
+        this.b2Body.setLinearDamping(60.0f);//Slow down
     }
 
 }
