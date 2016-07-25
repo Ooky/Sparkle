@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
+import com.coldpixel.sparkle.tools.WorldContactListener;
 
 /**
  *
@@ -71,13 +72,15 @@ public class PlayScreen implements Screen {
 
         //Player
         player = new Player(world, this);
+        
+        world.setContactListener(new WorldContactListener());
 
     }
 
     public void handleInput(float dt) {
         //LinearImpulse:first:x/y,second: where to impulse from the body?->center!, third: will impulse awake obj?
         if ((Gdx.input.isKeyPressed(Input.Keys.W) || (Gdx.input.isKeyPressed(Input.Keys.UP))) && player.b2Body.getLinearVelocity().y <= player.getMaxSpeed()) {
-            //Check if Mario isnt moving faster than he is allowed to 
+            //Check if Player isnt moving faster than he is allowed to 
             player.b2Body.applyLinearImpulse(new Vector2(0, player.getMovementSpeed()), player.b2Body.getWorldCenter(), true);
         }
         if ((Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) && player.b2Body.getLinearVelocity().x >= -player.getMaxSpeed()) {
