@@ -27,12 +27,12 @@
   <object id="25" x="1280" y="0" height="768"/>
   <object id="30" x="0" y="768" width="1280"/>
   <object id="31" x="0" y="0" height="768"/>
-  <object id="38" x="576" y="330.25" width="63.75" height="43.5"/>
-  <object id="39" x="127.455" y="586.845" width="64.5455" height="43.3981"/>
-  <object id="43" x="1023.96" y="202.936" width="64.1818" height="43.0909"/>
  </objectgroup>
  <objectgroup name="light">
   <object id="40" x="136.84" y="587.32" width="45.1605" height="43.1232">
+   <properties>
+    <property name="Color" value="BLUE"/>
+   </properties>
    <ellipse/>
   </object>
   <object id="41" x="584.583" y="330.583" width="46.4167" height="43.0255">

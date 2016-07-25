@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
+import com.coldpixel.sparkle.sprites.BoneFire;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
 
@@ -85,14 +86,11 @@ public class PlayScreen implements Screen {
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(.8f);
 
-        for (Ellipse object: b2WorldCreator.getLights()) {
-            pointLight = new PointLight(rayHandler, 200, Color.WHITE, object.width/Main.PPM*6, (object.x+(object.width/2))/Main.PPM, (object.y+(object.height/2))/Main.PPM);
-            pointLight.setSoftnessLength(0f);       
+        for (BoneFire object: b2WorldCreator.getBoneFires()) {
+            pointLight = new PointLight(rayHandler, 200, Color.WHITE, object.getWidth()/Main.PPM*6, (object.getPosX()+(object.getWidth()/2))/Main.PPM, (object.getPosY()+(object.getWidth()/2))/Main.PPM);
+            pointLight.setSoftnessLength(0f);
+            pointLight.attachToBody(object.getBody());
         }
-      //  myLight = new PointLight(rayHandler, 200, Color.WHITE, 3, Main.V_WIDTH/2/Main.PPM, Main.V_HEIGHT/2/Main.PPM);
-       // myLight.setSoftnessLength(0f);
-       // myLight.attachToBody(player.b2Body);
-       //myLight.setXray(true);
     }
 
     public void update(float dt) {

@@ -1,5 +1,8 @@
 package com.coldpixel.sparkle.tools;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -12,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.sprites.BoneFire;
 import com.coldpixel.sparkle.sprites.Dirt;
 import com.coldpixel.sparkle.sprites.EnvironmentObject;
 import com.coldpixel.sparkle.sprites.Grass;
@@ -34,7 +38,8 @@ public class B2WorldCreator {
     Grass grass;
     Dirt dirt;
     EnvironmentObject environmentObject;
-    ArrayList<Ellipse> ellipses;
+    ArrayList<BoneFire> bonefires;
+    private BoneFire boneFire;
 //==============================================================================
 //Methods
 //==============================================================================  
@@ -76,14 +81,14 @@ public class B2WorldCreator {
         }
         
         //Create light
-        ellipses = new ArrayList<Ellipse>();
-        for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) {
-            Ellipse ellipse = ((EllipseMapObject) object).getEllipse();
-            ellipses.add(ellipse);
+        bonefires = new ArrayList<BoneFire>();
+        for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) { 
+            boneFire = new BoneFire(((EllipseMapObject) object), world);
+            bonefires.add(boneFire);
         }
     }
     
-    public ArrayList<Ellipse> getLights(){
-        return ellipses;
+    public ArrayList<BoneFire> getBoneFires(){
+        return bonefires;
     }
 }
