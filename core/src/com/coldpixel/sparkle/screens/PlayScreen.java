@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
-import com.coldpixel.sparkle.sprites.BoneFire;
+import com.coldpixel.sparkle.sprites.BonFire;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
 
@@ -86,10 +86,10 @@ public class PlayScreen implements Screen {
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(.8f);
 
-        for (BoneFire object: b2WorldCreator.getBoneFires()) {
-            pointLight = new PointLight(rayHandler, 200, Color.WHITE, object.getWidth()/Main.PPM*6, 0, 0);
+        for (BonFire boneFire: b2WorldCreator.getBonFires()) {
+            pointLight = new PointLight(rayHandler, 200, Color.WHITE, boneFire.getWidth()/Main.PPM*6, 0, 0);
             pointLight.setSoftnessLength(0f);
-            pointLight.attachToBody(object.getBody());
+            pointLight.attachToBody(boneFire.getBody(),0,15/Main.PPM);
         }
     }
 
@@ -98,6 +98,10 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);//60 times a second
         rayHandler.update();
         player.update(dt);
+        //bonfire animation
+        for (BonFire boneFire: b2WorldCreator.getBonFires()) {
+            boneFire.update(dt);
+        }
         cam.update();
         renderer.setView(cam);
         
@@ -121,6 +125,9 @@ public class PlayScreen implements Screen {
         rayHandler.setCombinedMatrix(cam);
         main.batch.begin();
         player.draw(main.batch);
+        for (BonFire boneFire: b2WorldCreator.getBonFires()) {
+            boneFire.draw(main.batch);
+        }
         main.batch.end();
         rayHandler.render();
         player.targetLine();

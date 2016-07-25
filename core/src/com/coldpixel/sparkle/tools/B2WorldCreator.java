@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.coldpixel.sparkle.Main;
-import com.coldpixel.sparkle.sprites.BoneFire;
+import com.coldpixel.sparkle.sprites.BonFire;
 import com.coldpixel.sparkle.sprites.Dirt;
 import com.coldpixel.sparkle.sprites.EnvironmentObject;
 import com.coldpixel.sparkle.sprites.Grass;
@@ -38,8 +38,8 @@ public class B2WorldCreator {
     Grass grass;
     Dirt dirt;
     EnvironmentObject environmentObject;
-    ArrayList<BoneFire> bonefires;
-    private BoneFire boneFire;
+    ArrayList<BonFire> bonefires;
+    private BonFire boneFire;
 //==============================================================================
 //Methods
 //==============================================================================  
@@ -81,14 +81,14 @@ public class B2WorldCreator {
         }
         
         //Create light
-        bonefires = new ArrayList<BoneFire>();
+        bonefires = new ArrayList<BonFire>();
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) { 
-            boneFire = new BoneFire(((EllipseMapObject) object), world);
+            boneFire = new BonFire(((EllipseMapObject) object), world);
             bonefires.add(boneFire);
         }
     }
     
-    public ArrayList<BoneFire> getBoneFires(){
+    public ArrayList<BonFire> getBonFires(){
         return bonefires;
     }
 }
