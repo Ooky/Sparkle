@@ -87,7 +87,7 @@ public class PlayScreen implements Screen {
         rayHandler.setAmbientLight(.8f);
 
         for (BoneFire object: b2WorldCreator.getBoneFires()) {
-            pointLight = new PointLight(rayHandler, 200, Color.WHITE, object.getWidth()/Main.PPM*6, (object.getPosX()+(object.getWidth()/2))/Main.PPM, (object.getPosY()+(object.getWidth()/2))/Main.PPM);
+            pointLight = new PointLight(rayHandler, 200, Color.WHITE, object.getWidth()/Main.PPM*6, 0, 0);
             pointLight.setSoftnessLength(0f);
             pointLight.attachToBody(object.getBody());
         }
@@ -114,7 +114,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //render gamemap
         renderer.render();
-//        render Box2DDebugLines
+        //render Box2DDebugLines
         b2DebugRenderer.render(world, cam.combined);
 
         main.batch.setProjectionMatrix(cam.combined);
