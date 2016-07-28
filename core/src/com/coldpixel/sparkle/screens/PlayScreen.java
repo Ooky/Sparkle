@@ -69,7 +69,7 @@ public class PlayScreen implements Screen {
     public PlayScreen(Main main) {
         atlas = new TextureAtlas("Player_and_Enemies.pack");
         startTime = 0;
-        ambientLight = 0.05f;
+        ambientLight = 0.85f;
         isDay = false;
         oneDayDuration = 10000000000L;
 
@@ -118,11 +118,10 @@ public class PlayScreen implements Screen {
     }
 
     private void dayNightCycle() {
-        System.out.println(ambientLight);
         if (!isDay) {
-            if (TimeUtils.timeSinceNanos(startTime) > 1000) {//Every microsecond
+            if (TimeUtils.timeSinceNanos(startTime) > 100000000) {//Every microsecond
                 //Change ambientLight every microsecond
-                ambientLight += 0.0005f;
+                ambientLight += 0.005f;
                 rayHandler.setAmbientLight(ambientLight);
                 startTime = TimeUtils.nanoTime();
                 if (ambientLight >= 1f) {
@@ -131,9 +130,9 @@ public class PlayScreen implements Screen {
                 }
             }
         } else if (isDay) {
-            if (TimeUtils.timeSinceNanos(startTime) > 1000) {//Every microsecond
+            if (TimeUtils.timeSinceNanos(startTime) > 100000000) {//Every microsecond
                 //Change ambientLight every microsecond
-                ambientLight -= 0.0005f;
+                ambientLight -= 0.005f;
                 rayHandler.setAmbientLight(ambientLight);
                 startTime = TimeUtils.nanoTime();
                 if (ambientLight <= 0.05f) {

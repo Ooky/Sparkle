@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -79,10 +80,11 @@ public class Player extends Sprite {
 
         frames = new Array<TextureRegion>();
         //STANDING
-        for (int i = 0; i < 5; i++) {
-            frames.add(new TextureRegion(getTexture(), i * playerWidth, 0, playerWidth, playerHeight));
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mage.png"), i * playerWidth, 0, playerWidth*2, playerHeight*2));
         }
-        playerStanding = new Animation(1.0f, frames, LOOP);
+        playerStanding = new Animation(0.1f, frames, LOOP);
         frames.clear();
         //RUNNING
         for (int i = 0; i < 5; i++) {
