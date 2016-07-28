@@ -12,11 +12,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
@@ -48,22 +47,31 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2DebugRenderer;
     private B2WorldCreator b2WorldCreator;
-    
+
     //light
     private RayHandler rayHandler;
     private PointLight pointLight;
-            
-   // private PointLight myLight;
+    private float ambientLight;
 
+    // private PointLight myLight;
     //Character
     private Player player;
     private TextureAtlas atlas;
 
+    //DayNightCycle
+    private long startTime;
+    boolean isDay;
+    private long oneDayDuration;
 //==============================================================================
 //Methods
 //==============================================================================
+
     public PlayScreen(Main main) {
         atlas = new TextureAtlas("Player_and_Enemies.pack");
+        startTime = 0;
+        ambientLight = 0.05f;
+        isDay = false;
+        oneDayDuration = 10000000000L;
 
         this.main = main;
         cam = new OrthographicCamera();
@@ -83,37 +91,57 @@ public class PlayScreen implements Screen {
         player = new Player(world, this);
 
         world.setContactListener(new WorldContactListener());
-        
-        rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.4f);
 
-        for (BonFire boneFire: b2WorldCreator.getBonFires()) {
-            pointLight = new PointLight(rayHandler, 200, Color.ORANGE, boneFire.getWidth()/Main.PPM*4, 0, 0);
-            pointLight.setSoftnessLength(0f);
-            pointLight.attachToBody(boneFire.getBody(),0,0);
-            pointLight.setIgnoreAttachedBody(true);            
+        rayHandler = new RayHandler(world);
+
+        for (BonFire boneFire : b2WorldCreator.getBonFires()) {
+            pointLight = new PointLight(rayHandler, 100, Color.ORANGE, boneFire.getWidth() / Main.PPM * 4, 0, 0);
+            pointLight.setSoftnessLength(0.5f);
+            pointLight.attachToBody(boneFire.getBody(), 0, 0);
+            pointLight.setIgnoreAttachedBody(true);
             boneFire.setPointLight(pointLight);
-            
-            
         }
     }
 
     public void update(float dt) {
         player.handleInput(dt);
         world.step(1 / 60f, 6, 2);//60 times a second
-        rayHandler.update();
+//        rayHandler.update();
         player.update(dt);
         //bonfire animation
-        for (BonFire boneFire: b2WorldCreator.getBonFires()) {
+        for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
         }
         cam.update();
         renderer.setView(cam);
-        
+
     }
 
-    @Override
-    public void show() {
+    private void dayNightCycle() {
+        System.out.println(ambientLight);
+        if (!isDay) {
+            if (TimeUtils.timeSinceNanos(startTime) > 1000) {//Every microsecond
+                //Change ambientLight every microsecond
+                ambientLight += 0.0005f;
+                rayHandler.setAmbientLight(ambientLight);
+                startTime = TimeUtils.nanoTime();
+                if (ambientLight >= 1f) {
+                    startTime = 0;
+                    isDay = true;
+                }
+            }
+        } else if (isDay) {
+            if (TimeUtils.timeSinceNanos(startTime) > 1000) {//Every microsecond
+                //Change ambientLight every microsecond
+                ambientLight -= 0.0005f;
+                rayHandler.setAmbientLight(ambientLight);
+                startTime = TimeUtils.nanoTime();
+                if (ambientLight <= 0.05f) {
+                    startTime = 0;
+                    isDay = false;
+                }
+            }
+        }
     }
 
     @Override
@@ -128,18 +156,24 @@ public class PlayScreen implements Screen {
 
         main.batch.setProjectionMatrix(cam.combined);
         rayHandler.setCombinedMatrix(cam);
+        dayNightCycle();
         main.batch.begin();
-        player.draw(main.batch);        
+        player.draw(main.batch);
         main.batch.end();
-        rayHandler.render();
+        rayHandler.updateAndRender();
+//        rayHandler.render();
         main.batch.begin();
-        for (BonFire boneFire: b2WorldCreator.getBonFires()) {
+        for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.draw(main.batch);
         }
         main.batch.end();
         player.targetLine();
 
         hud.drawHUD();
+    }
+
+    @Override
+    public void show() {
     }
 
     @Override
