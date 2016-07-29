@@ -61,17 +61,17 @@ public class PlayScreen implements Screen {
     //DayNightCycle
     private long startTime;
     boolean isDay;
-    private long oneDayDuration;
+    private long cycleTime;
+
 //==============================================================================
 //Methods
 //==============================================================================
-
     public PlayScreen(Main main) {
         atlas = new TextureAtlas("Player_and_Enemies.pack");
         startTime = 0;
-        ambientLight = 0.85f;
+        ambientLight = 0.08f;
         isDay = false;
-        oneDayDuration = 10000000000L;
+        cycleTime = TimeUtils.nanoTime();
 
         this.main = main;
         cam = new OrthographicCamera();
@@ -93,6 +93,7 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener());
 
         rayHandler = new RayHandler(world);
+        rayHandler.setAmbientLight(0.08f);
 
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             pointLight = new PointLight(rayHandler, 100, Color.ORANGE, boneFire.getWidth() / Main.PPM * 4, 0, 0);
@@ -118,29 +119,34 @@ public class PlayScreen implements Screen {
     }
 
     private void dayNightCycle() {
-        if (!isDay) {
-            if (TimeUtils.timeSinceNanos(startTime) > 100000000) {//Every microsecond
-                //Change ambientLight every microsecond
+//        System.out.println(ambientLight);
+//        System.out.println(TimeUtils.timeSinceNanos(cycleTime));
+//        System.out.println(TimeUtils.timeSinceNanos(startTime));
+//        System.out.println(toggleDayTime);
+        if (TimeUtils.timeSinceNanos(cycleTime) > 900000000000L && !isDay) {//15Min  900000000000L
+            if (TimeUtils.timeSinceNanos(startTime) > 50000000L) {//1Sec= 1000000000
                 ambientLight += 0.005f;
                 rayHandler.setAmbientLight(ambientLight);
                 startTime = TimeUtils.nanoTime();
-                if (ambientLight >= 1f) {
+                if (ambientLight >= 0.8f) {
                     startTime = 0;
                     isDay = true;
+                    cycleTime = TimeUtils.nanoTime();
                 }
             }
-        } else if (isDay) {
-            if (TimeUtils.timeSinceNanos(startTime) > 100000000) {//Every microsecond
-                //Change ambientLight every microsecond
+        } else if (TimeUtils.timeSinceNanos(cycleTime) >  450000000000L && isDay) {//7.5Min  450000000000L
+            if (TimeUtils.timeSinceNanos(startTime) > 50000000L) {
                 ambientLight -= 0.005f;
                 rayHandler.setAmbientLight(ambientLight);
                 startTime = TimeUtils.nanoTime();
-                if (ambientLight <= 0.05f) {
+                if (ambientLight <= 0.08f) {
                     startTime = 0;
                     isDay = false;
+                    cycleTime = 0;
                 }
             }
         }
+
     }
 
     @Override
@@ -151,7 +157,7 @@ public class PlayScreen implements Screen {
         //render gamemap
         renderer.render();
         //render Box2DDebugLines
-        b2DebugRenderer.render(world, cam.combined);
+//        b2DebugRenderer.render(world, cam.combined);
 
         main.batch.setProjectionMatrix(cam.combined);
         rayHandler.setCombinedMatrix(cam);

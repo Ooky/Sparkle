@@ -2,7 +2,6 @@ package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -82,7 +81,7 @@ public class Player extends Sprite {
         //STANDING
         for (int i = 0; i < 9; i++) {
             //change to getTexture() later
-            frames.add(new TextureRegion(new Texture("Graphics/Character/mage.png"), i * playerWidth, 0, playerWidth*2, playerHeight*2));
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mage.png"), i * playerWidth, 0, playerWidth, playerHeight));
         }
         playerStanding = new Animation(0.1f, frames, LOOP);
         frames.clear();
