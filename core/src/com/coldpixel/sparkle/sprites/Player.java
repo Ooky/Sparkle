@@ -87,9 +87,10 @@ public class Player extends Sprite {
         frames.clear();
         //RUNNING
         for (int i = 0; i < 5; i++) {
-            frames.add(new TextureRegion(getTexture(), i * playerWidth, 64, playerWidth, playerHeight));
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageWalk.png"), i * playerWidth, 0, playerWidth, playerHeight));
         }
-        playerRunning = new Animation(1.0f, frames, LOOP);
+        playerRunning = new Animation(.1f, frames, LOOP);
         frames.clear();
     }
 
@@ -150,16 +151,16 @@ public class Player extends Sprite {
                 break;
         }
         if (region != playerStand) {
-            if ((b2Body.getLinearVelocity().x < 0) && !region.isFlipX()) {
+            if ((b2Body.getLinearVelocity().x > 0) && !region.isFlipX()) {
                 region.flip(true, false);
-            } else if ((b2Body.getLinearVelocity().x > 0) && region.isFlipX()) {
+            } else if ((b2Body.getLinearVelocity().x < 0) && region.isFlipX()) {
                 region.flip(true, false);
-            }
+            }/*
             if ((b2Body.getLinearVelocity().y < 0) && !region.isFlipY()) {
                 region.flip(false, true);
             } else if ((b2Body.getLinearVelocity().y > 0) && region.isFlipY()) {
                 region.flip(false, true);
-            }
+            }*/
         }
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         previousState = currentState;

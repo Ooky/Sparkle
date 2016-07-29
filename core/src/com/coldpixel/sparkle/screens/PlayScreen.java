@@ -93,7 +93,7 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener());
 
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.08f);
+        rayHandler.setAmbientLight(0.78f);
 
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             pointLight = new PointLight(rayHandler, 100, Color.ORANGE, boneFire.getWidth() / Main.PPM * 4, 0, 0);
