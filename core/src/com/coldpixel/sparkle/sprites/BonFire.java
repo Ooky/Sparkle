@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coldpixel.sparkle.sprites;
 
 import box2dLight.PointLight;
@@ -18,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Main;
@@ -27,7 +21,8 @@ import com.coldpixel.sparkle.Main;
  *
  * @author MikeSSD
  */
-public class BonFire extends Sprite {
+public final class BonFire extends Sprite {
+
     private float posX;
     private float posY;
     private float radius;
@@ -41,13 +36,11 @@ public class BonFire extends Sprite {
     private Animation burning;
     private float stateTimer;
     Array<TextureRegion> frames;
-    private TextureRegion fireBurning;
     private PointLight pointLight;
     private float currentDistance;
     private float previousDistance;
     private float frameDuration;
 
-    
     public BonFire(EllipseMapObject ellipse, World world) {
         this.world = world;
         e = ellipse.getEllipse();
@@ -55,15 +48,15 @@ public class BonFire extends Sprite {
         posY = e.y;
         radius = e.width;
         width = 32;
-        height=64;
-        scale=2;
-        frameDuration=0.15f;
-        currentDistance = radius/Main.PPM*4;
+        height = 64;
+        scale = 2;
+        frameDuration = 0.15f;
+        currentDistance = radius / Main.PPM * 4;
         previousDistance = currentDistance;
         defineBonFire();
-        
-        setBounds(0, 0, width/Main.PPM*scale, height/Main.PPM*scale);
-        setPosition(b2Body.getPosition().x - (64/2/Main.PPM), b2Body.getPosition().y - (64/2/Main.PPM));
+
+        setBounds(0, 0, width / Main.PPM * scale, height / Main.PPM * scale);
+        setPosition(b2Body.getPosition().x - (64 / 2 / Main.PPM), b2Body.getPosition().y - (64 / 2 / Main.PPM));
         stateTimer = 0;
         frames = new Array<TextureRegion>();
         //STANDING
@@ -75,40 +68,42 @@ public class BonFire extends Sprite {
 
     public void defineBonFire() {
         BodyDef bDef = new BodyDef();
-        bDef.position.set((posX+radius/2) / Main.PPM, (posY+radius/2) / Main.PPM);
+        bDef.position.set((posX + radius / 2) / Main.PPM, (posY + radius / 2) / Main.PPM);
         bDef.type = BodyDef.BodyType.StaticBody;
         b2Body = world.createBody(bDef);
 
         FixtureDef fDef = new FixtureDef();
         CircleShape rectangleShape = new CircleShape();
-        rectangleShape.setRadius(radius/200f);
-        
+        rectangleShape.setRadius(radius / 200f);
+
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef);
     }
-    
+
     public TextureRegion getFrame(float dt) {
         TextureRegion region;
         region = burning.getKeyFrame(stateTimer);
         stateTimer = stateTimer + dt;
         return region;
     }
-    
+
     public void update(float dt) {
         setRegion(getFrame(dt));
         //light rays extend and shorten
-        if(previousDistance >= radius/Main.PPM*4){
-            currentDistance -= 1/Main.PPM;
-            if(currentDistance < radius/Main.PPM*3)
+        if (previousDistance >= radius / Main.PPM * 4) {
+            currentDistance -= 1 / Main.PPM;
+            if (currentDistance < radius / Main.PPM * 3) {
                 previousDistance = currentDistance;
-        }else if(previousDistance <= radius/Main.PPM*4){
-            currentDistance += 1/Main.PPM;
-            if(currentDistance > radius/Main.PPM*3)
+            }
+        } else if (previousDistance <= radius / Main.PPM * 4) {
+            currentDistance += 1 / Main.PPM;
+            if (currentDistance > radius / Main.PPM * 3) {
                 previousDistance = currentDistance;
+            }
         }
         pointLight.setDistance(currentDistance);
     }
-    
+
     public float getPosX() {
         return posX;
     }
@@ -119,17 +114,17 @@ public class BonFire extends Sprite {
 
     public float getWidth() {
         return radius;
-    } 
-    
-    public Color getColor(){
+    }
+
+    public Color getColor() {
         return color;
     }
-    
-    public Body getBody(){
+
+    public Body getBody() {
         return b2Body;
     }
-    
-   public void setPointLight(PointLight pLight){
-       pointLight = pLight;
-   }
+
+    public void setPointLight(PointLight pLight) {
+        pointLight = pLight;
+    }
 }

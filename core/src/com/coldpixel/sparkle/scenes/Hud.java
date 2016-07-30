@@ -31,7 +31,10 @@ public class Hud implements Disposable {
     private final Table table;
 
     private int playerLife;
-    private short timeValue;
+    private int timeValue;
+    private int seconds;
+    private int minutes;
+    private int hours;
     private int scoreValue;
     private int maxLife;
     private final float gap;
@@ -40,11 +43,11 @@ public class Hud implements Disposable {
     private final float lifebarWidth;
     private final float lifebarHeight;
 
-    Label playerLifeLabel;
-    Label timeLabel;
-    Label timeValueLabel;
-    Label scoreLabel;
-    Label scoreValueLabel;
+    private Label playerLifeLabel;
+    private Label timeValueLabel;
+
+    private Label scoreLabel;
+    private Label scoreValueLabel;
 
     private BitmapFont font;
 
@@ -58,6 +61,10 @@ public class Hud implements Disposable {
         playerLife = 92;
         scoreValue = 57;
         timeValue = 0;
+        seconds = 0;
+        minutes = 0;
+        hours = 0;
+
         gap = Gdx.graphics.getHeight() / 48;
         shaperenderer = new ShapeRenderer();
         startTime = TimeUtils.nanoTime();
@@ -99,21 +106,21 @@ public class Hud implements Disposable {
         table.top();
         table.setFillParent(true);//=size of the stage
         playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK)); //4 numbers
-        timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        timeValueLabel = new Label(String.format("%04d", timeValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        timeValueLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreValueLabel = new Label(String.format("%06d", scoreValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
 //        table.setDebug(true);
         table.drawDebug(shaperenderer);
         table.add(playerLifeLabel).left().padTop(gap).padLeft(Gdx.graphics.getWidth() / 10);
-        table.add(timeLabel).expandX().padTop(gap);
-        table.add(scoreLabel).right().padTop(gap).padRight(gap);
+        table.add(timeValueLabel).expandX().padTop(gap);
+//        table.add(scoreLabel).right().padTop(gap).padRight(gap);
+        table.add(scoreValueLabel).right().padTop(gap).padRight(gap);
         table.row();
-        table.add();
-        table.add(timeValueLabel);
-        table.add(scoreValueLabel).right().padRight(gap);
+//        table.add();
+//        table.add();
+//        table.add(scoreValueLabel).right().padRight(gap);
         stage.addActor(table);
     }
 
@@ -144,10 +151,13 @@ public class Hud implements Disposable {
 
     public void timer() {
         if (TimeUtils.timeSinceNanos(startTime) > 1000000000) {//Every second
-            if (timeValue < 9000) {
+            if (timeValue < 86400) {//1day 
                 timeValue++;
-                timeValueLabel.setText(String.format("%04d", timeValue));
-            } else if (timeValue == 9000) {
+                seconds = timeValue % 60;
+                minutes = (timeValue / 60) % 60;
+                hours = (timeValue / 60 / 60) % 60;
+                timeValueLabel.setText(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
+            } else if (timeValue == 86400) {
                 timeValueLabel.setText("over 9000");
             }
             startTime = TimeUtils.nanoTime();
