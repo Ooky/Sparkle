@@ -79,7 +79,7 @@ public class PlayScreen implements Screen {
         hud = new Hud(main.batch);
 
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("tiledmap.tmx");
+        map = mapLoader.load("tiledmap2.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / Main.PPM);
         cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
@@ -157,7 +157,7 @@ public class PlayScreen implements Screen {
         //render gamemap
         renderer.render();
         //render Box2DDebugLines
-//        b2DebugRenderer.render(world, cam.combined);
+        b2DebugRenderer.render(world, cam.combined);
 
         main.batch.setProjectionMatrix(cam.combined);
         rayHandler.setCombinedMatrix(cam);

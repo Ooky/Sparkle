@@ -49,17 +49,17 @@ public final class BonFire extends Sprite {
         radius = e.width;
         width = 32;
         height = 64;
-        scale = 2;
+        scale = 1;
         frameDuration = 0.15f;
         currentDistance = radius / Main.PPM * 4;
         previousDistance = currentDistance;
         defineBonFire();
 
         setBounds(0, 0, width / Main.PPM * scale, height / Main.PPM * scale);
-        setPosition(b2Body.getPosition().x - (64 / 2 / Main.PPM), b2Body.getPosition().y - (64 / 2 / Main.PPM));
+        setPosition(b2Body.getPosition().x - (32 / 2 / Main.PPM), b2Body.getPosition().y - (32 / 2 / Main.PPM));
         stateTimer = 0;
         frames = new Array<TextureRegion>();
-        //STANDING
+        //Animation
         for (int i = 0; i < 10; i++) {
             frames.add(new TextureRegion(new Texture("Graphics/Terrain/BonFire5.png"), i * 32, 0, 32, 64));
         }
@@ -74,7 +74,7 @@ public final class BonFire extends Sprite {
 
         FixtureDef fDef = new FixtureDef();
         CircleShape rectangleShape = new CircleShape();
-        rectangleShape.setRadius(radius / 200f);
+        rectangleShape.setRadius(radius / 400f);
 
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef);
