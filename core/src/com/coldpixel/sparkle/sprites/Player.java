@@ -35,6 +35,7 @@ public class Player extends Sprite {
     private final int playerHeight;
     private float movementSpeed;
     private float maxSpeed = 2.0f;
+    private boolean directionRight = true;
     public World world;
     public Body b2Body;
 
@@ -86,7 +87,7 @@ public class Player extends Sprite {
         playerStanding = new Animation(0.1f, frames, LOOP);
         frames.clear();
         //RUNNING
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 9; i++) {
             //change to getTexture() later
             frames.add(new TextureRegion(new Texture("Graphics/Character/mageWalk.png"), i * playerWidth, 0, playerWidth, playerHeight));
         }
@@ -150,31 +151,41 @@ public class Player extends Sprite {
                 region = playerStand;
                 break;
         }
-        if (region != playerStand) {
+        if(b2Body.getLinearVelocity().x != 0){
             if ((b2Body.getLinearVelocity().x > 0) && !region.isFlipX()) {
                 region.flip(true, false);
+                directionRight = true;
             } else if ((b2Body.getLinearVelocity().x < 0) && region.isFlipX()) {
                 region.flip(true, false);
-            }/*
+                directionRight = false;
+            }
+        }else if(directionRight){
+            if(!region.isFlipX()){
+               region.flip(true,false); 
+            }
+        }else{
+            if(region.isFlipX()){
+               region.flip(true,false); 
+            }
+        }/*
             if ((b2Body.getLinearVelocity().y < 0) && !region.isFlipY()) {
                 region.flip(false, true);
             } else if ((b2Body.getLinearVelocity().y > 0) && region.isFlipY()) {
                 region.flip(false, true);
             }*/
-        }
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         previousState = currentState;
         return region;
     }
 
     public State getState() {
-        if (b2Body.getLinearVelocity().y > 0) {
+        if (b2Body.getLinearVelocity().y > 0.001) {
             return State.UP;
-        } else if (b2Body.getLinearVelocity().y < 0) {
+        } else if (b2Body.getLinearVelocity().y < -0.001) {
             return State.DOWN;
-        } else if (b2Body.getLinearVelocity().x > 0) {
+        } else if (b2Body.getLinearVelocity().x > 0.001) {
             return State.RIGHT;
-        } else if (b2Body.getLinearVelocity().x < 0) {
+        } else if (b2Body.getLinearVelocity().x < -0.001) {
             return State.LEFT;
         } else {
             return State.STANDING;
