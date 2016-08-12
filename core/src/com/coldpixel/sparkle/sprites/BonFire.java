@@ -1,6 +1,7 @@
 package com.coldpixel.sparkle.sprites;
 
 import box2dLight.PointLight;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -41,7 +42,7 @@ public final class BonFire extends Sprite {
     private float previousDistance;
     private float frameDuration;
 
-    public BonFire(EllipseMapObject ellipse, World world) {
+    public BonFire(EllipseMapObject ellipse, World world, Sound sound) {
         this.world = world;
         e = ellipse.getEllipse();
         posX = e.x;

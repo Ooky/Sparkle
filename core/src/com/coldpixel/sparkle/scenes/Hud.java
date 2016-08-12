@@ -46,7 +46,7 @@ public class Hud implements Disposable {
     private Label playerLifeLabel;
     private Label timeValueLabel;
 
-    private Label scoreLabel;
+  //  private Label scoreLabel;
     private Label scoreValueLabel;
 
     private BitmapFont font;
@@ -60,7 +60,7 @@ public class Hud implements Disposable {
         maxLife = 100;
         playerLife = 92;
         scoreValue = 57;
-        timeValue = 0;
+        timeValue = 86390;
         seconds = 0;
         minutes = 0;
         hours = 0;
@@ -106,7 +106,7 @@ public class Hud implements Disposable {
         table.top();
         table.setFillParent(true);//=size of the stage
         playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK)); //4 numbers
-        scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        //scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         timeValueLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreValueLabel = new Label(String.format("%06d", scoreValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -149,6 +149,11 @@ public class Hud implements Disposable {
         stage.dispose();
     }
 
+    public void addScore(int value){
+        scoreValue += value;
+        scoreValueLabel.setText(String.format("&06d",scoreValue));
+    }
+    
     public void timer() {
         if (TimeUtils.timeSinceNanos(startTime) > 1000000000) {//Every second
             if (timeValue < 86400) {//1day 
@@ -158,6 +163,7 @@ public class Hud implements Disposable {
                 hours = (timeValue / 60 / 60) % 60;
                 timeValueLabel.setText(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
             } else if (timeValue == 86400) {
+                timeValue= 0;
                 timeValueLabel.setText("over 9000");
             }
             startTime = TimeUtils.nanoTime();

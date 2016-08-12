@@ -1,5 +1,6 @@
 package com.coldpixel.sparkle.tools;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -39,7 +40,7 @@ public class B2WorldCreator {
 //==============================================================================
 //Methods
 //==============================================================================  
-    public B2WorldCreator(World world, TiledMap map) {        
+    public B2WorldCreator(World world, TiledMap map, Main main) {        
         bDef = new BodyDef();
         polygonShape = new PolygonShape();
         fDef = new FixtureDef();
@@ -79,7 +80,7 @@ public class B2WorldCreator {
         //Create light
         bonefires = new ArrayList<BonFire>();
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) { 
-            boneFire = new BonFire(((EllipseMapObject) object), world);
+            boneFire = new BonFire(((EllipseMapObject) object), world, main.getManager().get("audio/sounds/fire_1.wav",Sound.class));
             bonefires.add(boneFire);
         }
     }

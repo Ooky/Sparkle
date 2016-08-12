@@ -5,6 +5,7 @@ import box2dLight.RayHandler;
 import com.coldpixel.sparkle.sprites.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -62,6 +63,9 @@ public class PlayScreen implements Screen {
     private long startTime;
     boolean isDay;
     private long cycleTime;
+    
+    //Music
+    private Music music;
 
 //==============================================================================
 //Methods
@@ -86,7 +90,7 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2DebugRenderer = new Box2DDebugRenderer();
 
-        b2WorldCreator = new B2WorldCreator(world, map);
+        b2WorldCreator = new B2WorldCreator(world, map, main);
 
         player = new Player(world, this);
 
@@ -102,6 +106,9 @@ public class PlayScreen implements Screen {
             pointLight.setIgnoreAttachedBody(true);
             boneFire.setPointLight(pointLight);
         }
+        music = main.getManager().get("audio/music/determination.mp3", Music.class);
+        music.setLooping(true);
+        music.play();
     }
 
     public void update(float dt) {
