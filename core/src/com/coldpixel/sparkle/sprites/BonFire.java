@@ -77,6 +77,7 @@ public final class BonFire extends Sprite {
         rectangleShape.setRadius(radius / 400f);
 
         fDef.shape = rectangleShape;
+        fDef.filter.categoryBits = Main.BONFIRE_BIT;
         b2Body.createFixture(fDef);
     }
 

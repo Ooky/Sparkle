@@ -13,6 +13,12 @@ public class Main extends Game {
     public static final int V_WIDTH =Constants.WINDOW_WIDTH;
     public static final int V_HEIGHT=Constants.WINDOW_HEIGTH;
     public static final float PPM = Constants.PPM; //PixelPerMeter
+    
+    public static final short DEFAULT_BIT = 1;
+    public static final short PLAYER_BIT = 2;
+    public static final short BONFIRE_BIT = 4;
+    public static final short DESTROYED_BIT = 8;
+    
 
 //==============================================================================
 //Methods

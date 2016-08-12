@@ -109,6 +109,8 @@ public class Player extends Sprite {
 //        shape.setRadius(50);
 //        fDef.shape = shape;
         fDef.shape = rectangleShape;
+        fDef.filter.categoryBits = Main.PLAYER_BIT;
+        fDef.filter.maskBits = Main.DEFAULT_BIT | Main.BONFIRE_BIT;
         b2Body.createFixture(fDef);
     }
 
