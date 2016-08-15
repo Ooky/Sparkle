@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.screens.PlayScreen;
 
 /**
  *
@@ -42,8 +43,8 @@ public final class BonFire extends Sprite {
     private float previousDistance;
     private float frameDuration;
 
-    public BonFire(EllipseMapObject ellipse, World world, Sound sound) {
-        this.world = world;
+    public BonFire(EllipseMapObject ellipse, PlayScreen screen, Sound sound) {
+        this.world = screen.getWorld();
         e = ellipse.getEllipse();
         posX = e.x;
         posY = e.y;

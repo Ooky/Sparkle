@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.screens.PlayScreen;
 import com.coldpixel.sparkle.sprites.BonFire;
 import com.coldpixel.sparkle.sprites.Dirt;
 import com.coldpixel.sparkle.sprites.EnvironmentObject;
@@ -40,7 +41,10 @@ public class B2WorldCreator {
 //==============================================================================
 //Methods
 //==============================================================================  
-    public B2WorldCreator(World world, TiledMap map, Main main) {        
+    public B2WorldCreator(PlayScreen playScreen) {
+        World world = playScreen.getWorld();
+        TiledMap map = playScreen.getMap();
+        Main main = playScreen.getMain();
         bDef = new BodyDef();
         polygonShape = new PolygonShape();
         fDef = new FixtureDef();
@@ -48,19 +52,19 @@ public class B2WorldCreator {
         //Create Grass
         for (MapObject object : map.getLayers().get(0).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            grass = new Grass(world, map, rect);
+            grass = new Grass(playScreen, rect);
         }
 
         //Create Dirt
         for (MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            dirt = new Dirt(world, map, rect);
+            dirt = new Dirt(playScreen, rect);
         }
         
         //Create Object
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            environmentObject = new EnvironmentObject(world, map, rect);
+            environmentObject = new EnvironmentObject(playScreen, rect);
         }
 
         //Create hitbox
@@ -74,13 +78,14 @@ public class B2WorldCreator {
 
             polygonShape.setAsBox((rect.getWidth() / 2) / Main.PPM, (rect.getHeight() / 2) / Main.PPM);
             fDef.shape = polygonShape;
+            fDef.filter.categoryBits = Main.OBJECT_BIT;
             body.createFixture(fDef);
         }
         
         //Create light
         bonefires = new ArrayList<BonFire>();
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) { 
-            boneFire = new BonFire(((EllipseMapObject) object), world, main.getManager().get("audio/sounds/fire_1.wav",Sound.class));
+            boneFire = new BonFire(((EllipseMapObject) object), playScreen, main.getManager().get("audio/sounds/fire_1.wav",Sound.class));
             bonefires.add(boneFire);
         }
     }

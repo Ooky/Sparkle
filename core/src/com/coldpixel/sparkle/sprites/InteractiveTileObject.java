@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.screens.PlayScreen;
 
 /**
  *
@@ -33,9 +34,9 @@ public abstract class InteractiveTileObject {
 //==============================================================================
 //Methods
 //==============================================================================
-    public InteractiveTileObject(World world, TiledMap map, Rectangle bounds) {
-        this.world = world;
-        this.map = map;
+    public InteractiveTileObject(PlayScreen playScreen, Rectangle bounds) {
+        this.world = playScreen.getWorld();
+        this.map = playScreen.getMap();
         this.bounds = bounds;
 
         //Used for Grass & Dirt

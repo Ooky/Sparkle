@@ -90,9 +90,9 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2DebugRenderer = new Box2DDebugRenderer();
 
-        b2WorldCreator = new B2WorldCreator(world, map, main);
+        b2WorldCreator = new B2WorldCreator(this);
 
-        player = new Player(world, this);
+        player = new Player(this);
 
         world.setContactListener(new WorldContactListener());
 
@@ -194,6 +194,19 @@ public class PlayScreen implements Screen {
         hud.stage.getViewport().update(width, height);
     }
 
+    public TiledMap getMap(){
+        return map;
+    }
+    
+    public World getWorld(){
+        return world;
+    }
+    
+    public Main getMain(){
+        return main;
+    }
+    
+    
     @Override
     public void pause() {
     }

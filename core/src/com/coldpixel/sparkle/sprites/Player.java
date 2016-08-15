@@ -57,13 +57,13 @@ public class Player extends Sprite {
 //==============================================================================
 //Methods
 //==============================================================================
-    public Player(World world, PlayScreen screen) {
+    public Player(PlayScreen screen) {
         super(screen.getAtlas().findRegion("Player48x64"));
         startPosX = 180;
         startPosY = 60;
         playerWidth = 48;
         playerHeight = 64;
-        this.world = world;
+        this.world = screen.getWorld();
         movementSpeed = 3.0f;
         maxSpeed = 4.0f;
 
@@ -110,7 +110,10 @@ public class Player extends Sprite {
 //        fDef.shape = shape;
         fDef.shape = rectangleShape;
         fDef.filter.categoryBits = Main.PLAYER_BIT;
-        fDef.filter.maskBits = Main.DEFAULT_BIT | Main.BONFIRE_BIT;
+        fDef.filter.maskBits = Main.GROUND_BIT |
+                Main.BONFIRE_BIT |
+                Main.ENEMY_BIT |
+                Main.OBJECT_BIT;
         b2Body.createFixture(fDef);
     }
 
