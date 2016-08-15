@@ -22,7 +22,7 @@ public class Main extends Game {
     public static final short BONFIRE_BIT = 4;
     public static final short DESTROYED_BIT = 8;
     public static final short OBJECT_BIT = 16;
-    public static final short ENEMY_BIT = 32;
+    public static final short ENEMY_BIT = 3;
     
     private AssetManager manager;
 //==============================================================================

@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
 import com.coldpixel.sparkle.sprites.BonFire;
+import com.coldpixel.sparkle.sprites.Soldier;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
 
@@ -66,11 +67,14 @@ public class PlayScreen implements Screen {
     
     //Music
     private Music music;
+    
+    private Soldier soldier;
 
 //==============================================================================
 //Methods
 //==============================================================================
     public PlayScreen(Main main) {
+        
         atlas = new TextureAtlas("Player_and_Enemies.pack");
         startTime = 0;
         ambientLight = 0.8f;
@@ -93,7 +97,9 @@ public class PlayScreen implements Screen {
         b2WorldCreator = new B2WorldCreator(this);
 
         player = new Player(this);
-
+        //hardcoded for test purpose
+        soldier = new Soldier(this, 5f, 1f);
+        
         world.setContactListener(new WorldContactListener());
 
         rayHandler = new RayHandler(world);
@@ -116,6 +122,7 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);//60 times a second
 //        rayHandler.update();
         player.update(dt);
+        soldier.update(dt);
         //bonfire animation
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
@@ -171,6 +178,7 @@ public class PlayScreen implements Screen {
         dayNightCycle();
         main.batch.begin();
         player.draw(main.batch);
+        soldier.draw(main.batch);
         main.batch.end();
         rayHandler.updateAndRender();
 //        rayHandler.render();
