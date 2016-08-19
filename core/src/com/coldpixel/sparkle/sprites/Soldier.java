@@ -8,6 +8,7 @@ package com.coldpixel.sparkle.sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -26,29 +27,45 @@ public class Soldier extends Enemy{
     //animation
     private float stateTime;
     private Animation walkAnimation;
+    private Animation attackAnimation;
     private Array<TextureRegion> frames;
+    private boolean isAttacking = false;
     
     private float x;
     private float y;
     protected int soldierWidth = 48;
     protected int soldierHeight = 64;
     
+    public enum State {
+        STANDING, UP, DOWN, RIGHT, LEFT, ATTACK
+    };
+    public Soldier.State currentState;
+    public Soldier.State previousState;
+    
     public Soldier(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         this.screen = screen;
         frames = new Array<TextureRegion>();
+        //walkAnimation
         for(int i = 0; i<10; i++)
             frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWalk.png"), i*soldierWidth, 0, soldierWidth, soldierHeight));
-          //  frames.add(new TextureRegion(screen.getAtlas().findRegion("soldier"), i*soldierWidth, 0, soldierWidth, soldierHeight));            
+          //In case that we want to work with atlas later  frames.add(new TextureRegion(screen.getAtlas().findRegion("soldier"), i*soldierWidth, 0, soldierWidth, soldierHeight));            
         walkAnimation = new Animation(0.1f, frames);
+        frames.clear();
+        //AttackAnimation
+        for(int i = 0; i<4; i++)
+            frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAttack.png"), i*(soldierWidth+16), 0, soldierWidth+16, soldierHeight));           
+        attackAnimation = new Animation(0.15f, frames);
+        
         stateTime = 0;
         setBounds(0, 0, soldierWidth / Main.PPM, soldierHeight / Main.PPM);
+        currentState = Soldier.State.STANDING;
     }    
     
     public void update(float dt){
         stateTime += dt;
         setPosition(b2Body.getPosition().x - (getWidth() / 2), b2Body.getPosition().y - (getHeight() / 2));
-        setRegion(walkAnimation.getKeyFrame(stateTime, true));
+        setRegion(getFrame(dt));
     }
     
     protected void defineEnemy(){
@@ -69,6 +86,69 @@ public class Soldier extends Enemy{
                 Main.ENEMY_BIT |
                 Main.OBJECT_BIT;
         b2Body.createFixture(fDef);
+        rectangleShape.setAsBox(16 / 2 / Main.PPM, 64 / 2 / Main.PPM, new Vector2(-32 / Main.PPM, 0), 0);
+        fDef.shape = rectangleShape;
+        fDef.isSensor=true;
+        fDef.filter.categoryBits = Main.ENEMYMELEEATTACK_BIT;
+        fDef.filter.maskBits = Main.PLAYER_BIT;
+        b2Body.createFixture(fDef).setUserData(this);        
     }
     
+    public TextureRegion getFrame(float dt) {
+        currentState = getState();
+        TextureRegion region;
+        switch (currentState) {
+            case STANDING:
+                region = walkAnimation.getKeyFrame(stateTime, true);
+                break;
+            case UP:
+                region = walkAnimation.getKeyFrame(stateTime, true);
+                break;
+            case DOWN:
+                region = walkAnimation.getKeyFrame(stateTime, true);
+                break;
+            case RIGHT:
+                region = walkAnimation.getKeyFrame(stateTime, true);
+                break;
+            case LEFT:
+                region = walkAnimation.getKeyFrame(stateTime, true);
+                break;
+            case ATTACK:
+                stateTime = currentState == previousState ? stateTime : 0;
+                region = attackAnimation.getKeyFrame(stateTime);
+                this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight());
+                if(attackAnimation.isAnimationFinished(stateTime)){
+                    isAttacking = false;
+                    this.setBounds(0, 0, soldierWidth / Main.PPM, getHeight());
+                }
+                break;
+            default:
+                region = walkAnimation.getKeyFrame(stateTime, true);
+                break;
+        }
+        stateTime = currentState == previousState ? stateTime + dt : 0;
+        previousState = currentState;
+        return region;
+    }
+    
+    public Soldier.State getState() {
+        if (isAttacking) {
+            return Soldier.State.ATTACK;
+        }
+        else if (b2Body.getLinearVelocity().y > 0.001) {
+            return Soldier.State.UP;
+        } else if (b2Body.getLinearVelocity().y < -0.001) {
+            return Soldier.State.DOWN;
+        } else if (b2Body.getLinearVelocity().x > 0.001) {
+            return Soldier.State.RIGHT;
+        } else if (b2Body.getLinearVelocity().x < -0.001) {
+            return Soldier.State.LEFT;
+        } else {
+            return Soldier.State.STANDING;
+        }
+    }
+    
+    public void setAttack(boolean attack){
+        isAttacking = attack;
+    }
 }

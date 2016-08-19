@@ -113,8 +113,9 @@ public class Player extends Sprite {
         fDef.filter.maskBits = Main.GROUND_BIT |
                 Main.BONFIRE_BIT |
                 Main.ENEMY_BIT |
+                Main.ENEMYMELEEATTACK_BIT |
                 Main.OBJECT_BIT;
-        b2Body.createFixture(fDef);
+        b2Body.createFixture(fDef).setUserData(this);;
     }
 
     public void update(float dt) {

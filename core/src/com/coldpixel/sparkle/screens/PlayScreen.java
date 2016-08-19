@@ -235,6 +235,7 @@ public class PlayScreen implements Screen {
         b2DebugRenderer.dispose();
         hud.dispose();
         rayHandler.dispose();
+        main.getManager().dispose();
     }
 
 //==============================================================================
