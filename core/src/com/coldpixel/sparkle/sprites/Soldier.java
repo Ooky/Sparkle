@@ -64,7 +64,7 @@ public class Soldier extends Enemy{
     
     public void update(float dt){
         stateTime += dt;
-        setPosition(b2Body.getPosition().x - (getWidth() / 2), b2Body.getPosition().y - (getHeight() / 2));
+        setPosition(b2Body.getPosition().x - ((getWidth()+(isAttacking?16/Main.PPM:0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
         setRegion(getFrame(dt));
     }
     
@@ -95,7 +95,10 @@ public class Soldier extends Enemy{
     }
     
     public TextureRegion getFrame(float dt) {
-        currentState = getState();
+        if(currentState == Soldier.State.ATTACK && attackAnimation.isAnimationFinished(stateTime))
+            currentState = getState();
+        else if(currentState != Soldier.State.ATTACK)
+            currentState = getState();
         TextureRegion region;
         switch (currentState) {
             case STANDING:
@@ -115,12 +118,7 @@ public class Soldier extends Enemy{
                 break;
             case ATTACK:
                 stateTime = currentState == previousState ? stateTime : 0;
-                region = attackAnimation.getKeyFrame(stateTime);
-                this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight());
-                if(attackAnimation.isAnimationFinished(stateTime)){
-                    isAttacking = false;
-                    this.setBounds(0, 0, soldierWidth / Main.PPM, getHeight());
-                }
+                region = attackAnimation.getKeyFrame(stateTime, true);
                 break;
             default:
                 region = walkAnimation.getKeyFrame(stateTime, true);
@@ -150,5 +148,10 @@ public class Soldier extends Enemy{
     
     public void setAttack(boolean attack){
         isAttacking = attack;
+        if(isAttacking){
+           this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight()); 
+        }
+        else
+            this.setBounds(getX(), getY(), soldierWidth / Main.PPM, getHeight());
     }
 }

@@ -36,6 +36,7 @@ public class Player extends Sprite {
     private float movementSpeed;
     private float maxSpeed = 2.0f;
     private boolean directionRight = true;
+    private int health;
     public World world;
     public Body b2Body;
 
@@ -66,7 +67,8 @@ public class Player extends Sprite {
         this.world = screen.getWorld();
         movementSpeed = 3.0f;
         maxSpeed = 4.0f;
-
+        health = 100;
+        
         shapeRenderer = new ShapeRenderer();
 
         definePlayer();
@@ -225,6 +227,18 @@ public class Player extends Sprite {
                 Gdx.input.getX(),
                 Constants.WINDOW_HEIGTH - Gdx.input.getY());
         shapeRenderer.end();
+    }
+    
+    public int getHealth(){
+        return health;
+    }
+    
+    public void increaseHealth(int increase){
+        health += increase;
+    }
+    
+    public void decreaseHealth(int decrease){
+        health -= decrease;
     }
 
 }

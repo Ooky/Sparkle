@@ -127,6 +127,7 @@ public class PlayScreen implements Screen {
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
         }
+        
         cam.update();
         renderer.setView(cam);
 

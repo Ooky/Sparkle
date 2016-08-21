@@ -143,7 +143,7 @@ public class Hud implements Disposable {
         timer();
         stage.draw();
     }
-
+    
     @Override
     public void dispose() {
         stage.dispose();
@@ -168,6 +168,10 @@ public class Hud implements Disposable {
             }
             startTime = TimeUtils.nanoTime();
         }
+    }
+    
+    public void setPlayerLife(int life){
+        playerLife = life;
     }
 }
 

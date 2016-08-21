@@ -33,8 +33,20 @@ public class WorldContactListener implements ContactListener{
     }
 
     @Override
-    public void endContact(Contact cntct) {
-        Gdx.app.log("End Contact","");
+    public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
+        
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+        
+        switch(cDef){
+            case Main.PLAYER_BIT | Main.ENEMYMELEEATTACK_BIT:
+                if(fixA.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT)
+                    ((Soldier)fixA.getUserData()).setAttack(false);
+                else if(fixB.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
+                    ((Soldier)fixB.getUserData()).setAttack(false);}
+                break;
+        }
     }
 
     @Override
