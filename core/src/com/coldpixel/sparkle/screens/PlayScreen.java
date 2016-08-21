@@ -127,7 +127,6 @@ public class PlayScreen implements Screen {
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
         }
-        
         cam.update();
         renderer.setView(cam);
 
@@ -190,7 +189,7 @@ public class PlayScreen implements Screen {
         main.batch.end();
         player.targetLine();
 
-        hud.drawHUD();
+        hud.drawHUD(player.getHealth());
     }
 
     @Override

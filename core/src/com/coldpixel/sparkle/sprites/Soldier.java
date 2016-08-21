@@ -154,4 +154,5 @@ public class Soldier extends Enemy{
         else
             this.setBounds(getX(), getY(), soldierWidth / Main.PPM, getHeight());
     }
+    
 }

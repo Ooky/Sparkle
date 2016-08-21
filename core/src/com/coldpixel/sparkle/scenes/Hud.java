@@ -41,6 +41,7 @@ public class Hud implements Disposable {
 
     private final ShapeRenderer shaperenderer;
     private final float lifebarWidth;
+    private float lifebarLength;
     private final float lifebarHeight;
 
     private Label playerLifeLabel;
@@ -107,7 +108,7 @@ public class Hud implements Disposable {
         table.setFillParent(true);//=size of the stage
         playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK)); //4 numbers
         //scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
+       
         timeValueLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreValueLabel = new Label(String.format("%06d", scoreValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -125,20 +126,23 @@ public class Hud implements Disposable {
     }
 
     public void drawLifebar() {
+        lifebarLength = lifebarWidth / 100 * playerLife;
+        playerLifeLabel.setText(String.format("%03d", playerLife) + " / " + maxLife);        
         shaperenderer.setProjectionMatrix(stage.getCamera().combined);
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
         shaperenderer.setColor(Color.GREEN);
         shaperenderer.rect(gap - 4,//x
                 playerLifeLabel.getY(),//y
-                lifebarWidth, lifebarHeight);//width,height
+                lifebarLength, lifebarHeight);//width,height
         shaperenderer.end();
 
 //                System.out.println(playerLifeLabel.getMinWidth());
 //                System.out.println("Lifebar: " + lifebarWidth);
     }
 
-    public void drawHUD() {
+    public void drawHUD(int playerHealth) {
         //Make sure to draw first the lifebar
+        playerLife = playerHealth;
         drawLifebar();
         timer();
         stage.draw();
@@ -168,10 +172,6 @@ public class Hud implements Disposable {
             }
             startTime = TimeUtils.nanoTime();
         }
-    }
-    
-    public void setPlayerLife(int life){
-        playerLife = life;
     }
 }
 
