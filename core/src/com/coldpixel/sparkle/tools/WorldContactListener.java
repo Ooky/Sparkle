@@ -27,12 +27,12 @@ public class WorldContactListener implements ContactListener{
         switch(cDef){
             case Main.PLAYER_BIT | Main.ENEMYMELEEATTACK_BIT:
                 if(fixA.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
-                    ((Soldier)fixA.getUserData()).setAttack(true);
+                    ((Soldier)fixA.getUserData()).setAttack(true, (Player)fixB.getUserData());
                     //((Soldier)fixA.getUserData()).pushBack((Player)fixB);(wenn die animation beendet ist wird ein pushback durchgeführt)
                    // ((Player)fixB.getUserData()).b2Body.applyLinearImpulse(new Vector2((((Soldier)fixA.getUserData()).getX()<((Player)fixB.getUserData()).getX()?25f:-25f), 0), ((Player)fixB.getUserData()).b2Body.getWorldCenter(), true);
                 }
                 else if(fixB.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
-                    ((Soldier)fixB.getUserData()).setAttack(true);
+                    ((Soldier)fixB.getUserData()).setAttack(true, (Player)fixA.getUserData());
                    // ((Player)fixA.getUserData()).b2Body.applyLinearImpulse(new Vector2((((Soldier)fixB.getUserData()).getX()<((Player)fixA.getUserData()).getX()?25f:-25f), 0), ((Player)fixA.getUserData()).b2Body.getWorldCenter(), true);
                 }
                 break;
@@ -50,11 +50,9 @@ public class WorldContactListener implements ContactListener{
             case Main.PLAYER_BIT | Main.ENEMYMELEEATTACK_BIT:
                 if(fixA.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
                     ((Soldier)fixA.getUserData()).setAttack(false);
-                    ((Player)fixB.getUserData()).decreaseHealth(10);
                 }
                 else if(fixB.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
                     ((Soldier)fixB.getUserData()).setAttack(false);
-                    ((Player)fixA.getUserData()).decreaseHealth(10);
                 }
                 break;
         }

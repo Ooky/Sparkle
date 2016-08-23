@@ -36,6 +36,8 @@ public class Soldier extends Enemy{
     protected int soldierWidth = 48;
     protected int soldierHeight = 64;
     
+    private Player victim;
+    
     public enum State {
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK
     };
@@ -64,7 +66,7 @@ public class Soldier extends Enemy{
     
     public void update(float dt){
         stateTime += dt;
-        setPosition(b2Body.getPosition().x - ((getWidth()+(isAttacking?16/Main.PPM:0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
+        setPosition(b2Body.getPosition().x - ((getWidth()+((isAttacking || !attackAnimation.isAnimationFinished(stateTime))?16/Main.PPM:0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
         setRegion(getFrame(dt));
     }
     
@@ -95,7 +97,8 @@ public class Soldier extends Enemy{
     }
     
     public TextureRegion getFrame(float dt) {
-        if(currentState == Soldier.State.ATTACK && attackAnimation.isAnimationFinished(stateTime))
+        if(currentState == Soldier.State.ATTACK &&
+                attackAnimation.isAnimationFinished(stateTime))
             currentState = getState();
         else if(currentState != Soldier.State.ATTACK)
             currentState = getState();
@@ -119,10 +122,18 @@ public class Soldier extends Enemy{
             case ATTACK:
                 stateTime = currentState == previousState ? stateTime : 0;
                 region = attackAnimation.getKeyFrame(stateTime, true);
+                if(attackAnimation.isAnimationFinished(stateTime)){
+                    stateTime = 0;
+                    victim.decreaseHealth(10);
+                    victim.b2Body.applyLinearImpulse(new Vector2(-10, 0), victim.b2Body.getWorldCenter(), true);
+                }
                 break;
             default:
                 region = walkAnimation.getKeyFrame(stateTime, true);
                 break;
+        }
+        if(previousState == Soldier.State.ATTACK && currentState != Soldier.State.ATTACK && attackAnimation.isAnimationFinished(stateTime)){
+            this.setBounds(getX(), getY(), soldierWidth / Main.PPM, getHeight());
         }
         stateTime = currentState == previousState ? stateTime + dt : 0;
         previousState = currentState;
@@ -151,8 +162,14 @@ public class Soldier extends Enemy{
         if(isAttacking){
            this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight()); 
         }
-        else
-            this.setBounds(getX(), getY(), soldierWidth / Main.PPM, getHeight());
+    }
+    
+    public void setAttack(boolean attack, Player player){
+        isAttacking = attack;
+        victim = player;
+        if(isAttacking){
+           this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight()); 
+        }
     }
     
 }
