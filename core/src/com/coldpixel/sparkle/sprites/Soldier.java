@@ -37,14 +37,14 @@ public class Soldier extends Enemy{
     protected int soldierHeight = 64;
     
     private Player victim;
-    
+    private Boolean isFlipped;
     public enum State {
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK
     };
     public Soldier.State currentState;
     public Soldier.State previousState;
     
-    public Soldier(PlayScreen screen, float x, float y) {
+    public Soldier(PlayScreen screen, float x, float y, Player player) {
         super(screen, x, y);
         this.screen = screen;
         frames = new Array<TextureRegion>();
@@ -59,14 +59,17 @@ public class Soldier extends Enemy{
             frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAttack.png"), i*(soldierWidth+16), 0, soldierWidth+16, soldierHeight));           
         attackAnimation = new Animation(0.15f, frames);
         
+        isFlipped = false;
         stateTime = 0;
         setBounds(0, 0, soldierWidth / Main.PPM, soldierHeight / Main.PPM);
         currentState = Soldier.State.STANDING;
+        victim = player;
     }    
     
     public void update(float dt){
-        stateTime += dt;
-        setPosition(b2Body.getPosition().x - ((getWidth()+((currentState == Soldier.State.ATTACK)?16/Main.PPM:0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
+        stateTime += dt;       
+        System.out.println(isFlipped);
+        setPosition(b2Body.getPosition().x - ((getWidth()+((currentState == Soldier.State.ATTACK)?(isFlipped?-16:+16)/Main.PPM:0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
         setRegion(getFrame(dt));
     }
     
@@ -93,7 +96,13 @@ public class Soldier extends Enemy{
         fDef.isSensor=true;
         fDef.filter.categoryBits = Main.ENEMYMELEEATTACK_BIT;
         fDef.filter.maskBits = Main.PLAYER_BIT;
-        b2Body.createFixture(fDef).setUserData(this);        
+        b2Body.createFixture(fDef).setUserData(this);   ;  
+        rectangleShape.setAsBox(16 / 2 / Main.PPM, 64 / 2 / Main.PPM, new Vector2(+32 / Main.PPM, 0), 0);
+        fDef.shape = rectangleShape;
+        fDef.isSensor=true;
+        fDef.filter.categoryBits = Main.ENEMYMELEEATTACK_BIT;
+        fDef.filter.maskBits = Main.PLAYER_BIT;
+        b2Body.createFixture(fDef).setUserData(this);       
     }
     
     public TextureRegion getFrame(float dt) {
@@ -125,7 +134,7 @@ public class Soldier extends Enemy{
                 if(attackAnimation.isAnimationFinished(stateTime)){
                     stateTime = 0;
                     victim.decreaseHealth(10);
-                    victim.b2Body.applyLinearImpulse(new Vector2(-10, 0), victim.b2Body.getWorldCenter(), true);
+                    victim.b2Body.applyLinearImpulse(new Vector2((isFlipped?+10:-10), 0), victim.b2Body.getWorldCenter(), true);
                 }
                 break;
             default:
@@ -137,6 +146,14 @@ public class Soldier extends Enemy{
         }
         stateTime = currentState == previousState ? stateTime + dt : 0;
         previousState = currentState;
+        if(victim.getX() < this.getX() && region.isFlipX()){
+            isFlipped = false;
+            region.flip(true, false);
+        }
+        else if(victim.getX() > this.getX() && !region.isFlipX()){
+            isFlipped = true;
+            region.flip(true, false);
+        }
         return region;
     }
     
@@ -166,7 +183,7 @@ public class Soldier extends Enemy{
     
     public void setAttack(boolean attack, Player player){
         isAttacking = attack;
-        victim = player;
+      //  victim = player;
         if(isAttacking){
            this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight()); 
         }

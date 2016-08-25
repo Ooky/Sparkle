@@ -98,7 +98,7 @@ public class PlayScreen implements Screen {
 
         player = new Player(this);
         //hardcoded for test purpose
-        soldier = new Soldier(this, 5f, 1f);
+        soldier = new Soldier(this, 5f, 1f, player);
         
         world.setContactListener(new WorldContactListener());
 
