@@ -66,7 +66,7 @@ public class Soldier extends Enemy{
     
     public void update(float dt){
         stateTime += dt;
-        setPosition(b2Body.getPosition().x - ((getWidth()+((isAttacking || !attackAnimation.isAnimationFinished(stateTime))?16/Main.PPM:0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
+        setPosition(b2Body.getPosition().x - ((getWidth()+((currentState == Soldier.State.ATTACK)?16/Main.PPM:0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
         setRegion(getFrame(dt));
     }
     
