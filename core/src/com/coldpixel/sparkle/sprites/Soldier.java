@@ -128,7 +128,6 @@ public class Soldier extends Enemy{
                 region = walkAnimation.getKeyFrame(stateTime, true);
                 break;
             case ATTACK:
-                stateTime = currentState == previousState ? stateTime : 0;
                 region = attackAnimation.getKeyFrame(stateTime, true);
                 if(attackAnimation.isAnimationFinished(stateTime)){
                     stateTime = 0;

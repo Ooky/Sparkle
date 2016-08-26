@@ -42,12 +42,14 @@ public class Player extends Sprite {
 
     public enum State {
 
-        STANDING, UP, DOWN, RIGHT, LEFT,
+        STANDING, UP, DOWN, RIGHT, LEFT, ATTACK,
     };
     public State currentState;
     public State previousState;
+    private Boolean isAttacking;
     private Animation playerStanding;
     private Animation playerRunning;
+    private Animation playerAttack;
     private float stateTimer;
     Array<TextureRegion> frames;
 
@@ -68,6 +70,7 @@ public class Player extends Sprite {
         movementSpeed = 3.0f;
         maxSpeed = 4.0f;
         health = 100;
+        isAttacking = false;
         
         shapeRenderer = new ShapeRenderer();
 
@@ -95,6 +98,13 @@ public class Player extends Sprite {
         }
         playerRunning = new Animation(.1f, frames, LOOP);
         frames.clear();
+        //ATTACK
+        for (int i = 0; i < 14; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageAttack.png"), i * 64, 0, 64, playerHeight));
+        }
+        playerAttack = new Animation(.085f, frames);
+        frames.clear();
     }
 
     public void definePlayer() {
@@ -121,7 +131,7 @@ public class Player extends Sprite {
     }
 
     public void update(float dt) {
-        setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
+        setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK)?(directionRight? +16: -16)/Main.PPM:0)) / 2), b2Body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
     }
 
@@ -137,7 +147,11 @@ public class Player extends Sprite {
     }
 
     public TextureRegion getFrame(float dt) {
-        currentState = getState();
+        if(currentState == Player.State.ATTACK &&
+                playerAttack.isAnimationFinished(stateTimer))
+            currentState = getState();
+        else if(currentState != Player.State.ATTACK)
+            currentState = getState();
         TextureRegion region;
         switch (currentState) {
             case STANDING:
@@ -155,10 +169,19 @@ public class Player extends Sprite {
             case LEFT:
                 region = playerRunning.getKeyFrame(stateTimer, true);
                 break;
+            case ATTACK:
+                region = playerAttack.getKeyFrame(stateTimer, true);
+                if(playerAttack.isAnimationFinished(stateTimer)){
+                    isAttacking = false;
+                }
+                break;
             default:
                 region = playerStand;
                 break;
-        }
+        }        
+        if(previousState == Player.State.ATTACK && currentState != Player.State.ATTACK && playerAttack.isAnimationFinished(stateTimer)){
+            this.setBounds(getX(), getY(), playerWidth / Main.PPM, getHeight());
+        }        
         if(b2Body.getLinearVelocity().x != 0){
             if ((b2Body.getLinearVelocity().x > 0) && !region.isFlipX()) {
                 region.flip(true, false);
@@ -187,7 +210,10 @@ public class Player extends Sprite {
     }
 
     public State getState() {
-        if (b2Body.getLinearVelocity().y > 0.001) {
+        if (isAttacking) {
+            return Player.State.ATTACK;
+        }
+        else if (b2Body.getLinearVelocity().y > 0.001) {
             return State.UP;
         } else if (b2Body.getLinearVelocity().y < -0.001) {
             return State.DOWN;
@@ -214,6 +240,10 @@ public class Player extends Sprite {
         }
         if ((Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) && this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()) {
             this.b2Body.applyLinearImpulse(new Vector2(this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+        }
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            isAttacking = true;
+            this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight()); 
         }
 //        player.b2Body.setLinearVelocity(new Vector2(0,0));//Stop immediatly.
         this.b2Body.setLinearDamping(60.0f);//Slow down
