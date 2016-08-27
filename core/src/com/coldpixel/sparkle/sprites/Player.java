@@ -180,7 +180,7 @@ public class Player extends Sprite {
                 break;
         }        
         if(previousState == Player.State.ATTACK && currentState != Player.State.ATTACK && playerAttack.isAnimationFinished(stateTimer)){
-            this.setBounds(getX(), getY(), playerWidth / Main.PPM, getHeight());
+            this.setBounds(getX()+(directionRight? 16: 0)/Main.PPM, getY(), playerWidth / Main.PPM, getHeight());
         }        
         if(b2Body.getLinearVelocity().x != 0){
             if ((b2Body.getLinearVelocity().x > 0) && !region.isFlipX()) {
