@@ -120,13 +120,13 @@ public class Player extends Sprite {
 //        CircleShape shape = new CircleShape();
 //        shape.setRadius(50);
 //        fDef.shape = shape;
-        fDef.shape = rectangleShape;
         fDef.filter.categoryBits = Main.PLAYER_BIT;
-        fDef.filter.maskBits = Main.GROUND_BIT |
+        fDef.filter.maskBits = /*Main.GROUND_BIT | */ //Needed?
                 Main.BONFIRE_BIT |
                 Main.ENEMY_BIT |
                 Main.ENEMYMELEEATTACK_BIT |
                 Main.OBJECT_BIT;
+        fDef.shape = rectangleShape;
         b2Body.createFixture(fDef).setUserData(this);;
     }
 

@@ -167,7 +167,7 @@ public class Hud implements Disposable {
                 hours = (timeValue / 60 / 60) % 60;
                 timeValueLabel.setText(String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
             } else if (timeValue == 86400) {
-                timeValue= 0;
+//                timeValue= 0;
                 timeValueLabel.setText("over 9000");
             }
             startTime = TimeUtils.nanoTime();
