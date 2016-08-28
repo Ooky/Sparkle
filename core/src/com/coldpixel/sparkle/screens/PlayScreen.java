@@ -65,19 +65,17 @@ public class PlayScreen implements Screen {
     private long startTime;
     boolean isDay;
     private long cycleTime;
-    
+
     //Music
-    private Music music;
-    public AssetHelper assetHelper;
-    
+    private AssetHelper assetHelper;
+
     private Soldier soldier;
-    
 
 //==============================================================================
 //Methods
 //==============================================================================
     public PlayScreen(Main main) {
-        
+
         atlas = new TextureAtlas("Player_and_Enemies.pack");
         startTime = 0;
         ambientLight = 0.8f;
@@ -102,7 +100,7 @@ public class PlayScreen implements Screen {
         player = new Player(this);
         //hardcoded for test purpose
         soldier = new Soldier(this, 5f, 1f, player);
-        
+
         world.setContactListener(new WorldContactListener());
 
         rayHandler = new RayHandler(world);
@@ -115,12 +113,10 @@ public class PlayScreen implements Screen {
             pointLight.setIgnoreAttachedBody(true);
             boneFire.setPointLight(pointLight);
         }
-        
+
         assetHelper = new AssetHelper();
-        
-        music = assetHelper.getManager().get("audio/music/determination.mp3", Music.class);
-        music.setLooping(true);
-        music.play();
+        assetHelper.musicBackground(true);
+        assetHelper.soundBonfire(true);
     }
 
     public void update(float dt) {
@@ -154,7 +150,7 @@ public class PlayScreen implements Screen {
                     cycleTime = TimeUtils.nanoTime();
                 }
             }
-        } else if (TimeUtils.timeSinceNanos(cycleTime) >  450000000000L && isDay) {//7.5Min  450000000000L
+        } else if (TimeUtils.timeSinceNanos(cycleTime) > 450000000000L && isDay) {//7.5Min  450000000000L
             if (TimeUtils.timeSinceNanos(startTime) > 50000000L) {
                 ambientLight -= 0.005f;
                 rayHandler.setAmbientLight(ambientLight);
@@ -208,19 +204,6 @@ public class PlayScreen implements Screen {
         hud.stage.getViewport().update(width, height);
     }
 
-    public TiledMap getMap(){
-        return map;
-    }
-    
-    public World getWorld(){
-        return world;
-    }
-    
-    public Main getMain(){
-        return main;
-    }
-    
-    
     @Override
     public void pause() {
     }
@@ -241,7 +224,7 @@ public class PlayScreen implements Screen {
         b2DebugRenderer.dispose();
         hud.dispose();
         rayHandler.dispose();
-        assetHelper.getManager().dispose();
+        assetHelper.dispose();
     }
 
 //==============================================================================
@@ -250,6 +233,18 @@ public class PlayScreen implements Screen {
     public TextureAtlas getAtlas() {
         return atlas;
 
+    }
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public Main getMain() {
+        return main;
     }
 
 }

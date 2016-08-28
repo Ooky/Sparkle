@@ -19,6 +19,10 @@ public class AssetHelper extends AssetManager {
 //Initialization
 //============================================================================== 
     private AssetManager manager;
+    private Music music;
+    private Sound sound;
+    private long soundID;
+    private float volume;
 
 //==============================================================================
 //Methods
@@ -29,12 +33,20 @@ public class AssetHelper extends AssetManager {
         manager.load("audio/sounds/fire_1.wav", Sound.class);
         //blocks everything until assets are loaded;
         manager.finishLoading();
+        volume = 0.2f;
     }
 
-//==============================================================================
-//Getter
-//==============================================================================  
-    public AssetManager getManager() {
-        return manager;
+    public void musicBackground(Boolean setLooping) {
+        music = manager.get("audio/music/determination.mp3", Music.class);
+        music.setLooping(setLooping);
+        music.setVolume(volume);
+        music.play();
+    }
+
+    public Sound soundBonfire(Boolean setLooping) {
+        sound = manager.get("audio/sounds/fire_1.wav", Sound.class);
+        soundID = sound.play(volume);
+        sound.setLooping(soundID, setLooping);
+        return sound;
     }
 }
