@@ -38,13 +38,16 @@ public class B2WorldCreator {
     EnvironmentObject environmentObject;
     ArrayList<BonFire> bonefires;
     private BonFire boneFire;
+    
+    public AssetHelper assetHelper;
 //==============================================================================
 //Methods
 //==============================================================================  
     public B2WorldCreator(PlayScreen playScreen) {
         World world = playScreen.getWorld();
         TiledMap map = playScreen.getMap();
-        Main main = playScreen.getMain();
+//        Main main = playScreen.getMain();
+        assetHelper = new AssetHelper();
         bDef = new BodyDef();
         polygonShape = new PolygonShape();
         fDef = new FixtureDef();
@@ -85,7 +88,7 @@ public class B2WorldCreator {
         //Create light
         bonefires = new ArrayList<BonFire>();
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) { 
-            boneFire = new BonFire(((EllipseMapObject) object), playScreen, main.getManager().get("audio/sounds/fire_1.wav",Sound.class));
+            boneFire = new BonFire(((EllipseMapObject) object), playScreen, assetHelper.getManager().get("audio/sounds/fire_1.wav",Sound.class));
             bonefires.add(boneFire);
         }
     }

@@ -23,6 +23,7 @@ import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
 import com.coldpixel.sparkle.sprites.BonFire;
 import com.coldpixel.sparkle.sprites.Soldier;
+import com.coldpixel.sparkle.tools.AssetHelper;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
 
@@ -67,8 +68,10 @@ public class PlayScreen implements Screen {
     
     //Music
     private Music music;
+    public AssetHelper assetHelper;
     
     private Soldier soldier;
+    
 
 //==============================================================================
 //Methods
@@ -112,7 +115,10 @@ public class PlayScreen implements Screen {
             pointLight.setIgnoreAttachedBody(true);
             boneFire.setPointLight(pointLight);
         }
-        music = main.getManager().get("audio/music/determination.mp3", Music.class);
+        
+        assetHelper = new AssetHelper();
+        
+        music = assetHelper.getManager().get("audio/music/determination.mp3", Music.class);
         music.setLooping(true);
         music.play();
     }
@@ -235,7 +241,7 @@ public class PlayScreen implements Screen {
         b2DebugRenderer.dispose();
         hud.dispose();
         rayHandler.dispose();
-        main.getManager().dispose();
+        assetHelper.getManager().dispose();
     }
 
 //==============================================================================
