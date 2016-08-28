@@ -2,6 +2,7 @@ package com.coldpixel.sparkle.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -47,7 +48,7 @@ public class Hud implements Disposable {
     private Label playerLifeLabel;
     private Label timeValueLabel;
 
-  //  private Label scoreLabel;
+    //  private Label scoreLabel;
     private Label scoreValueLabel;
 
     private BitmapFont font;
@@ -108,7 +109,7 @@ public class Hud implements Disposable {
         table.setFillParent(true);//=size of the stage
         playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK)); //4 numbers
         //scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-       
+
         timeValueLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreValueLabel = new Label(String.format("%06d", scoreValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -123,17 +124,30 @@ public class Hud implements Disposable {
 //        table.add();
 //        table.add(scoreValueLabel).right().padRight(gap);
         stage.addActor(table);
+
     }
 
     public void drawLifebar() {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
         lifebarLength = lifebarWidth / 100 * playerLife;
-        playerLifeLabel.setText(String.format("%03d", playerLife) + " / " + maxLife);        
+        playerLifeLabel.setText(String.format("%03d", playerLife) + " / " + maxLife);
         shaperenderer.setProjectionMatrix(stage.getCamera().combined);
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
+        //Behind the Lifebar
+        shaperenderer.setColor(new Color(0, 1, 0, 0.2f));
+        shaperenderer.rect(gap - 4,//x
+                playerLifeLabel.getY(),//y
+                lifebarWidth, lifebarHeight);//width,height
+        //Actuall Lifebar
         shaperenderer.setColor(Color.GREEN);
         shaperenderer.rect(gap - 4,//x
                 playerLifeLabel.getY(),//y
                 lifebarLength, lifebarHeight);//width,height
+        shaperenderer.setColor(Color.BLACK);
+        shaperenderer.end();
+        //Black Border around Lifebar
+        shaperenderer.begin(ShapeRenderer.ShapeType.Line);
+        shaperenderer.rectLine(gap - 4, Constants.getWINDOW_HEIGTH()-lifebarHeight-4, lifebarWidth+gap-4, Constants.getWINDOW_HEIGTH()-lifebarHeight-4, lifebarHeight);
         shaperenderer.end();
 
 //                System.out.println(playerLifeLabel.getMinWidth());
@@ -147,17 +161,17 @@ public class Hud implements Disposable {
         timer();
         stage.draw();
     }
-    
+
     @Override
     public void dispose() {
         stage.dispose();
     }
 
-    public void addScore(int value){
+    public void addScore(int value) {
         scoreValue += value;
-        scoreValueLabel.setText(String.format("&06d",scoreValue));
+        scoreValueLabel.setText(String.format("&06d", scoreValue));
     }
-    
+
     public void timer() {
         if (TimeUtils.timeSinceNanos(startTime) > 1000000000) {//Every second
             if (timeValue < 86400) {//1day 

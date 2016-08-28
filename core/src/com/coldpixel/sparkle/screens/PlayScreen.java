@@ -114,6 +114,7 @@ public class PlayScreen implements Screen {
             boneFire.setPointLight(pointLight);
         }
 
+        //Music and Sound
         assetHelper = new AssetHelper();
         assetHelper.musicBackground(true);
         assetHelper.soundBonfire(true);
