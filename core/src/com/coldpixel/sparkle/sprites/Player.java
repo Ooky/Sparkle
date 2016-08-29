@@ -178,6 +178,7 @@ public class Player extends Sprite {
             case ATTACK:
                 region = playerAttack.getKeyFrame(stateTimer, true);
                 if(playerAttack.isAnimationFinished(stateTimer)){
+                    stateTimer = 0;
                     isAttacking = false;
                     iceShards.add(new IceShard(b2Body.getPosition().x,b2Body.getPosition().y,screen));
                 }
@@ -211,7 +212,11 @@ public class Player extends Sprite {
             } else if ((b2Body.getLinearVelocity().y > 0) && region.isFlipY()) {
                 region.flip(false, true);
             }*/
-        stateTimer = currentState == previousState ? stateTimer + dt : 0;
+        if(stateTimer != 0 || 
+                currentState != Player.State.ATTACK || 
+                previousState != Player.State.ATTACK || 
+                isAttacking)
+            stateTimer = currentState == previousState ? stateTimer + dt : 0;
         previousState = currentState;
         return region;
     }
