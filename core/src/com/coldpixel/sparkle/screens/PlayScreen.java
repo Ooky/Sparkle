@@ -26,6 +26,7 @@ import com.coldpixel.sparkle.sprites.Soldier;
 import com.coldpixel.sparkle.tools.AssetHelper;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
+import com.coldpixel.sparkle.sprites.IceShard;
 
 /**
  *
@@ -130,6 +131,9 @@ public class PlayScreen implements Screen {
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
         }
+        for (IceShard ice : player.getIceShards()) {
+            ice.update(dt);
+        }
         cam.update();
         renderer.setView(cam);
 
@@ -188,6 +192,9 @@ public class PlayScreen implements Screen {
         main.batch.begin();
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.draw(main.batch);
+        }
+        for (IceShard ice : player.getIceShards()) {
+            ice.draw(main.batch);
         }
         main.batch.end();
         player.targetLine();

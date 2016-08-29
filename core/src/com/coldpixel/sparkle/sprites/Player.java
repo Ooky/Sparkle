@@ -138,10 +138,7 @@ public class Player extends Sprite {
 
     public void update(float dt) {
         setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK)?(directionRight? +16: -16)/Main.PPM:0)) / 2), b2Body.getPosition().y - getHeight() / 2);
-        setRegion(getFrame(dt));
-        for (IceShard ice : iceShards) {
-            ice.update(dt);
-        }
+        setRegion(getFrame(dt));        
     }
 
 //==============================================================================
@@ -279,6 +276,10 @@ public class Player extends Sprite {
     
     public void decreaseHealth(int decrease){
         health -= decrease;
+    }
+    
+    public ArrayList<IceShard> getIceShards(){
+        return iceShards;
     }
 
 }
