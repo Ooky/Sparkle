@@ -19,7 +19,8 @@ import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Constants;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.screens.PlayScreen;
-
+import com.coldpixel.sparkle.sprites.IceShard;
+import java.util.ArrayList;
 /**
  *
  * @author Coldpixel
@@ -38,6 +39,7 @@ public class Player extends Sprite {
     private boolean directionRight = true;
     private int health;
     public World world;
+    private PlayScreen screen;
     public Body b2Body;
 
     public enum State {
@@ -57,6 +59,9 @@ public class Player extends Sprite {
 
     private ShapeRenderer shapeRenderer;
 
+    //Attack
+    private IceShard iceShard;
+    private ArrayList<IceShard> iceShards;
 //==============================================================================
 //Methods
 //==============================================================================
@@ -67,11 +72,12 @@ public class Player extends Sprite {
         playerWidth = 48;
         playerHeight = 64;
         this.world = screen.getWorld();
+        this.screen = screen;
         movementSpeed = 3.0f;
         maxSpeed = 4.0f;
         health = 100;
         isAttacking = false;
-        
+        iceShards = new ArrayList<IceShard>();
         shapeRenderer = new ShapeRenderer();
 
         definePlayer();
@@ -133,6 +139,9 @@ public class Player extends Sprite {
     public void update(float dt) {
         setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK)?(directionRight? +16: -16)/Main.PPM:0)) / 2), b2Body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
+        for (IceShard ice : iceShards) {
+            ice.update(dt);
+        }
     }
 
 //==============================================================================
@@ -173,6 +182,7 @@ public class Player extends Sprite {
                 region = playerAttack.getKeyFrame(stateTimer, true);
                 if(playerAttack.isAnimationFinished(stateTimer)){
                     isAttacking = false;
+                    iceShards.add(new IceShard(b2Body.getPosition().x,b2Body.getPosition().y,screen));
                 }
                 break;
             default:
@@ -243,7 +253,7 @@ public class Player extends Sprite {
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             isAttacking = true;
-            this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight()); 
+            this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
         }
 //        player.b2Body.setLinearVelocity(new Vector2(0,0));//Stop immediatly.
         this.b2Body.setLinearDamping(60.0f);//Slow down

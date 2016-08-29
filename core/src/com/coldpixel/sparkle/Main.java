@@ -22,6 +22,7 @@ public class Main extends Game {
     public static final short OBJECT_BIT = 16;
     public static final short ENEMY_BIT = 32;
     public static final short ENEMYMELEEATTACK_BIT = 64;
+    public static final short PLAYERATTACK_BIT = 128;
 
     private AssetHelper assetHelper;
 

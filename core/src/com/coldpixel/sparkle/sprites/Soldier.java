@@ -90,7 +90,8 @@ public class Soldier extends Enemy {
                 Main.BONFIRE_BIT
                 | Main.PLAYER_BIT
                 | Main.ENEMY_BIT
-                | Main.OBJECT_BIT;
+                | Main.OBJECT_BIT
+                | Main.PLAYERATTACK_BIT;
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef);
         rectangleShape.setAsBox(16 / 2 / Main.PPM, 64 / 2 / Main.PPM, new Vector2(-32 / Main.PPM, 0), 0);
