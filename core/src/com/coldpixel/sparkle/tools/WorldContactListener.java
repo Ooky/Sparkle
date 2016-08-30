@@ -32,9 +32,11 @@ public class WorldContactListener implements ContactListener{
                     ((Soldier)fixB.getUserData()).setAttack(true, (Player)fixA.getUserData());
                 }
                 break;
+            //IceShard Enemy
             case Main.PLAYERATTACK_BIT | Main.ENEMY_BIT:
                     if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
                     ((Soldier)fixA.getUserData()).decreaseHealth(((IceShard)fixB.getUserData()).getDamage());
+                    ((IceShard)fixB.getUserData()).destroy();
                     //Sets filter for soldier to destroyed_bit to avoid collisions
                     if(((Soldier)fixA.getUserData()).getHealth() <= 0){
                         ((Soldier)fixA.getUserData()).death();
@@ -42,9 +44,26 @@ public class WorldContactListener implements ContactListener{
                 }
                 else {
                     ((Soldier)fixB.getUserData()).decreaseHealth(((IceShard)fixA.getUserData()).getDamage());
+                    ((IceShard)fixA.getUserData()).destroy();
                     if(((Soldier)fixB.getUserData()).getHealth() <= 0){
                         ((Soldier)fixB.getUserData()).death();
                     }
+                }
+                break;
+            //IceShard Objects
+            case Main.PLAYERATTACK_BIT | Main.OBJECT_BIT:
+                if(fixA.getFilterData().categoryBits == Main.OBJECT_BIT){
+                    ((IceShard)fixB.getUserData()).destroy();
+                } else{
+                    ((IceShard)fixA .getUserData()).destroy();
+                }
+                break;
+            //IceShard Bonfire
+            case Main.PLAYERATTACK_BIT | Main.BONFIRE_BIT:
+                if(fixA.getFilterData().categoryBits == Main.BONFIRE_BIT){
+                    ((IceShard)fixB.getUserData()).destroy();
+                } else{
+                    ((IceShard)fixA .getUserData()).destroy();
                 }
                 break;
         }

@@ -1,6 +1,7 @@
 package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -24,10 +25,13 @@ public class IceShard extends Sprite{
     private int height;
     private float x;
     private float y;
+    private float stateTime;
     private World world;
     private Body b2Body;
     private Boolean facingRight;
     private int damage;
+    private Boolean setToDestroy;
+    private Boolean destroyed;
     
     public IceShard(float x, float y, PlayScreen screen, Boolean directionRight) {       
         this.x = x;
@@ -37,6 +41,9 @@ public class IceShard extends Sprite{
         world = screen.getWorld();
         facingRight = directionRight;
         damage = 25;
+        destroyed = false;
+        setToDestroy = false;
+        stateTime = 0;
         
         defineIceShard();
         iceShard = new TextureRegion(new Texture("Graphics/Attacks/Ice/shard.png"), 0, 0, width, height);        
@@ -44,8 +51,21 @@ public class IceShard extends Sprite{
     }
     
     public void update(float dt) {
+        stateTime += dt;
+        if(setToDestroy && !destroyed){
+            world.destroyBody(b2Body);
+            destroyed = true;
+        } else if (!destroyed){
+           setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
+        }
         setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
         setRegion(iceShard);
+    }
+    
+    public void draw(Batch batch){
+        if(!destroyed || stateTime < 2){
+            super.draw(batch);
+        }
     }
 
       protected void defineIceShard() {
@@ -70,5 +90,9 @@ public class IceShard extends Sprite{
       
     public int getDamage(){
         return damage;
+    }
+    
+    public void destroy(){
+        setToDestroy = true;
     }
 }
