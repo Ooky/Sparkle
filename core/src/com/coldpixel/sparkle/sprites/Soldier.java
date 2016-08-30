@@ -7,6 +7,7 @@ package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -37,7 +38,9 @@ public class Soldier extends Enemy {
 
     private Player victim;
     private Boolean isFlipped;
-
+    private Boolean setToDestroy;
+    private Boolean destroyed;
+    
     public enum State {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK
@@ -50,6 +53,8 @@ public class Soldier extends Enemy {
         this.screen = screen;
         frames = new Array<TextureRegion>();
         health = 100;
+        destroyed = false;
+        setToDestroy = false;
         
         //walkAnimation
         for (int i = 0; i < 10; i++) {
@@ -73,11 +78,21 @@ public class Soldier extends Enemy {
 
     public void update(float dt) {
         stateTime += dt;
-        setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Soldier.State.ATTACK) ? (isFlipped ? -16 : +16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
+        if(setToDestroy && !destroyed){
+            world.destroyBody(b2Body);
+            destroyed = true;  
+            //change texture region
+        } else if (!destroyed){
+            setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Soldier.State.ATTACK) ? (isFlipped ? -16 : +16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - (getHeight() / 2));    
+        }
         setRegion(getFrame(dt));
-       /* if(health >= 0){
-            System.out.println("death");
-        }*/
+            
+    }
+    
+    public void draw(Batch batch){
+        if(!destroyed || stateTime < 2){
+            super.draw(batch);
+        }
     }
 
     protected void defineEnemy() {
@@ -165,7 +180,10 @@ public class Soldier extends Enemy {
     }
 
     public Soldier.State getState() {
-        if (isAttacking) {
+        if(setToDestroy){
+            return Soldier.State.UP;
+        }
+        else if (isAttacking) {
             return Soldier.State.ATTACK;
         } else if (b2Body.getLinearVelocity().y > 0.001) {
             return Soldier.State.UP;
@@ -197,6 +215,7 @@ public class Soldier extends Enemy {
     
     public void death(){
         setCategoryFilter(Main.DESTROYED_BIT);
+        setToDestroy = true;
     }
 
 }

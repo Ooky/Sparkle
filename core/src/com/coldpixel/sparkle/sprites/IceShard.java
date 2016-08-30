@@ -56,7 +56,7 @@ public class IceShard extends Sprite{
 
         FixtureDef fDef = new FixtureDef();
         PolygonShape rectangleShape = new PolygonShape();
-        rectangleShape.setAsBox(32 / 2 / Main.PPM, 16 / 2 / Main.PPM); //Starts from the center
+        rectangleShape.setAsBox(30 / 2 / Main.PPM, 10 / 2 / Main.PPM); //Starts from the center
 
         fDef.filter.categoryBits = Main.PLAYERATTACK_BIT;
         fDef.filter.maskBits = /*Main.GROUND_BIT |*/ //Do we need this?

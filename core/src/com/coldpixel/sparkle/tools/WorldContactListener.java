@@ -28,7 +28,7 @@ public class WorldContactListener implements ContactListener{
                 if(fixA.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
                     ((Soldier)fixA.getUserData()).setAttack(true, (Player)fixB.getUserData());
                 }
-                else if(fixB.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
+                else {
                     ((Soldier)fixB.getUserData()).setAttack(true, (Player)fixA.getUserData());
                 }
                 break;
@@ -40,7 +40,7 @@ public class WorldContactListener implements ContactListener{
                         ((Soldier)fixA.getUserData()).death();
                     }
                 }
-                else if(fixB.getFilterData().categoryBits == Main.ENEMY_BIT){
+                else {
                     ((Soldier)fixB.getUserData()).decreaseHealth(((IceShard)fixA.getUserData()).getDamage());
                     if(((Soldier)fixB.getUserData()).getHealth() <= 0){
                         ((Soldier)fixB.getUserData()).death();

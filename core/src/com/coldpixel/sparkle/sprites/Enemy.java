@@ -39,7 +39,7 @@ public abstract class Enemy extends Sprite{
         filter.categoryBits = filterBit;
         for (Fixture fixture : b2Body.getFixtureList()) {
             fixture.setFilterData(filter); 
-        }    
+        }
     }
     
     protected abstract void defineEnemy();
