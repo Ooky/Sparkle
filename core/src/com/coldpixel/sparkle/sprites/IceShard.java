@@ -26,13 +26,15 @@ public class IceShard extends Sprite{
     private float y;
     private World world;
     private Body b2Body;
+    private Boolean facingRight;
     
-    public IceShard(float x, float y, PlayScreen screen) {       
+    public IceShard(float x, float y, PlayScreen screen, Boolean directionRight) {       
         this.x = x;
         this.y = y;
         width = 32;
         height = 16;
         world = screen.getWorld();
+        facingRight = directionRight;
         
         defineIceShard();
         iceShard = new TextureRegion(new Texture("Graphics/Attacks/Ice/shard.png"), 0, 0, width, height);        
@@ -46,7 +48,7 @@ public class IceShard extends Sprite{
 
       protected void defineIceShard() {
         BodyDef bDef = new BodyDef();
-        bDef.position.set(x + 48 / Main.PPM, y);
+        bDef.position.set(x + (facingRight?48:-48) / Main.PPM, y);
         bDef.type = BodyDef.BodyType.DynamicBody;
         b2Body = world.createBody(bDef);
 
@@ -61,6 +63,6 @@ public class IceShard extends Sprite{
                 | Main.OBJECT_BIT;
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef).setUserData(this);
-        b2Body.applyLinearImpulse(new Vector2(5, 0), this.b2Body.getWorldCenter(), true);
+        b2Body.applyLinearImpulse(new Vector2(facingRight?+5:-5, 0), this.b2Body.getWorldCenter(), true);
     }
 }

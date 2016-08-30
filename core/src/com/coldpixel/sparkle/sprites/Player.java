@@ -180,7 +180,7 @@ public class Player extends Sprite {
                 if(playerAttack.isAnimationFinished(stateTimer)){
                     stateTimer = 0;
                     isAttacking = false;
-                    iceShards.add(new IceShard(b2Body.getPosition().x,b2Body.getPosition().y,screen));
+                    iceShards.add(new IceShard(b2Body.getPosition().x,b2Body.getPosition().y,screen, directionRight));
                 }
                 break;
             default:
