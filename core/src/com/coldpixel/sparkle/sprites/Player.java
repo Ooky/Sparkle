@@ -154,7 +154,7 @@ public class Player extends Sprite {
 
     public TextureRegion getFrame(float dt) {
         if(currentState == Player.State.ATTACK &&
-                playerAttack.isAnimationFinished(stateTimer))
+                !isAttacking)
             currentState = getState();
         else if(currentState != Player.State.ATTACK)
             currentState = getState();
@@ -187,7 +187,7 @@ public class Player extends Sprite {
                 region = playerStand;
                 break;
         }        
-        if(previousState == Player.State.ATTACK && currentState != Player.State.ATTACK && playerAttack.isAnimationFinished(stateTimer)){
+        if(previousState == Player.State.ATTACK && currentState != Player.State.ATTACK && !isAttacking){
             this.setBounds(getX()+(directionRight? 16: 0)/Main.PPM, getY(), playerWidth / Main.PPM, getHeight());
         }        
         if(b2Body.getLinearVelocity().x != 0){
@@ -212,10 +212,7 @@ public class Player extends Sprite {
             } else if ((b2Body.getLinearVelocity().y > 0) && region.isFlipY()) {
                 region.flip(false, true);
             }*/
-        if(stateTimer != 0 || 
-                currentState != Player.State.ATTACK || 
-                previousState != Player.State.ATTACK || 
-                isAttacking)
+        if(isAttacking || (!isAttacking && currentState != Player.State.ATTACK))
             stateTimer = currentState == previousState ? stateTimer + dt : 0;
         previousState = currentState;
         return region;
