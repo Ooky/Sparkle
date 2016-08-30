@@ -49,6 +49,8 @@ public class Soldier extends Enemy {
         super(screen, x, y);
         this.screen = screen;
         frames = new Array<TextureRegion>();
+        health = 100;
+        
         //walkAnimation
         for (int i = 0; i < 10; i++) {
             frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWalk.png"), i * soldierWidth, 0, soldierWidth, soldierHeight));
@@ -73,6 +75,9 @@ public class Soldier extends Enemy {
         stateTime += dt;
         setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Soldier.State.ATTACK) ? (isFlipped ? -16 : +16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
         setRegion(getFrame(dt));
+       /* if(health >= 0){
+            System.out.println("death");
+        }*/
     }
 
     protected void defineEnemy() {
@@ -93,7 +98,7 @@ public class Soldier extends Enemy {
                 | Main.OBJECT_BIT
                 | Main.PLAYERATTACK_BIT;
         fDef.shape = rectangleShape;
-        b2Body.createFixture(fDef);
+        b2Body.createFixture(fDef).setUserData(this);;
         rectangleShape.setAsBox(16 / 2 / Main.PPM, 64 / 2 / Main.PPM, new Vector2(-32 / Main.PPM, 0), 0);
         fDef.shape = rectangleShape;
         fDef.isSensor = true;
@@ -188,6 +193,10 @@ public class Soldier extends Enemy {
         if (isAttacking) {
             this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight());
         }
+    }
+    
+    public void death(){
+        setCategoryFilter(Main.DESTROYED_BIT);
     }
 
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.sprites.IceShard;
 import com.coldpixel.sparkle.sprites.Player;
 import com.coldpixel.sparkle.sprites.Soldier;
 
@@ -29,6 +30,21 @@ public class WorldContactListener implements ContactListener{
                 }
                 else if(fixB.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
                     ((Soldier)fixB.getUserData()).setAttack(true, (Player)fixA.getUserData());
+                }
+                break;
+            case Main.PLAYERATTACK_BIT | Main.ENEMY_BIT:
+                    if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
+                    ((Soldier)fixA.getUserData()).decreaseHealth(((IceShard)fixB.getUserData()).getDamage());
+                    //Sets filter for soldier to destroyed_bit to avoid collisions
+                    if(((Soldier)fixA.getUserData()).getHealth() <= 0){
+                        ((Soldier)fixA.getUserData()).death();
+                    }
+                }
+                else if(fixB.getFilterData().categoryBits == Main.ENEMY_BIT){
+                    ((Soldier)fixB.getUserData()).decreaseHealth(((IceShard)fixA.getUserData()).getDamage());
+                    if(((Soldier)fixB.getUserData()).getHealth() <= 0){
+                        ((Soldier)fixB.getUserData()).death();
+                    }
                 }
                 break;
         }

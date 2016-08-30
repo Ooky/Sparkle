@@ -27,6 +27,7 @@ public class IceShard extends Sprite{
     private World world;
     private Body b2Body;
     private Boolean facingRight;
+    private int damage;
     
     public IceShard(float x, float y, PlayScreen screen, Boolean directionRight) {       
         this.x = x;
@@ -35,6 +36,7 @@ public class IceShard extends Sprite{
         height = 16;
         world = screen.getWorld();
         facingRight = directionRight;
+        damage = 25;
         
         defineIceShard();
         iceShard = new TextureRegion(new Texture("Graphics/Attacks/Ice/shard.png"), 0, 0, width, height);        
@@ -64,5 +66,9 @@ public class IceShard extends Sprite{
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef).setUserData(this);
         b2Body.applyLinearImpulse(new Vector2(facingRight?+5:-5, 0), this.b2Body.getWorldCenter(), true);
+    }
+      
+    public int getDamage(){
+        return damage;
     }
 }
