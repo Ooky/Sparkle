@@ -35,6 +35,7 @@ public class IceShard extends Sprite{
     //animation
     private float stateTime;
     private Animation shardAnimation;
+    private Animation collisionAnimation;
     private Array<TextureRegion> frames;
     private TextureRegion iceShard;
     
@@ -52,19 +53,27 @@ public class IceShard extends Sprite{
         frames = new Array<TextureRegion>();
         
         defineIceShard();
-        //walkAnimation
+        //fly Animation
         for (int i = 0; i < 3; i++) {
             frames.add(new TextureRegion(new Texture("Graphics/Attacks/Ice/shard.png"), i * width, 0, width, height));
         }
-        //In case that we want to work with atlas later  frames.add(new TextureRegion(screen.getAtlas().findRegion("soldier"), i*soldierWidth, 0, soldierWidth, soldierHeight));            
         shardAnimation = new Animation(0.1f, frames);
-        frames.clear();     
+        frames.clear();
+        //Collision Animation
+        for (int i = 0; i < 9; i++) {
+            frames.add(new TextureRegion(new Texture("Graphics/Attacks/Ice/shardCollision.png"), i * width, 0, width, height));
+        }
+        collisionAnimation = new Animation(.015f, frames);
+        frames.clear(); 
         setBounds(0, 0, width / Main.PPM, height / Main.PPM);
     }
     
     public void update(float dt) {
         stateTime += dt;
-        iceShard = shardAnimation.getKeyFrame(stateTime, true);
+        if(setToDestroy)
+            iceShard = collisionAnimation.getKeyFrame(stateTime, true);
+        else
+            iceShard = shardAnimation.getKeyFrame(stateTime, true);
         if(!facingRight && !iceShard.isFlipX())
             iceShard.flip(true, false);
         if(setToDestroy && !destroyed){
@@ -72,14 +81,13 @@ public class IceShard extends Sprite{
             destroyed = true;
         } else if (!destroyed){
            setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
-           setRegion(iceShard);
         }
         setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
         setRegion(iceShard);
     }
     
     public void draw(Batch batch){
-        if(!destroyed || stateTime < 2){
+        if(!destroyed || stateTime < .1){
             super.draw(batch);
         }
     }
@@ -110,5 +118,6 @@ public class IceShard extends Sprite{
     
     public void destroy(){
         setToDestroy = true;
+        stateTime = 0;
     }
 }
