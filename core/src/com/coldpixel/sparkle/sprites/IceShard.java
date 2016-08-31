@@ -1,6 +1,7 @@
 package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.screens.PlayScreen;
 
@@ -20,43 +22,57 @@ import com.coldpixel.sparkle.screens.PlayScreen;
  */
 public class IceShard extends Sprite{
     
-    private TextureRegion iceShard;
     private int width;
     private int height;
     private float x;
-    private float y;
-    private float stateTime;
+    private float y;    
     private World world;
     private Body b2Body;
     private Boolean facingRight;
     private int damage;
     private Boolean setToDestroy;
     private Boolean destroyed;
+    //animation
+    private float stateTime;
+    private Animation shardAnimation;
+    private Array<TextureRegion> frames;
+    private TextureRegion iceShard;
     
-    public IceShard(float x, float y, PlayScreen screen, Boolean directionRight) {       
+    public IceShard(float x, float y, PlayScreen screen, Boolean directionRight) {
         this.x = x;
         this.y = y;
         width = 32;
-        height = 16;
+        height = 32;
         world = screen.getWorld();
         facingRight = directionRight;
         damage = 25;
         destroyed = false;
         setToDestroy = false;
         stateTime = 0;
+        frames = new Array<TextureRegion>();
         
         defineIceShard();
-        iceShard = new TextureRegion(new Texture("Graphics/Attacks/Ice/shard.png"), 0, 0, width, height);        
+        //walkAnimation
+        for (int i = 0; i < 3; i++) {
+            frames.add(new TextureRegion(new Texture("Graphics/Attacks/Ice/shard.png"), i * width, 0, width, height));
+        }
+        //In case that we want to work with atlas later  frames.add(new TextureRegion(screen.getAtlas().findRegion("soldier"), i*soldierWidth, 0, soldierWidth, soldierHeight));            
+        shardAnimation = new Animation(0.1f, frames);
+        frames.clear();     
         setBounds(0, 0, width / Main.PPM, height / Main.PPM);
     }
     
     public void update(float dt) {
         stateTime += dt;
+        iceShard = shardAnimation.getKeyFrame(stateTime, true);
+        if(!facingRight && !iceShard.isFlipX())
+            iceShard.flip(true, false);
         if(setToDestroy && !destroyed){
             world.destroyBody(b2Body);
             destroyed = true;
         } else if (!destroyed){
            setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
+           setRegion(iceShard);
         }
         setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
         setRegion(iceShard);

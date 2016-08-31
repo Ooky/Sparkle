@@ -177,7 +177,7 @@ public class Player extends Sprite {
                 break;
             case ATTACK:
                 region = playerAttack.getKeyFrame(stateTimer, true);
-                if(playerAttack.isAnimationFinished(stateTimer)){
+                if(playerAttack.isAnimationFinished(stateTimer) && previousState == Player.State.ATTACK){
                     stateTimer = 0;
                     isAttacking = false;
                     iceShards.add(new IceShard(b2Body.getPosition().x,b2Body.getPosition().y,screen, directionRight));
@@ -212,8 +212,11 @@ public class Player extends Sprite {
             } else if ((b2Body.getLinearVelocity().y > 0) && region.isFlipY()) {
                 region.flip(false, true);
             }*/
+        //if the current state is the same as the previous state increase the state timer.
+        //otherwise the state has changed and we need to reset timer.
         if(isAttacking || (!isAttacking && currentState != Player.State.ATTACK))
             stateTimer = currentState == previousState ? stateTimer + dt : 0;
+        //update previous state
         previousState = currentState;
         return region;
     }
