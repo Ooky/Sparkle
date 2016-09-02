@@ -184,8 +184,8 @@ public class PlayScreen implements Screen {
         rayHandler.setCombinedMatrix(cam);
         dayNightCycle();
         main.batch.begin();
-        player.draw(main.batch);
         soldier.draw(main.batch);
+        player.draw(main.batch);        
         main.batch.end();
         rayHandler.updateAndRender();
 //        rayHandler.render();

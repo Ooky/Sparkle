@@ -28,6 +28,7 @@ public class Soldier extends Enemy {
     private float stateTime;
     private Animation walkAnimation;
     private Animation attackAnimation;
+    private Animation deathAnimation;
     private Array<TextureRegion> frames;
     private boolean isAttacking = false;
 
@@ -43,7 +44,7 @@ public class Soldier extends Enemy {
     
     public enum State {
 
-        STANDING, UP, DOWN, RIGHT, LEFT, ATTACK
+        STANDING, UP, DOWN, RIGHT, LEFT, ATTACK, DESTROYED
     };
     public Soldier.State currentState;
     public Soldier.State previousState;
@@ -68,7 +69,13 @@ public class Soldier extends Enemy {
             frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAttack.png"), i * (soldierWidth + 16), 0, soldierWidth + 16, soldierHeight));
         }
         attackAnimation = new Animation(0.15f, frames);
-
+        frames.clear();
+        //DeathAnimation
+        for (int i = 0; i < 12; i++) {
+            frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierDeathFinal.png"), i * (soldierWidth + 32), 0, soldierWidth + 32, soldierHeight));
+        }
+        deathAnimation = new Animation(0.3f, frames);
+        frames.clear();
         isFlipped = false;
         stateTime = 0;
         setBounds(0, 0, soldierWidth / Main.PPM, soldierHeight / Main.PPM);
@@ -81,16 +88,17 @@ public class Soldier extends Enemy {
         if(setToDestroy && !destroyed){
             world.destroyBody(b2Body);
             destroyed = true;  
+            
             //change texture region
         } else if (!destroyed){
             setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Soldier.State.ATTACK) ? (isFlipped ? -16 : +16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - (getHeight() / 2));    
         }
-        setRegion(getFrame(dt));
+            setRegion(getFrame(dt));
             
     }
     
     public void draw(Batch batch){
-        if(!destroyed || stateTime < 2){
+        if(!destroyed || stateTime < 15){
             super.draw(batch);
         }
     }
@@ -160,6 +168,10 @@ public class Soldier extends Enemy {
                     victim.b2Body.applyLinearImpulse(new Vector2((isFlipped ? +10 : -10), 0), victim.b2Body.getWorldCenter(), true);
                 }
                 break;
+            case DESTROYED:
+                region = deathAnimation.getKeyFrame(stateTime);
+                this.setBounds(getX(), getY(), (soldierWidth+32) / Main.PPM, getHeight());
+                break;
             default:
                 region = walkAnimation.getKeyFrame(stateTime, true);
                 break;
@@ -169,19 +181,24 @@ public class Soldier extends Enemy {
         }
         stateTime = currentState == previousState ? stateTime + dt : 0;
         previousState = currentState;
-        if (victim.getX() < this.getX() && region.isFlipX()) {
-            isFlipped = false;
-            region.flip(true, false);
-        } else if (victim.getX() > this.getX() && !region.isFlipX()) {
-            isFlipped = true;
-            region.flip(true, false);
+        if(!destroyed){
+            if (victim.getX() < this.getX() && region.isFlipX()) {
+                isFlipped = false;
+                region.flip(true, false);
+            } else if (victim.getX() > this.getX() && !region.isFlipX()) {
+                isFlipped = true;
+                region.flip(true, false);
+            }
+        } else{
+            if(isFlipped && !region.isFlipX())
+                region.flip(true, false);
         }
         return region;
     }
 
     public Soldier.State getState() {
         if(setToDestroy){
-            return Soldier.State.UP;
+            return Soldier.State.DESTROYED;
         }
         else if (isAttacking) {
             return Soldier.State.ATTACK;

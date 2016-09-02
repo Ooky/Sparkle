@@ -31,7 +31,6 @@ public abstract class Enemy extends Sprite{
     
     public void decreaseHealth(int decrease){
         health -= decrease;
-        System.out.println(health);
     }
     
     public void setCategoryFilter(short filterBit){
