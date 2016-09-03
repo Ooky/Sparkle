@@ -34,34 +34,38 @@ public class Player extends Sprite {
     private final int startPosY;
     private final int playerWidth;
     private final int playerHeight;
-    private float movementSpeed;
-    private float maxSpeed = 2.0f;
     private boolean directionRight = true;
-    private int health;
     public World world;
     private PlayScreen screen;
     public Body b2Body;
 
+    //Player Stats
     public enum State {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK,
     };
     public State currentState;
     public State previousState;
-    private Boolean isAttacking;
+    //Animation
     private Animation playerStanding;
     private Animation playerRunning;
     private Animation playerAttack;
     private float stateTimer;
     Array<TextureRegion> frames;
-
     private TextureRegion playerStand;
-
+    
     private ShapeRenderer shapeRenderer;
 
     //Attack
+    private Boolean isAttacking;
     private IceShard iceShard;
     private ArrayList<IceShard> iceShards;
+    
+    //Player Stats
+    private float movementSpeed;
+    private float maxSpeed = 2.0f;
+    private int health;
+    private float attackSpeed;
 //==============================================================================
 //Methods
 //==============================================================================
@@ -73,15 +77,20 @@ public class Player extends Sprite {
         playerHeight = 64;
         this.world = screen.getWorld();
         this.screen = screen;
+        
+        //Player Stats
         movementSpeed = 3.0f;
         maxSpeed = 4.0f;
         health = 100;
+        attackSpeed = 1f;
+        
+        //Attack
         isAttacking = false;
         iceShards = new ArrayList<IceShard>();
         shapeRenderer = new ShapeRenderer();
-
+        
         definePlayer();
-
+        //Animation
         playerStand = new TextureRegion(getTexture(), 0, 0, playerWidth, playerHeight);
         setBounds(0, 0, playerWidth / Main.PPM, playerHeight / Main.PPM);
         setRegion(playerStand);
@@ -109,7 +118,7 @@ public class Player extends Sprite {
             //change to getTexture() later
             frames.add(new TextureRegion(new Texture("Graphics/Character/mageAttack.png"), i * 64, 0, 64, playerHeight));
         }
-        playerAttack = new Animation(.085f, frames);
+        playerAttack = new Animation(.085f / attackSpeed, frames);
         frames.clear();
     }
 
