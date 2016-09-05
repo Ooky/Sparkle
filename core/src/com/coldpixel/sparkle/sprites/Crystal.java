@@ -47,7 +47,7 @@ public class Crystal extends Sprite {
         posY = y;
         width = 32;
         height = 80;
-        radius = 150 / Main.PPM;
+        radius = 250 / Main.PPM;
         defineCrystal();
         
         //###########################################################

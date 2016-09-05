@@ -69,9 +69,9 @@ public class WorldContactListener implements ContactListener{
             //Player Crystal
             case Main.PLAYER_BIT | Main.CRYSTAL_BIT:
                 if(fixA.getFilterData().categoryBits == Main.PLAYER_BIT){
-                    System.out.println("in range to crystal");
+                    ((Player)fixA.getUserData()).setIsHealing(true);
                 } else{
-                    System.out.println("in range to crystal");
+                    ((Player)fixB.getUserData()).setIsHealing(true);
                 }
                 break;
         }
@@ -93,6 +93,14 @@ public class WorldContactListener implements ContactListener{
                     ((Soldier)fixB.getUserData()).setAttack(false);
                 }
                 break;
+            //Player Crystal
+            case Main.PLAYER_BIT | Main.CRYSTAL_BIT:
+                if(fixA.getFilterData().categoryBits == Main.PLAYER_BIT){
+                    ((Player)fixA.getUserData()).setIsHealing(false);
+                } else{
+                    ((Player)fixB.getUserData()).setIsHealing(false);
+                }
+            break;
         }
     }
 

@@ -55,7 +55,10 @@ public class Player extends Sprite {
     private TextureRegion playerStand;
     
     private ShapeRenderer shapeRenderer;
-
+    
+    //healing
+    private int healingFactor;
+    private Boolean isHealing;
     //Attack
     private Boolean isAttacking;
     private IceShard iceShard;
@@ -65,6 +68,7 @@ public class Player extends Sprite {
     private float movementSpeed;
     private float maxSpeed = 2.0f;
     private int health;
+    private int maxHealth = 100;
     private float attackSpeed;
 //==============================================================================
 //Methods
@@ -83,6 +87,10 @@ public class Player extends Sprite {
         maxSpeed = 4.0f;
         health = 100;
         attackSpeed = 1f;
+        
+        //healing
+        isHealing = false;
+        healingFactor = 1;
         
         //Attack
         isAttacking = false;
@@ -148,7 +156,9 @@ public class Player extends Sprite {
 
     public void update(float dt) {
         setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK)?(directionRight? +16: -16)/Main.PPM:0)) / 2), b2Body.getPosition().y - getHeight() / 2);
-        setRegion(getFrame(dt));        
+        setRegion(getFrame(dt));
+        if(isHealing && health < maxHealth)
+            healing();
     }
 
 //==============================================================================
@@ -285,6 +295,14 @@ public class Player extends Sprite {
         return health;
     }
     
+    public void setIsHealing(boolean h){
+        isHealing = h;
+    }
+    
+    public void setHealingFactor(int factor){
+        healingFactor = factor;
+    }
+    
     public void increaseHealth(int increase){
         health += increase;
     }
@@ -295,6 +313,10 @@ public class Player extends Sprite {
     
     public ArrayList<IceShard> getIceShards(){
         return iceShards;
+    }
+    
+    public void healing(){
+        health += healingFactor;
     }
 
 }
