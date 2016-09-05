@@ -140,6 +140,7 @@ public class Player extends Sprite {
                 Main.BONFIRE_BIT |
                 Main.ENEMY_BIT |
                 Main.ENEMYMELEEATTACK_BIT |
+                Main.CRYSTAL_BIT |
                 Main.OBJECT_BIT;
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef).setUserData(this);;

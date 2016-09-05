@@ -66,6 +66,14 @@ public class WorldContactListener implements ContactListener{
                     ((IceShard)fixA .getUserData()).destroy();
                 }
                 break;
+            //Player Crystal
+            case Main.PLAYER_BIT | Main.CRYSTAL_BIT:
+                if(fixA.getFilterData().categoryBits == Main.PLAYER_BIT){
+                    System.out.println("in range to crystal");
+                } else{
+                    System.out.println("in range to crystal");
+                }
+                break;
         }
     }
 
