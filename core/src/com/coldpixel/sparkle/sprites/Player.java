@@ -2,7 +2,6 @@ package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import static com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP;
@@ -16,11 +15,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.coldpixel.sparkle.Constants;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.screens.PlayScreen;
-import com.coldpixel.sparkle.sprites.IceShard;
 import java.util.ArrayList;
+
 /**
  *
  * @author Coldpixel
@@ -37,6 +35,12 @@ public class Player extends Sprite {
     private float movementSpeed;
     private float maxSpeed = 2.0f;
     private boolean directionRight = true;
+
+    public enum shootDirection {
+
+        RIGHT, LEFT, UP, DOWN
+    };
+    public shootDirection currentShootDirection;
     private int health;
     public World world;
     private PlayScreen screen;
@@ -65,6 +69,7 @@ public class Player extends Sprite {
 //==============================================================================
 //Methods
 //==============================================================================
+
     public Player(PlayScreen screen) {
         super(screen.getAtlas().findRegion("Player48x64"));
         startPosX = 180;
@@ -89,6 +94,7 @@ public class Player extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
 
+        //currentShootDirection = Player.shootDirection.RIGHT;
         frames = new Array<TextureRegion>();
         //STANDING
         for (int i = 0; i < 9; i++) {
@@ -109,7 +115,7 @@ public class Player extends Sprite {
             //change to getTexture() later
             frames.add(new TextureRegion(new Texture("Graphics/Character/mageAttack.png"), i * 64, 0, 64, playerHeight));
         }
-        playerAttack = new Animation(.085f, frames);
+        playerAttack = new Animation(.05f, frames);
         frames.clear();
     }
 
@@ -128,17 +134,18 @@ public class Player extends Sprite {
 //        fDef.shape = shape;
         fDef.filter.categoryBits = Main.PLAYER_BIT;
         fDef.filter.maskBits = /*Main.GROUND_BIT | */ //Needed?
-                Main.BONFIRE_BIT |
-                Main.ENEMY_BIT |
-                Main.ENEMYMELEEATTACK_BIT |
-                Main.OBJECT_BIT;
+                Main.BONFIRE_BIT
+                | Main.ENEMY_BIT
+                | Main.ENEMYMELEEATTACK_BIT
+                | Main.OBJECT_BIT;
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef).setUserData(this);;
     }
 
     public void update(float dt) {
-        setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK)?(directionRight? +16: -16)/Main.PPM:0)) / 2), b2Body.getPosition().y - getHeight() / 2);
-        setRegion(getFrame(dt));        
+        setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK) ? (directionRight ? +16 : -16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - getHeight() / 2);
+        setRegion(getFrame(dt));
+
     }
 
 //==============================================================================
@@ -153,11 +160,12 @@ public class Player extends Sprite {
     }
 
     public TextureRegion getFrame(float dt) {
-        if(currentState == Player.State.ATTACK &&
-                !isAttacking)
-            currentState = getState();
-        else if(currentState != Player.State.ATTACK)
-            currentState = getState();
+        currentState = getState();
+//        if (currentState == Player.State.ATTACK && !isAttacking) {
+//            currentState = getState();
+//        } else if (currentState != Player.State.ATTACK) {
+//            currentState = getState();
+//        }
         TextureRegion region;
         switch (currentState) {
             case STANDING:
@@ -177,55 +185,73 @@ public class Player extends Sprite {
                 break;
             case ATTACK:
                 region = playerAttack.getKeyFrame(stateTimer, true);
-                if(playerAttack.isAnimationFinished(stateTimer) && previousState == Player.State.ATTACK){
+                if (!region.isFlipX() && currentShootDirection == Player.shootDirection.RIGHT) {
+                    region.flip(true, false);
+                }else if (region.isFlipX() && currentShootDirection == Player.shootDirection.LEFT) {
+                    region.flip(true, false);
+                }
+                if (playerAttack.isAnimationFinished(stateTimer) && previousState == Player.State.ATTACK) {
                     stateTimer = 0;
                     isAttacking = false;
-                    iceShards.add(new IceShard(b2Body.getPosition().x,b2Body.getPosition().y,screen, directionRight));
+                    switch (currentShootDirection) {
+                        case RIGHT:
+                            iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.RIGHT));
+                            break;
+                        case LEFT:
+                            iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.LEFT));
+                            break;
+                        case UP:
+                            iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.UP));
+                            break;
+                        case DOWN:
+                            iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN));
+                            break;
+                    }
                 }
                 break;
             default:
                 region = playerStand;
                 break;
-        }        
-        if(previousState == Player.State.ATTACK && currentState != Player.State.ATTACK && !isAttacking){
-            this.setBounds(getX()+(directionRight? 16: 0)/Main.PPM, getY(), playerWidth / Main.PPM, getHeight());
-        }        
-        if(b2Body.getLinearVelocity().x != 0){
-            if ((b2Body.getLinearVelocity().x > 0) && !region.isFlipX()) {
-                region.flip(true, false);
-                directionRight = true;
-            } else if ((b2Body.getLinearVelocity().x < 0) && region.isFlipX()) {
-                region.flip(true, false);
-                directionRight = false;
+        }
+        if (previousState == Player.State.ATTACK && currentState != Player.State.ATTACK && !isAttacking) {
+            this.setBounds(getX() + (directionRight ? 16 : 0) / Main.PPM, getY(), playerWidth / Main.PPM, getHeight());
+        }
+        if (!isAttacking) {
+            if (b2Body.getLinearVelocity().x != 0) {
+                //RIGHT
+                if ((b2Body.getLinearVelocity().x > 0) && !region.isFlipX()) {
+                    region.flip(true, false);
+                    directionRight = true;
+                } else if ((b2Body.getLinearVelocity().x < 0) && region.isFlipX()) {
+                    region.flip(true, false);
+                    directionRight = false;
+                }
+            } else if (directionRight) {
+                if (!region.isFlipX()) {
+                    region.flip(true, false);
+                }
+            } else {
+                if (region.isFlipX()) {
+                    region.flip(true, false);
+                }
             }
-        }else if(directionRight){
-            if(!region.isFlipX()){
-               region.flip(true,false); 
-            }
-        }else{
-            if(region.isFlipX()){
-               region.flip(true,false); 
-            }
-        }/*
-            if ((b2Body.getLinearVelocity().y < 0) && !region.isFlipY()) {
-                region.flip(false, true);
-            } else if ((b2Body.getLinearVelocity().y > 0) && region.isFlipY()) {
-                region.flip(false, true);
-            }*/
+        }
+
         //if the current state is the same as the previous state increase the state timer.
         //otherwise the state has changed and we need to reset timer.
-        if(isAttacking || (!isAttacking && currentState != Player.State.ATTACK))
+        if (isAttacking || (!isAttacking && currentState != Player.State.ATTACK)) {
             stateTimer = currentState == previousState ? stateTimer + dt : 0;
+        }
         //update previous state
         previousState = currentState;
         return region;
+
     }
 
     public State getState() {
         if (isAttacking) {
             return Player.State.ATTACK;
-        }
-        else if (b2Body.getLinearVelocity().y > 0.001) {
+        } else if (b2Body.getLinearVelocity().y > 0.001) {
             return State.UP;
         } else if (b2Body.getLinearVelocity().y < -0.001) {
             return State.DOWN;
@@ -240,50 +266,56 @@ public class Player extends Sprite {
 
     public void handleInput(float dt) {
         //LinearImpulse:first:x/y,second: where to impulse from the body?->center!, third: will impulse awake obj?
-        if ((Gdx.input.isKeyPressed(Input.Keys.W) || (Gdx.input.isKeyPressed(Input.Keys.UP))) && this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) /*|| (Gdx.input.isKeyPressed(Input.Keys.UP))*/) && this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
             //Check if Player isnt moving faster than he is allowed to 
             this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
         }
-        if ((Gdx.input.isKeyPressed(Input.Keys.A) || (Gdx.input.isKeyPressed(Input.Keys.LEFT))) && this.b2Body.getLinearVelocity().x >= -this.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.A) /*|| (Gdx.input.isKeyPressed(Input.Keys.LEFT))*/) && this.b2Body.getLinearVelocity().x >= -this.getMaxSpeed()) {
             this.b2Body.applyLinearImpulse(new Vector2(-this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
         }
-        if ((Gdx.input.isKeyPressed(Input.Keys.S) || (Gdx.input.isKeyPressed(Input.Keys.DOWN))) && this.b2Body.getLinearVelocity().y >= -this.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.S) /*|| (Gdx.input.isKeyPressed(Input.Keys.DOWN))*/) && this.b2Body.getLinearVelocity().y >= -this.getMaxSpeed()) {
             this.b2Body.applyLinearImpulse(new Vector2(0, -this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
         }
-        if ((Gdx.input.isKeyPressed(Input.Keys.D) || (Gdx.input.isKeyPressed(Input.Keys.RIGHT))) && this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.D) /*|| (Gdx.input.isKeyPressed(Input.Keys.RIGHT))*/) && this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()) {
             this.b2Body.applyLinearImpulse(new Vector2(this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
         }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+
+        this.b2Body.setLinearDamping(60.0f);//Slow down
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             isAttacking = true;
             this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
+            currentShootDirection = Player.shootDirection.RIGHT;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            isAttacking = true;
+            this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
+            currentShootDirection = Player.shootDirection.LEFT;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            isAttacking = true;
+            this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
+            currentShootDirection = Player.shootDirection.UP;
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            isAttacking = true;
+            this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
+            currentShootDirection = Player.shootDirection.DOWN;
+        } else {
         }
-//        player.b2Body.setLinearVelocity(new Vector2(0,0));//Stop immediatly.
-        this.b2Body.setLinearDamping(60.0f);//Slow down
+
     }
 
-    public void targetLine() {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.line(b2Body.getPosition().x * Main.PPM,
-                b2Body.getPosition().y * Main.PPM,
-                Gdx.input.getX(),
-                Constants.WINDOW_HEIGTH - Gdx.input.getY());
-        shapeRenderer.end();
-    }
-    
-    public int getHealth(){
+    public int getHealth() {
         return health;
     }
-    
-    public void increaseHealth(int increase){
+
+    public void increaseHealth(int increase) {
         health += increase;
     }
-    
-    public void decreaseHealth(int decrease){
+
+    public void decreaseHealth(int decrease) {
         health -= decrease;
     }
-    
-    public ArrayList<IceShard> getIceShards(){
+
+    public ArrayList<IceShard> getIceShards() {
         return iceShards;
     }
 

@@ -87,7 +87,7 @@ public class B2WorldCreator {
         //Create light
         bonefires = new ArrayList<BonFire>();
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) { 
-            boneFire = new BonFire(((EllipseMapObject) object), playScreen, assetHelper.soundBonfire(true));
+            boneFire = new BonFire(((EllipseMapObject) object), playScreen);
             bonefires.add(boneFire);
         }
     }
