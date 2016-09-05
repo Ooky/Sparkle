@@ -28,6 +28,7 @@ import com.coldpixel.sparkle.tools.AssetHelper;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
 import com.coldpixel.sparkle.sprites.IceShard;
+import com.coldpixel.sparkle.sprites.Crystal;
 
 /**
  *
@@ -133,6 +134,10 @@ public class PlayScreen implements Screen {
         for (IceShard ice : player.getIceShards()) {
             ice.update(dt);
         }
+        /*
+        prepared for animation
+        for(Crystal crystal : b2WorldCreator.getCrystals())
+            crystal.update(dt);*/
         cam.update();
         renderer.setView(cam);
 
@@ -185,6 +190,9 @@ public class PlayScreen implements Screen {
         main.batch.begin();
         for(Enemy enemy : b2WorldCreator.getSoldiers())
             enemy.draw(main.batch);
+        for(Crystal crystal : b2WorldCreator.getCrystals()){
+            crystal.draw(main.batch);
+        }
         player.draw(main.batch);        
         main.batch.end();
         rayHandler.updateAndRender();

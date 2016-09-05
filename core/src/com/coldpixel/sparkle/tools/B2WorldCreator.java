@@ -17,6 +17,7 @@ import com.coldpixel.sparkle.sprites.Dirt;
 import com.coldpixel.sparkle.sprites.EnvironmentObject;
 import com.coldpixel.sparkle.sprites.Grass;
 import com.coldpixel.sparkle.sprites.Soldier;
+import com.coldpixel.sparkle.sprites.Crystal;
 import java.util.ArrayList;
 
 /**
@@ -42,6 +43,9 @@ public class B2WorldCreator {
     
     private ArrayList<Soldier> soldiers;
     private Soldier soldier;
+    
+    private ArrayList<Crystal> crystals;
+    private Crystal crystal;
     
     private AssetHelper assetHelper;
 //==============================================================================
@@ -103,6 +107,14 @@ public class B2WorldCreator {
                     ((RectangleMapObject)object).getRectangle().getY() / Main.PPM, playScreen.getPlayer());
             soldiers.add(soldier);
         }
+        
+        //Create Soldiers
+        crystals = new ArrayList<Crystal>();
+        for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) { 
+            crystal = new Crystal(playScreen, ((RectangleMapObject)object).getRectangle().getX(),
+                    ((RectangleMapObject)object).getRectangle().getY());
+            crystals.add(crystal);
+        }
     }
     
     public ArrayList<BonFire> getBonFires(){
@@ -111,5 +123,9 @@ public class B2WorldCreator {
     
         public ArrayList<Soldier> getSoldiers(){
         return soldiers;
+    }
+        
+    public ArrayList<Crystal> getCrystals(){
+        return crystals;
     }
 }
