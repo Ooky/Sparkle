@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
 import com.coldpixel.sparkle.sprites.BonFire;
+import com.coldpixel.sparkle.sprites.Enemy;
 import com.coldpixel.sparkle.sprites.Soldier;
 import com.coldpixel.sparkle.tools.AssetHelper;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
@@ -70,8 +71,6 @@ public class PlayScreen implements Screen {
     //Music
     private AssetHelper assetHelper;
 
-    private Soldier soldier;
-
 //==============================================================================
 //Methods
 //==============================================================================
@@ -95,12 +94,11 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2DebugRenderer = new Box2DDebugRenderer();
+        
+        player = new Player(this);
 
         b2WorldCreator = new B2WorldCreator(this);
 
-        player = new Player(this);
-        //hardcoded for test purpose
-        soldier = new Soldier(this, 5f, 1f, player);
 
         world.setContactListener(new WorldContactListener());
 
@@ -126,7 +124,8 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);//60 times a second
 //        rayHandler.update();
         player.update(dt);
-        soldier.update(dt);
+        for(Enemy enemy : b2WorldCreator.getSoldiers())
+            enemy.update(dt);
         //bonfire animation
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
@@ -184,7 +183,8 @@ public class PlayScreen implements Screen {
         rayHandler.setCombinedMatrix(cam);
         dayNightCycle();
         main.batch.begin();
-        soldier.draw(main.batch);
+        for(Enemy enemy : b2WorldCreator.getSoldiers())
+            enemy.draw(main.batch);
         player.draw(main.batch);        
         main.batch.end();
         rayHandler.updateAndRender();
@@ -253,6 +253,10 @@ public class PlayScreen implements Screen {
 
     public Main getMain() {
         return main;
+    }
+    
+    public Player getPlayer(){
+        return player;
     }
 
 }
