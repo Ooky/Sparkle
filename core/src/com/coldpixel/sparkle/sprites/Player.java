@@ -32,8 +32,6 @@ public class Player extends Sprite {
     private final int startPosY;
     private final int playerWidth;
     private final int playerHeight;
-    private float movementSpeed;
-    private float maxSpeed = 2.0f;
     private boolean directionRight = true;
 
     public enum shootDirection {
@@ -46,26 +44,37 @@ public class Player extends Sprite {
     private PlayScreen screen;
     public Body b2Body;
 
+    //Player Stats
     public enum State {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK,
     };
     public State currentState;
     public State previousState;
-    private Boolean isAttacking;
+    //Animation
     private Animation playerStanding;
     private Animation playerRunning;
     private Animation playerAttack;
     private float stateTimer;
     Array<TextureRegion> frames;
-
     private TextureRegion playerStand;
-
+    
     private ShapeRenderer shapeRenderer;
-
+    
+    //healing
+    private int healingFactor;
+    private Boolean isHealing;
     //Attack
+    private Boolean isAttacking;
     private IceShard iceShard;
     private ArrayList<IceShard> iceShards;
+    
+    //Player Stats
+    private float movementSpeed;
+    private float maxSpeed = 2.0f;
+    private int health;
+    private int maxHealth = 100;
+    private float attackSpeed;
 //==============================================================================
 //Methods
 //==============================================================================
@@ -78,15 +87,24 @@ public class Player extends Sprite {
         playerHeight = 64;
         this.world = screen.getWorld();
         this.screen = screen;
+        
+        //Player Stats
         movementSpeed = 3.0f;
         maxSpeed = 4.0f;
         health = 100;
+        attackSpeed = 1f;
+        
+        //healing
+        isHealing = false;
+        healingFactor = 1;
+        
+        //Attack
         isAttacking = false;
         iceShards = new ArrayList<IceShard>();
         shapeRenderer = new ShapeRenderer();
-
+        
         definePlayer();
-
+        //Animation
         playerStand = new TextureRegion(getTexture(), 0, 0, playerWidth, playerHeight);
         setBounds(0, 0, playerWidth / Main.PPM, playerHeight / Main.PPM);
         setRegion(playerStand);
@@ -115,7 +133,7 @@ public class Player extends Sprite {
             //change to getTexture() later
             frames.add(new TextureRegion(new Texture("Graphics/Character/mageAttack.png"), i * 64, 0, 64, playerHeight));
         }
-        playerAttack = new Animation(.05f, frames);
+        playerAttack = new Animation(.085f / attackSpeed, frames);
         frames.clear();
     }
 
@@ -134,18 +152,20 @@ public class Player extends Sprite {
 //        fDef.shape = shape;
         fDef.filter.categoryBits = Main.PLAYER_BIT;
         fDef.filter.maskBits = /*Main.GROUND_BIT | */ //Needed?
-                Main.BONFIRE_BIT
-                | Main.ENEMY_BIT
-                | Main.ENEMYMELEEATTACK_BIT
-                | Main.OBJECT_BIT;
+                Main.BONFIRE_BIT |
+                Main.ENEMY_BIT |
+                Main.ENEMYMELEEATTACK_BIT |
+                Main.CRYSTAL_BIT |
+                Main.OBJECT_BIT;
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef).setUserData(this);;
     }
 
     public void update(float dt) {
-        setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK) ? (directionRight ? +16 : -16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - getHeight() / 2);
+        setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK)?(directionRight? +16: -16)/Main.PPM:0)) / 2), b2Body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
-
+        if(isHealing && health < maxHealth)
+            healing();
     }
 
 //==============================================================================
@@ -306,8 +326,16 @@ public class Player extends Sprite {
     public int getHealth() {
         return health;
     }
-
-    public void increaseHealth(int increase) {
+    
+    public void setIsHealing(boolean h){
+        isHealing = h;
+    }
+    
+    public void setHealingFactor(int factor){
+        healingFactor = factor;
+    }
+    
+    public void increaseHealth(int increase){
         health += increase;
     }
 
@@ -317,6 +345,10 @@ public class Player extends Sprite {
 
     public ArrayList<IceShard> getIceShards() {
         return iceShards;
+    }
+    
+    public void healing(){
+        health += healingFactor;
     }
 
 }

@@ -74,11 +74,11 @@ public final class BonFire extends Sprite {
         b2Body = world.createBody(bDef);
 
         FixtureDef fDef = new FixtureDef();
-        CircleShape rectangleShape = new CircleShape();
-        rectangleShape.setRadius(radius / 400f);
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(radius / 400f);
 
         fDef.filter.categoryBits = Main.BONFIRE_BIT;
-        fDef.shape = rectangleShape;
+        fDef.shape = circleShape;
         b2Body.createFixture(fDef);
     }
 
