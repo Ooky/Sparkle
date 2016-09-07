@@ -133,10 +133,9 @@ public class PlayScreen implements Screen {
         for (IceShard ice : player.getIceShards()) {
             ice.update(dt);
         }
-        /*
-        prepared for animation
-        for(Crystal crystal : b2WorldCreator.getCrystals())
-            crystal.update(dt);*/
+        for(Crystal crystal : b2WorldCreator.getCrystals()){
+            crystal.update(dt); 
+        } 
         cam.update();
         renderer.setView(cam);
 
@@ -204,6 +203,9 @@ public class PlayScreen implements Screen {
         for (IceShard ice : player.getIceShards()) {
             ice.draw(main.batch);
         }
+        for(Crystal crystal : b2WorldCreator.getCrystals()){
+            crystal.draw(main.batch); 
+        } 
         main.batch.end();
 
         hud.drawHUD((int)player.getHealth());

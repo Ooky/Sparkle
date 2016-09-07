@@ -38,8 +38,6 @@ public class Crystal extends Sprite {
     private float stateTimer;
     Array<TextureRegion> frames;
     
-    //provisory until we get an animation
-    private TextureRegion crystal;
 
     public Crystal(PlayScreen screen, float x, float y) {
         this.world = screen.getWorld();
@@ -50,21 +48,15 @@ public class Crystal extends Sprite {
         radius = 250 / Main.PPM;
         defineCrystal();
         
-        //###########################################################
-        //provisory until we get an animation
-        crystal = new TextureRegion(new Texture("Graphics/Crystal/Source.png"), 0, 0, width, height);
-        //############################################################
         setBounds(0, 0, width / Main.PPM , height / Main.PPM);
-        setRegion(crystal);
         setPosition(b2Body.getPosition().x - (width / 2 / Main.PPM), b2Body.getPosition().y - (height / 2 / Main.PPM));
-        /* Prepared for animation
         stateTimer = 0;
         frames = new Array<TextureRegion>();
         //Animation
-        for (int i = 0; i < 10; i++) {
-            frames.add(new TextureRegion(new Texture("Graphics/Crystal/rotating.png"), i * 32, 0, 32, 80));
+        for (int i = 0; i < 6; i++) {
+            frames.add(new TextureRegion(new Texture("Graphics/Crystal/animated.png"), i * 32, 0, 32, 80));
         }
-        rotating = new Animation(1, frames);*/
+        rotating = new Animation(.13f, frames);
     }
 
     public void defineCrystal() {
@@ -91,10 +83,15 @@ public class Crystal extends Sprite {
     }
 
     public void update(float dt) {
-        //prepared for animation
-        //setRegion(rotating.getKeyFrame(dt));
+        setRegion(getFrame(dt));
     }
 
+    public TextureRegion getFrame(float dt) {
+        TextureRegion region;
+        region = rotating.getKeyFrame(stateTimer, true);
+        stateTimer = stateTimer + dt;
+        return region;
+    }
 }
 
 
