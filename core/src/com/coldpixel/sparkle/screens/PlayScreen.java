@@ -208,7 +208,7 @@ public class PlayScreen implements Screen {
         } 
         main.batch.end();
 
-        hud.drawHUD((int)player.getHealth());
+        hud.drawHUD(player.getHealth());
         hud.drawActionbar(main.batch);
     }
 

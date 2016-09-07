@@ -133,7 +133,7 @@ public class Player extends Sprite {
             //change to getTexture() later
             frames.add(new TextureRegion(new Texture("Graphics/Character/mageAttack.png"), i * 64, 0, 64, playerHeight));
         }
-        playerAttack = new Animation(.085f / attackSpeed, frames);
+        playerAttack = new Animation(.05f / attackSpeed, frames);
         frames.clear();
     }
 
@@ -324,8 +324,8 @@ public class Player extends Sprite {
 
     }
 
-    public float getHealth() {
-        return health;
+    public int getHealth() {
+        return (int) health;
     }
     
     public void setIsHealing(boolean h){
