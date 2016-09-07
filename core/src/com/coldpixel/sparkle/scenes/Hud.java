@@ -31,7 +31,7 @@ public class Hud implements Disposable {
     private final Viewport viewport;
     private final Table table;
 
-    private float playerLife;
+    private int playerLife;
     private int timeValue;
     private int seconds;
     private int minutes;
@@ -60,7 +60,7 @@ public class Hud implements Disposable {
 //==============================================================================
     public Hud(SpriteBatch sb) {
         maxLife = 100;
-        playerLife = 100f;
+        playerLife = 100;
         scoreValue = 57;
         timeValue = 86390;
         seconds = 0;
@@ -107,7 +107,7 @@ public class Hud implements Disposable {
         table = new Table();
         table.top();
         table.setFillParent(true);//=size of the stage
-        playerLifeLabel = new Label(String.format("%03.0f", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK)); 
+        playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK)); 
         //scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         timeValueLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -130,7 +130,7 @@ public class Hud implements Disposable {
     public void drawLifebar() {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         lifebarLength = lifebarWidth / 100 * playerLife;
-        playerLifeLabel.setText(String.format("%03.0f", playerLife) + " / " + maxLife);
+        playerLifeLabel.setText(String.format("%03d", playerLife) + " / " + maxLife);
         shaperenderer.setProjectionMatrix(stage.getCamera().combined);
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
         //Behind the Lifebar
@@ -154,7 +154,7 @@ public class Hud implements Disposable {
 //                System.out.println("Lifebar: " + lifebarWidth);
     }
 
-    public void drawHUD(float playerHealth) {
+    public void drawHUD(int playerHealth) {
         //Make sure to draw first the lifebar
         playerLife = playerHealth;
         drawLifebar();

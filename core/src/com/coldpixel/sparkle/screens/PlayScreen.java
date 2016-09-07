@@ -205,7 +205,7 @@ public class PlayScreen implements Screen {
         }
         main.batch.end();
 
-        hud.drawHUD(player.getHealth());
+        hud.drawHUD((int)player.getHealth());
     }
 
     @Override
