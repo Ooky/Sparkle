@@ -32,7 +32,7 @@ public class Player extends Sprite {
     private final int startPosY;
     private final int playerWidth;
     private final int playerHeight;
-    private boolean directionRight = true;
+    private boolean directionRight;
 
     public enum shootDirection {
 
@@ -84,6 +84,7 @@ public class Player extends Sprite {
         startPosY = 60;
         playerWidth = 48;
         playerHeight = 64;
+        directionRight = true;
         this.world = screen.getWorld();
         this.screen = screen;
         
@@ -207,7 +208,7 @@ public class Player extends Sprite {
                 if (!region.isFlipX() && currentShootDirection == Player.shootDirection.RIGHT) {
                     region.flip(true, false);
                 }else if (region.isFlipX() && currentShootDirection == Player.shootDirection.LEFT) {
-                    region.flip(true, false);
+                    region.flip(true, false);                    
                 }
                 if (playerAttack.isAnimationFinished(stateTimer) && previousState == Player.State.ATTACK) {
                     stateTimer = 0;
@@ -215,9 +216,11 @@ public class Player extends Sprite {
                     switch (currentShootDirection) {
                         case RIGHT:
                             iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.RIGHT));
+                            directionRight = true;
                             break;
                         case LEFT:
                             iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.LEFT));
+                            directionRight = false;
                             break;
                         case UP:
                             iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.UP));
@@ -226,6 +229,8 @@ public class Player extends Sprite {
                             iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN));
                             break;
                     }
+                    if(b2Body.getLinearVelocity().x < 0.00001 && b2Body.getLinearVelocity().x > -0.00001)
+                        b2Body.setLinearVelocity(0, b2Body.getLinearVelocity().y);
                 }
                 break;
             default:
@@ -249,10 +254,8 @@ public class Player extends Sprite {
                 if (!region.isFlipX()) {
                     region.flip(true, false);
                 }
-            } else {
-                if (region.isFlipX()) {
+            } else if (region.isFlipX()) {
                     region.flip(true, false);
-                }
             }
         }
 
