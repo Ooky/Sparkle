@@ -186,6 +186,7 @@ public class PlayScreen implements Screen {
         main.batch.setProjectionMatrix(cam.combined);
         rayHandler.setCombinedMatrix(cam);
         dayNightCycle();
+        
         main.batch.begin();
         for(Enemy enemy : b2WorldCreator.getSoldiers())
             enemy.draw(main.batch);
@@ -206,6 +207,7 @@ public class PlayScreen implements Screen {
         main.batch.end();
 
         hud.drawHUD((int)player.getHealth());
+        hud.drawActionbar(main.batch);
     }
 
     @Override

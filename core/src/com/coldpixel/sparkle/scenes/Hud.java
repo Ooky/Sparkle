@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -54,6 +55,8 @@ public class Hud implements Disposable {
     private BitmapFont font;
 
     private long startTime = 0;
+    
+    private Texture actionBar;
 
 //==============================================================================
 //Methods
@@ -125,6 +128,7 @@ public class Hud implements Disposable {
 //        table.add(scoreValueLabel).right().padRight(gap);
         stage.addActor(table);
 
+        actionBar = new Texture(Gdx.files.internal("Graphics/Hud/Actionbar.png"));
     }
 
     public void drawLifebar() {
@@ -160,6 +164,12 @@ public class Hud implements Disposable {
         drawLifebar();
         timer();
         stage.draw();
+    }
+    
+    public void drawActionbar(SpriteBatch batch){
+        batch.begin();
+        batch.draw(actionBar, (Constants.WINDOW_WIDTH/2-actionBar.getWidth()/2), 0);
+        batch.end();
     }
 
     @Override
