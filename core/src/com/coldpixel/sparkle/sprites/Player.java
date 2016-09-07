@@ -39,7 +39,7 @@ public class Player extends Sprite {
         RIGHT, LEFT, UP, DOWN
     };
     public shootDirection currentShootDirection;
-    private int health;
+    private float health;
     public World world;
     private PlayScreen screen;
     public Body b2Body;
@@ -62,7 +62,7 @@ public class Player extends Sprite {
     private ShapeRenderer shapeRenderer;
     
     //healing
-    private int healingFactor;
+    private float healingFactor;
     private Boolean isHealing;
     //Attack
     private Boolean isAttacking;
@@ -72,7 +72,6 @@ public class Player extends Sprite {
     //Player Stats
     private float movementSpeed;
     private float maxSpeed = 2.0f;
-    private int health;
     private int maxHealth = 100;
     private float attackSpeed;
 //==============================================================================
@@ -96,7 +95,7 @@ public class Player extends Sprite {
         
         //healing
         isHealing = false;
-        healingFactor = 1;
+        healingFactor = 0.05f;
         
         //Attack
         isAttacking = false;
@@ -158,7 +157,7 @@ public class Player extends Sprite {
                 Main.CRYSTAL_BIT |
                 Main.OBJECT_BIT;
         fDef.shape = rectangleShape;
-        b2Body.createFixture(fDef).setUserData(this);;
+        b2Body.createFixture(fDef).setUserData(this);
     }
 
     public void update(float dt) {
@@ -318,12 +317,11 @@ public class Player extends Sprite {
             isAttacking = true;
             this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
             currentShootDirection = Player.shootDirection.DOWN;
-        } else {
         }
 
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
     
