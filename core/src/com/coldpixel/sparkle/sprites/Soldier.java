@@ -43,6 +43,8 @@ public class Soldier extends Enemy {
     private Boolean isFlipped;
     private Boolean setToDestroy;
     private Boolean destroyed;
+    private Boolean avoidObject;
+    private State avoidDirection;
     
     public enum State {
 
@@ -58,6 +60,7 @@ public class Soldier extends Enemy {
         health = 100;
         destroyed = false;
         setToDestroy = false;
+        avoidObject = false;
         movementSpeed = .8f;
         maxSpeed = 1.0f;
         
@@ -95,7 +98,10 @@ public class Soldier extends Enemy {
             
             //change texture region
         } else if (!destroyed){
-            if(!isAttacking){
+            if(avoidObject){
+                avoidObject();
+            }
+            else if(!isAttacking){
                 moveAi();
             }
             setPosition((b2Body.getPosition().x ) - ((getWidth() + ((currentState == Soldier.State.ATTACK) ? (isFlipped ? -16 : +16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - (getHeight() / 2));    
@@ -240,12 +246,27 @@ public class Soldier extends Enemy {
             }
         } 
     }
+    
+    public void avoidObject(){
+        if(this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()){
+            this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+        }
+    }
 
     public void setAttack(boolean attack) {
         isAttacking = attack;
         if (isAttacking) {
             this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight());
         }
+    }
+    
+    public void setAvoidObject(Boolean set){
+        this.avoidObject = set;
+    }
+    
+    public void setAvoidObject(State direction){
+        this.avoidObject = true;
+        this.avoidDirection = direction;
     }
     
     public void death(){

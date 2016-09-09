@@ -46,9 +46,7 @@
   </object>
  </objectgroup>
  <objectgroup name="Soldier">
-  <object id="58" x="704" y="384" width="64" height="64"/>
-  <object id="59" x="704" y="640" width="64" height="64"/>
-  <object id="60" x="448" y="192" width="64" height="64"/>
+  <object id="58" x="1149" y="63" width="64" height="64"/>
  </objectgroup>
  <objectgroup name="Crystal" offsetx="0" offsety="-1">
   <object id="61" x="576" y="448" width="64" height="64"/>

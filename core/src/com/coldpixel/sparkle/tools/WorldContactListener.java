@@ -1,10 +1,13 @@
 package com.coldpixel.sparkle.tools;
 
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.sprites.IceShard;
 import com.coldpixel.sparkle.sprites.Player;
@@ -74,6 +77,41 @@ public class WorldContactListener implements ContactListener{
                     ((Player)fixB.getUserData()).setIsHealing(true);
                 }
                 break;
+            case Main.ENEMY_BIT | Main.OBJECT_BIT:
+                if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
+                    Soldier.State state = Soldier.State.UP;
+                    ((Soldier)fixA.getUserData()).setAvoidObject(state);
+                } else{
+                /*    float width = ((Rectangle)fixA.getUserData()).width;
+                    float height = ((Rectangle)fixA.getUserData()).height;
+                    float x = ((Rectangle)fixA.getUserData()).x;
+                    float y = ((Rectangle)fixA.getUserData()).y;
+                    System.out.println(((Soldier)fixB.getUserData()).getY()-((Soldier)fixB.getUserData()).getHeight()/2+" "+(y+height)/Main.PPM);
+                   // if(((Soldier)fixB.getUserData()).b2Body.getPosition().x > (x + width / 2) / Main.PPM){
+                   //     
+                  //  }
+                   */Soldier.State state = Soldier.State.UP;
+                    ((Soldier)fixB.getUserData()).setAvoidObject(state);
+                }
+                break;
+            case Main.ENEMY_BIT | Main.BONFIRE_BIT:
+                if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
+                    Soldier.State state = Soldier.State.UP;
+                    ((Soldier)fixA.getUserData()).setAvoidObject(state);
+                } else{
+                    Soldier.State state = Soldier.State.UP;
+                    ((Soldier)fixB.getUserData()).setAvoidObject(state);
+                }
+                break;
+            case Main.ENEMY_BIT | Main.CRYSTAL_BIT:
+                if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
+                    Soldier.State state = Soldier.State.UP;
+                    ((Soldier)fixA.getUserData()).setAvoidObject(state);
+                } else{
+                    Soldier.State state = Soldier.State.UP;
+                    ((Soldier)fixB.getUserData()).setAvoidObject(state);
+                }
+                break;
         }
     }
 
@@ -101,6 +139,27 @@ public class WorldContactListener implements ContactListener{
                     ((Player)fixB.getUserData()).setIsHealing(false);
                 }
             break;
+            case Main.ENEMY_BIT | Main.OBJECT_BIT:
+                if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
+                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
+                } else{
+                    ((Soldier)fixB.getUserData()).setAvoidObject(false);
+                }
+                break;
+            case Main.ENEMY_BIT | Main.BONFIRE_BIT:
+                if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
+                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
+                } else{
+                    ((Soldier)fixB.getUserData()).setAvoidObject(false);
+                }
+                break;
+            case Main.ENEMY_BIT | Main.CRYSTAL_BIT:
+                if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
+                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
+                } else{
+                    ((Soldier)fixB.getUserData()).setAvoidObject(false);
+                }
+                break;
         }
     }
 

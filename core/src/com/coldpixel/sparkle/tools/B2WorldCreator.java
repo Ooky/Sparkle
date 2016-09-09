@@ -90,7 +90,7 @@ public class B2WorldCreator {
             polygonShape.setAsBox((rect.getWidth() / 2) / Main.PPM, (rect.getHeight() / 2) / Main.PPM);
             fDef.shape = polygonShape;
             fDef.filter.categoryBits = Main.OBJECT_BIT;
-            body.createFixture(fDef);
+            body.createFixture(fDef).setUserData(rect);
         }
         
         //Create light
