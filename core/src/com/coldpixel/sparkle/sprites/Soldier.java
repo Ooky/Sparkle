@@ -36,7 +36,9 @@ public class Soldier extends Enemy {
     private float y;
     protected int soldierWidth = 48;
     protected int soldierHeight = 64;
-
+    private float movementSpeed;
+    private float maxSpeed;
+    
     private Player victim;
     private Boolean isFlipped;
     private Boolean setToDestroy;
@@ -56,6 +58,8 @@ public class Soldier extends Enemy {
         health = 100;
         destroyed = false;
         setToDestroy = false;
+        movementSpeed = .8f;
+        maxSpeed = 1.0f;
         
         //walkAnimation
         for (int i = 0; i < 10; i++) {
@@ -83,7 +87,7 @@ public class Soldier extends Enemy {
         victim = player;
     }
 
-    public void update(float dt) {
+    public void update(float dt) {        
         stateTime += dt;
         if(setToDestroy && !destroyed){
             world.destroyBody(b2Body);
@@ -91,7 +95,10 @@ public class Soldier extends Enemy {
             
             //change texture region
         } else if (!destroyed){
-            setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Soldier.State.ATTACK) ? (isFlipped ? -16 : +16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - (getHeight() / 2));    
+            if(!isAttacking){
+                moveAi();
+            }
+            setPosition((b2Body.getPosition().x ) - ((getWidth() + ((currentState == Soldier.State.ATTACK) ? (isFlipped ? -16 : +16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - (getHeight() / 2));    
         }
             setRegion(getFrame(dt));
             
@@ -214,17 +221,28 @@ public class Soldier extends Enemy {
             return Soldier.State.STANDING;
         }
     }
+    
+    private void moveAi(){
+        if(Math.abs(this.getX() - victim.getX()) > .5 ){
+            if(this.getX() > victim.getX()&& this.b2Body.getLinearVelocity().x >= -this.getMaxSpeed()){
+                this.b2Body.applyLinearImpulse(new Vector2(- this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+
+            }  else if(this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()){
+                this.b2Body.applyLinearImpulse(new Vector2( this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+            }
+        } 
+        if(Math.abs(this.getY() - victim.getY()) > 1 ){
+            if(this.getY() > victim.getY()&& this.b2Body.getLinearVelocity().y >= -this.getMaxSpeed()){
+                this.b2Body.applyLinearImpulse(new Vector2(0, - this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+
+            }  else if(this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()){
+                this.b2Body.applyLinearImpulse(new Vector2(0,  this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+            }
+        } 
+    }
 
     public void setAttack(boolean attack) {
         isAttacking = attack;
-        if (isAttacking) {
-            this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight());
-        }
-    }
-
-    public void setAttack(boolean attack, Player player) {
-        isAttacking = attack;
-        //  victim = player;
         if (isAttacking) {
             this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight());
         }
@@ -233,6 +251,14 @@ public class Soldier extends Enemy {
     public void death(){
         setCategoryFilter(Main.DESTROYED_BIT);
         setToDestroy = true;
+    }
+    
+    public float getMovementSpeed() {
+        return movementSpeed;
+    }
+
+    public float getMaxSpeed() {
+        return maxSpeed;
     }
 
 }

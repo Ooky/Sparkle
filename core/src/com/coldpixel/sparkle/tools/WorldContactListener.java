@@ -26,10 +26,10 @@ public class WorldContactListener implements ContactListener{
         switch(cDef){
             case Main.PLAYER_BIT | Main.ENEMYMELEEATTACK_BIT:
                 if(fixA.getFilterData().categoryBits == Main.ENEMYMELEEATTACK_BIT){
-                    ((Soldier)fixA.getUserData()).setAttack(true, (Player)fixB.getUserData());
+                    ((Soldier)fixA.getUserData()).setAttack(true);
                 }
                 else {
-                    ((Soldier)fixB.getUserData()).setAttack(true, (Player)fixA.getUserData());
+                    ((Soldier)fixB.getUserData()).setAttack(true);
                 }
                 break;
             //IceShard Enemy

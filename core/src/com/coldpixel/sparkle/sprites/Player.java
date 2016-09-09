@@ -71,7 +71,7 @@ public class Player extends Sprite {
     
     //Player Stats
     private float movementSpeed;
-    private float maxSpeed = 2.0f;
+    private float maxSpeed;
     private int maxHealth = 100;
     private float attackSpeed;
 //==============================================================================
