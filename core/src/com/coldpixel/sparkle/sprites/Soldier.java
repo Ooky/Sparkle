@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -288,9 +289,63 @@ public class Soldier extends Enemy {
         this.avoidObject = set;
     }
     
-    public void setAvoidObject(State direction){
-        this.avoidObject = true;
-        this.avoidDirection = direction;
+    public void setAvoidObject(Rectangle rect){
+        this.avoidObject = true;        
+        float widthR = rect.width/Main.PPM;
+        float heightR = rect.height/Main.PPM;
+        float xR = rect.x/Main.PPM;
+        float yR = rect.y/Main.PPM;
+        float widthS = getWidth();
+        float heightS =getHeight();
+        float xS = b2Body.getPosition().x-widthS/2;
+        float yS = b2Body.getPosition().y-heightS/2;
+      /*  System.out.println("y: "+(String.format(java.util.Locale.US,"%.2f", yS-0.01)));
+        System.out.println("x: "+(String.format(java.util.Locale.US,"%.2f", xS-0.01)));
+        System.out.println("left/bott: "+xR+" ::::::: "+yR);
+        System.out.println("left/top: "+xR+" ::::::: "+String.format(java.util.Locale.US,"%.2f", (yR+heightR)));
+        System.out.println("right/bott: "+String.format(java.util.Locale.US,"%.2f", xR+widthR)+" ::::::: "+yR);
+        System.out.println("right/top: "+String.format(java.util.Locale.US,"%.2f", xR+widthR)+" ::::::: "+String.format(java.util.Locale.US,"%.2f", yR+heightR));
+        */if((xS >= xR+widthR)){//soldier is on the right side of an object
+            if(xR+widthR <= victim.b2Body.getPosition().x-victim.getWidth()/2){//player is on the right side of the object
+                this.avoidDirection = State.RIGHT;
+            }else /*if(xR >= victim.b2Body.getPosition().x+victim.getWidth()/2)*/{//player isn't on the right side of the object
+                if(yS >= victim.b2Body.getPosition().y){//the player is standing lower than the soldier
+                    this.avoidDirection = State.DOWN;
+                }else{//the players position is higher than the soldiers
+                    this.avoidDirection = State.UP;
+                }
+            }
+        }else if(xS+widthS <= xR){//soldier is on the left side of an object
+            if(xR >= victim.b2Body.getPosition().x+victim.getWidth()/2){//player is on the left side of the object
+                this.avoidDirection = State.LEFT;
+            }else /*if(xR <= victim.b2Body.getPosition().x-victim.getWidth()/2)*/{//player isn't on the left side of the object
+                if(yS >= victim.b2Body.getPosition().y){//the player is standing lower than the soldier
+                    this.avoidDirection = State.DOWN;
+                }else{//the players position is higher than the soldiers
+                    this.avoidDirection = State.UP;
+                }
+            }
+        }else if(yS >= yR + heightR){//soldier is on top of the object
+            if(yR + heightR <= victim.b2Body.getPosition().y - victim.getHeight()/2){//player higher than object
+                this.avoidDirection = State.UP;
+            } else{//the player isn't higher than the object
+                if(xS >= victim.b2Body.getPosition().x){//player is on the left
+                    this.avoidDirection = State.LEFT;
+                }else{//player is on the right
+                    this.avoidDirection = State.RIGHT;
+                }
+            }         
+        }else if(yS + heightS <= yR){//soldier is under the object
+            if(yR >= victim.b2Body.getPosition().y + victim.getHeight()/2){//player lower than object
+                this.avoidDirection = State.DOWN;
+            } else{//the player isn't lower than the object
+                if(xS >= victim.b2Body.getPosition().x){//player is on the left
+                    this.avoidDirection = State.LEFT;
+                }else{
+                    this.avoidDirection = State.RIGHT;
+                }
+            }         
+        }
     }
     
     public void death(){

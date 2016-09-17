@@ -80,43 +80,27 @@ public class WorldContactListener implements ContactListener{
                 break;
             case Main.ENEMY_BIT | Main.OBJECT_BIT:
                 if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
-                    Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixA.getUserData()).setAvoidObject(state);
+                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
                 } else{
-                    float width = ((Rectangle)fixA.getUserData()).width/Main.PPM;
-                    float height = ((Rectangle)fixA.getUserData()).height/Main.PPM;
-                    float x = ((Rectangle)fixA.getUserData()).x/Main.PPM;
-                    float y = ((Rectangle)fixA.getUserData()).y/Main.PPM;
-                    //Rectangle Points 
-                    System.out.println((String.format(java.util.Locale.US,"%.2f", ((Soldier)fixB.getUserData()).b2Body.getPosition().y-((Soldier)fixB.getUserData()).getHeight()/2-0.01)));
-                    System.out.println((String.format(java.util.Locale.US,"%.2f", ((Soldier)fixB.getUserData()).b2Body.getPosition().x-((Soldier)fixB.getUserData()).getWidth()/2-0.01)));
-                    System.out.println("left/bott: "+x+" ::::::: "+y);
-                    System.out.println("left/top: "+x+" ::::::: "+String.format(java.util.Locale.US,"%.2f", (y+height)));
-                    System.out.println("right/bott: "+String.format(java.util.Locale.US,"%.2f", x+width)+" ::::::: "+y);
-                    System.out.println("right/top: "+String.format(java.util.Locale.US,"%.2f", x+width)+" ::::::: "+String.format(java.util.Locale.US,"%.2f", y+height));
-                   /* if(((Soldier)fixB.getUserData()).b2Body.getPosition().x > (x + width / 2) / Main.PPM){
-                      
-                   }*/
-                   Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixB.getUserData()).setAvoidObject(state);
+                    ((Soldier)fixB.getUserData()).setAvoidObject((Rectangle)fixA.getUserData());
                 }
                 break;
             case Main.ENEMY_BIT | Main.BONFIRE_BIT:
                 if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
                     Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixA.getUserData()).setAvoidObject(state);
+                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
                 } else{
                     Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixB.getUserData()).setAvoidObject(state);
+                    ((Soldier)fixB.getUserData()).setAvoidObject(false);
                 }
                 break;
             case Main.ENEMY_BIT | Main.CRYSTAL_BIT:
                 if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
                     Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixA.getUserData()).setAvoidObject(state);
+                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
                 } else{
                     Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixB.getUserData()).setAvoidObject(state);
+                    ((Soldier)fixB.getUserData()).setAvoidObject(false);
                 }
                 break;
         }
