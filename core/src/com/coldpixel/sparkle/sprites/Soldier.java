@@ -90,7 +90,7 @@ public class Soldier extends Enemy {
         victim = player;
     }
 
-    public void update(float dt) {        
+    public void update(float dt) {
         stateTime += dt;
         if(setToDestroy && !destroyed){
             world.destroyBody(b2Body);
@@ -248,9 +248,33 @@ public class Soldier extends Enemy {
     }
     
     public void avoidObject(){
-        if(this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()){
-            this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
-        }
+        switch(avoidDirection){
+            case UP:
+                if(this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()){
+                    this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+                }
+                break;
+            case DOWN:
+                if(this.b2Body.getLinearVelocity().y >= -this.getMaxSpeed()){
+                    this.b2Body.applyLinearImpulse(new Vector2(0, -this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+                }
+                break;
+            case RIGHT:
+                if(this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()){
+                    this.b2Body.applyLinearImpulse(new Vector2(this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+                }
+                break;
+            case LEFT:
+                if(this.b2Body.getLinearVelocity().x >= -this.getMaxSpeed()){
+                    this.b2Body.applyLinearImpulse(new Vector2(-this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+                }
+                break;
+            default:
+                if(this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()){
+                    this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+                }
+                break;
+        }        
     }
 
     public void setAttack(boolean attack) {

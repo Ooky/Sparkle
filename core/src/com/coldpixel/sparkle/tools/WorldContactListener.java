@@ -94,7 +94,7 @@ public class WorldContactListener implements ContactListener{
                     System.out.println("left/top: "+x+" ::::::: "+String.format(java.util.Locale.US,"%.2f", (y+height)));
                     System.out.println("right/bott: "+String.format(java.util.Locale.US,"%.2f", x+width)+" ::::::: "+y);
                     System.out.println("right/top: "+String.format(java.util.Locale.US,"%.2f", x+width)+" ::::::: "+String.format(java.util.Locale.US,"%.2f", y+height));
-                  /*  if(((Soldier)fixB.getUserData()).b2Body.getPosition().x > (x + width / 2) / Main.PPM){
+                   /* if(((Soldier)fixB.getUserData()).b2Body.getPosition().x > (x + width / 2) / Main.PPM){
                       
                    }*/
                    Soldier.State state = Soldier.State.UP;
