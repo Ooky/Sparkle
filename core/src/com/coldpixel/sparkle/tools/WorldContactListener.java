@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.coldpixel.sparkle.Main;
@@ -82,15 +83,21 @@ public class WorldContactListener implements ContactListener{
                     Soldier.State state = Soldier.State.UP;
                     ((Soldier)fixA.getUserData()).setAvoidObject(state);
                 } else{
-                /*    float width = ((Rectangle)fixA.getUserData()).width;
-                    float height = ((Rectangle)fixA.getUserData()).height;
-                    float x = ((Rectangle)fixA.getUserData()).x;
-                    float y = ((Rectangle)fixA.getUserData()).y;
-                    System.out.println(((Soldier)fixB.getUserData()).getY()-((Soldier)fixB.getUserData()).getHeight()/2+" "+(y+height)/Main.PPM);
-                   // if(((Soldier)fixB.getUserData()).b2Body.getPosition().x > (x + width / 2) / Main.PPM){
-                   //     
-                  //  }
-                   */Soldier.State state = Soldier.State.UP;
+                    float width = ((Rectangle)fixA.getUserData()).width/Main.PPM;
+                    float height = ((Rectangle)fixA.getUserData()).height/Main.PPM;
+                    float x = ((Rectangle)fixA.getUserData()).x/Main.PPM;
+                    float y = ((Rectangle)fixA.getUserData()).y/Main.PPM;
+                    //Rectangle Points 
+                    System.out.println((String.format(java.util.Locale.US,"%.2f", ((Soldier)fixB.getUserData()).b2Body.getPosition().y-((Soldier)fixB.getUserData()).getHeight()/2-0.01)));
+                    System.out.println((String.format(java.util.Locale.US,"%.2f", ((Soldier)fixB.getUserData()).b2Body.getPosition().x-((Soldier)fixB.getUserData()).getWidth()/2-0.01)));
+                    System.out.println("left/bott: "+x+" ::::::: "+y);
+                    System.out.println("left/top: "+x+" ::::::: "+String.format(java.util.Locale.US,"%.2f", (y+height)));
+                    System.out.println("right/bott: "+String.format(java.util.Locale.US,"%.2f", x+width)+" ::::::: "+y);
+                    System.out.println("right/top: "+String.format(java.util.Locale.US,"%.2f", x+width)+" ::::::: "+String.format(java.util.Locale.US,"%.2f", y+height));
+                  /*  if(((Soldier)fixB.getUserData()).b2Body.getPosition().x > (x + width / 2) / Main.PPM){
+                      
+                   }*/
+                   Soldier.State state = Soldier.State.UP;
                     ((Soldier)fixB.getUserData()).setAvoidObject(state);
                 }
                 break;
