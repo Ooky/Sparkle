@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -250,6 +251,10 @@ public class Soldier extends Enemy {
     }
     
     public void avoidObject(){
+        if(this.b2Body.getLinearVelocity().x == 0 &&
+                this.b2Body.getLinearVelocity().y == 0){
+            this.avoidDirection = getRandomState();
+        }
         switch(avoidDirection){
             case UP:
                 if(this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()){
@@ -354,8 +359,27 @@ public class Soldier extends Enemy {
                 }
             }         
         }else{
-            return State.UP;
+            return getRandomState();
         }
+    }
+    
+    private State getRandomState(){
+        State randomState = State.UP;
+            switch(MathUtils.random(0, 3)){
+                case 0:
+                    randomState = State.DOWN;
+                    break;
+                case 1:
+                    randomState = State.LEFT;
+                    break;
+                case 2:
+                    randomState = State.RIGHT;
+                    break;
+                case 3:
+                    randomState = State.UP;
+                    break;
+            }
+            return randomState;
     }
     
     public void death(){
