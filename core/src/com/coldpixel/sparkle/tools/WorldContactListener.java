@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.coldpixel.sparkle.Main;
-import com.coldpixel.sparkle.sprites.IceShard;
+import com.coldpixel.sparkle.sprites.Shard;
 import com.coldpixel.sparkle.sprites.Player;
 import com.coldpixel.sparkle.sprites.Soldier;
 
@@ -36,16 +36,16 @@ public class WorldContactListener implements ContactListener{
             //IceShard Enemy
             case Main.PLAYERATTACK_BIT | Main.ENEMY_BIT:
                     if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
-                    ((Soldier)fixA.getUserData()).decreaseHealth(((IceShard)fixB.getUserData()).getDamage());
-                    ((IceShard)fixB.getUserData()).destroy();
+                    ((Soldier)fixA.getUserData()).decreaseHealth(((Shard)fixB.getUserData()).getDamage());
+                    ((Shard)fixB.getUserData()).destroy();
                     //Sets filter for soldier to destroyed_bit to avoid collisions
                     if(((Soldier)fixA.getUserData()).getHealth() <= 0){
                         ((Soldier)fixA.getUserData()).death();
                     }
                 }
                 else {
-                    ((Soldier)fixB.getUserData()).decreaseHealth(((IceShard)fixA.getUserData()).getDamage());
-                    ((IceShard)fixA.getUserData()).destroy();
+                    ((Soldier)fixB.getUserData()).decreaseHealth(((Shard)fixA.getUserData()).getDamage());
+                    ((Shard)fixA.getUserData()).destroy();
                     if(((Soldier)fixB.getUserData()).getHealth() <= 0){
                         ((Soldier)fixB.getUserData()).death();
                     }
@@ -54,17 +54,17 @@ public class WorldContactListener implements ContactListener{
             //IceShard Objects
             case Main.PLAYERATTACK_BIT | Main.OBJECT_BIT:
                 if(fixA.getFilterData().categoryBits == Main.OBJECT_BIT){
-                    ((IceShard)fixB.getUserData()).destroy();
+                    ((Shard)fixB.getUserData()).destroy();
                 } else{
-                    ((IceShard)fixA .getUserData()).destroy();
+                    ((Shard)fixA .getUserData()).destroy();
                 }
                 break;
             //IceShard Bonfire
             case Main.PLAYERATTACK_BIT | Main.BONFIRE_BIT:
                 if(fixA.getFilterData().categoryBits == Main.BONFIRE_BIT){
-                    ((IceShard)fixB.getUserData()).destroy();
+                    ((Shard)fixB.getUserData()).destroy();
                 } else{
-                    ((IceShard)fixA .getUserData()).destroy();
+                    ((Shard)fixA .getUserData()).destroy();
                 }
                 break;
             //Player Crystal

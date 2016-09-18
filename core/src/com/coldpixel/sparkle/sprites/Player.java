@@ -71,8 +71,8 @@ public class Player extends Sprite {
     private Boolean isHealing;
     //Attack
     private Boolean isAttacking;
-    private IceShard iceShard;
-    private ArrayList<IceShard> iceShards;
+    private Shard iceShard;
+    private ArrayList<Shard> iceShards;
 
     //Player Stats
     private float movementSpeed;
@@ -105,7 +105,7 @@ public class Player extends Sprite {
 
         //Attack
         isAttacking = false;
-        iceShards = new ArrayList<IceShard>();
+        iceShards = new ArrayList<Shard>();
         shapeRenderer = new ShapeRenderer();
 
         definePlayer();
@@ -223,18 +223,18 @@ public class Player extends Sprite {
                     isAttacking = false;
                     switch (currentShootDirection) {
                         case RIGHT:
-                            iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.RIGHT));
+                            iceShards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.RIGHT));
                             directionRight = true;
                             break;
                         case LEFT:
-                            iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.LEFT));
+                            iceShards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.LEFT));
                             directionRight = false;
                             break;
                         case UP:
-                            iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.UP));
+                            iceShards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.UP));
                             break;
                         case DOWN:
-                            iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN));
+                            iceShards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN));
                             break;
                     }
                     if (b2Body.getLinearVelocity().x < 0.00001 && b2Body.getLinearVelocity().x > -0.00001) {
@@ -366,7 +366,7 @@ public class Player extends Sprite {
         health -= decrease;
     }
 
-    public ArrayList<IceShard> getIceShards() {
+    public ArrayList<Shard> getIceShards() {
         return iceShards;
     }
 

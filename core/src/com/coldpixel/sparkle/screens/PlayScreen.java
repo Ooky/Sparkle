@@ -25,7 +25,7 @@ import com.coldpixel.sparkle.sprites.Enemy;
 import com.coldpixel.sparkle.tools.AssetHelper;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
-import com.coldpixel.sparkle.sprites.IceShard;
+import com.coldpixel.sparkle.sprites.Shard;
 import com.coldpixel.sparkle.sprites.Crystal;
 
 /**
@@ -129,8 +129,8 @@ public class PlayScreen implements Screen {
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
         }
-        for (IceShard ice : player.getIceShards()) {
-            ice.update(dt);
+        for (Shard shard : player.getIceShards()) {
+            shard.update(dt, player.currentElement);
         }
         for(Crystal crystal : b2WorldCreator.getCrystals()){
             crystal.update(dt); 
@@ -198,7 +198,7 @@ public class PlayScreen implements Screen {
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.draw(main.batch);
         }
-        for (IceShard ice : player.getIceShards()) {
+        for (Shard ice : player.getIceShards()) {
             ice.draw(main.batch);
         }
         for(Crystal crystal : b2WorldCreator.getCrystals()){
