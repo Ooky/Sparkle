@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.coldpixel.sparkle.scenes.Hud;
 import com.coldpixel.sparkle.screens.PlayScreen;
 
 /**
@@ -21,6 +22,7 @@ public abstract class Enemy extends Sprite{
     protected PlayScreen screen;
     public Body b2Body;
     protected int health;
+    protected int previousHealth;
     
     public Enemy(PlayScreen screen, float x, float y){
         this.world = screen.getWorld();
@@ -29,7 +31,7 @@ public abstract class Enemy extends Sprite{
         defineEnemy();
     }
     
-    public void decreaseHealth(int decrease){
+    public void decreaseHealth(int decrease){        
         health -= decrease;
     }
     
@@ -42,7 +44,7 @@ public abstract class Enemy extends Sprite{
     }
     
     protected abstract void defineEnemy();
-    public abstract void update(float dt);
+    public abstract void update(float dt, Hud hud);
     public int getHealth(){
         return health;
     }

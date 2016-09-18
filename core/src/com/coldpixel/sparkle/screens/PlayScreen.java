@@ -125,7 +125,7 @@ public class PlayScreen implements Screen {
 //        rayHandler.update();
         player.update(dt);
         for(Enemy enemy : b2WorldCreator.getSoldiers())
-            enemy.update(dt);
+            enemy.update(dt, hud);
         //bonfire animation
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
@@ -138,7 +138,6 @@ public class PlayScreen implements Screen {
         } 
         cam.update();
         renderer.setView(cam);
-
     }
 
     private void dayNightCycle() {

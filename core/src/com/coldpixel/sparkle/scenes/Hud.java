@@ -64,7 +64,7 @@ public class Hud implements Disposable {
     public Hud(SpriteBatch sb) {
         maxLife = 100;
         playerLife = 100;
-        scoreValue = 57;
+        scoreValue = 0;
         timeValue = 86390;
         seconds = 0;
         minutes = 0;
@@ -179,7 +179,7 @@ public class Hud implements Disposable {
 
     public void addScore(int value) {
         scoreValue += value;
-        scoreValueLabel.setText(String.format("&06d", scoreValue));
+        scoreValueLabel.setText(String.format("%06d", scoreValue));
     }
 
     public void timer() {

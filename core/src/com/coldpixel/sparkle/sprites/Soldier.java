@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.scenes.Hud;
 import com.coldpixel.sparkle.screens.PlayScreen;
 
 /**
@@ -27,7 +28,6 @@ import com.coldpixel.sparkle.screens.PlayScreen;
 public class Soldier extends Enemy {
 
     //animation
-
     private float stateTime;
     private Animation walkAnimation;
     private Animation attackAnimation;
@@ -61,6 +61,7 @@ public class Soldier extends Enemy {
         this.screen = screen;
         frames = new Array<TextureRegion>();
         health = 100;
+        previousHealth = 100;
         destroyed = false;
         setToDestroy = false;
         avoidObject = false;
@@ -93,12 +94,15 @@ public class Soldier extends Enemy {
         victim = player;
     }
 
-    public void update(float dt) {
+    public void update(float dt, Hud hud) {
+        if(previousHealth != health){
+            hud.addScore(previousHealth - health);
+            previousHealth = health;
+        }
         stateTime += dt;
         if(setToDestroy && !destroyed){
             world.destroyBody(b2Body);
-            destroyed = true;  
-            
+            destroyed = true;
             //change texture region
         } else if (!destroyed){
             if(avoidObject){
