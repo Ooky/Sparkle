@@ -1,5 +1,6 @@
 package com.coldpixel.sparkle.tools;
 
+import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -80,27 +81,16 @@ public class WorldContactListener implements ContactListener{
                 break;
             case Main.ENEMY_BIT | Main.OBJECT_BIT:
                 if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
-                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
+                    ((Soldier)fixA.getUserData()).setAvoidObject((Rectangle)fixB.getUserData());
                 } else{
                     ((Soldier)fixB.getUserData()).setAvoidObject((Rectangle)fixA.getUserData());
                 }
                 break;
             case Main.ENEMY_BIT | Main.BONFIRE_BIT:
                 if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
-                    Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
+                    ((Soldier)fixA.getUserData()).setAvoidObject((Rectangle)fixB.getUserData());
                 } else{
-                    Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixB.getUserData()).setAvoidObject(false);
-                }
-                break;
-            case Main.ENEMY_BIT | Main.CRYSTAL_BIT:
-                if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
-                    Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixA.getUserData()).setAvoidObject(false);
-                } else{
-                    Soldier.State state = Soldier.State.UP;
-                    ((Soldier)fixB.getUserData()).setAvoidObject(false);
+                    ((Soldier)fixB.getUserData()).setAvoidObject((Rectangle)fixA.getUserData());
                 }
                 break;
         }

@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.math.Ellipse;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Main;
@@ -74,12 +76,12 @@ public final class BonFire extends Sprite {
         b2Body = world.createBody(bDef);
 
         FixtureDef fDef = new FixtureDef();
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(radius / 400f);
+        PolygonShape rectangleeShape = new PolygonShape();
+        rectangleeShape.setAsBox(radius / 400f, radius / 400f);
 
         fDef.filter.categoryBits = Main.BONFIRE_BIT;
-        fDef.shape = circleShape;
-        b2Body.createFixture(fDef);
+        fDef.shape = rectangleeShape;
+        b2Body.createFixture(fDef).setUserData(new Rectangle(posX - radius / 2, posY - radius / 2, radius / 400f, radius / 400f));
     }
 
     public TextureRegion getFrame(float dt) {

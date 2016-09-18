@@ -71,7 +71,7 @@ public class Crystal extends Sprite {
 
         fDef.filter.categoryBits = Main.OBJECT_BIT;
         fDef.shape = rectangleShape;
-        b2Body.createFixture(fDef);
+        b2Body.createFixture(fDef).setUserData(new Rectangle(posX - width / 2 ,posY - height / 2 ,width ,height));
         
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(radius);
