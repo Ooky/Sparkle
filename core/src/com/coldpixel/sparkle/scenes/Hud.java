@@ -179,23 +179,20 @@ public class Hud implements Disposable {
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 8, 8, 32, 32);
             shaperenderer.setColor(Color.CYAN);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 9, 9, 30, 30);
-        }
-        //Second Spell
-        if (currentElement == Player.elementType.FIRE) {
+        } //Second Spell
+        else if (currentElement == Player.elementType.FIRE) {
             shaperenderer.setColor(Color.RED);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 16 + 32, 8, 32, 32);
             shaperenderer.setColor(Color.SALMON);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 18 + 31, 9, 30, 30);
-        }
-        //Third Spell
-        if (currentElement == Player.elementType.EARTH) {
+        } //Third Spell
+        else if (currentElement == Player.elementType.EARTH) {
             shaperenderer.setColor(Color.GREEN);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 24 + 64, 8, 32, 32);
             shaperenderer.setColor(Color.CHARTREUSE);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 27 + 62, 9, 30, 30);
-        }
-        //Fourth Spell
-        if (currentElement == Player.elementType.AIR) {
+        } //Fourth Spell
+        else if (currentElement == Player.elementType.AIR) {
             shaperenderer.setColor(Color.YELLOW);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 32 + 96, 8, 32, 32);
             shaperenderer.setColor(Color.WHITE);

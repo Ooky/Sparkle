@@ -34,8 +34,8 @@ public class IceShard extends Sprite {
     private short velocity;
     //animation
     private float stateTime;
-    private Animation shardAnimation;
-    private Animation collisionAnimation;
+    private Animation waterShardAnimation;
+    private Animation waterCollisionAnimation;
     private Array<TextureRegion> frames;
     private TextureRegion iceShard;
 
@@ -58,15 +58,15 @@ public class IceShard extends Sprite {
         defineIceShard();
         //fly Animation
         for (int i = 0; i < 3; i++) {
-            frames.add(new TextureRegion(new Texture("Graphics/Attacks/Ice/shard.png"), i * width, 0, width, height));
+            frames.add(new TextureRegion(new Texture("Graphics/Attacks/Water/shard.png"), i * width, 0, width, height));
         }
-        shardAnimation = new Animation(0.1f, frames);
+        waterShardAnimation = new Animation(0.1f, frames);
         frames.clear();
         //Collision Animation
         for (int i = 0; i < 9; i++) {
-            frames.add(new TextureRegion(new Texture("Graphics/Attacks/Ice/shardCollision.png"), i * width, 0, width, height));
+            frames.add(new TextureRegion(new Texture("Graphics/Attacks/Water/shardCollision.png"), i * width, 0, width, height));
         }
-        collisionAnimation = new Animation(.015f, frames);
+        waterCollisionAnimation = new Animation(.015f, frames);
         frames.clear();
         setBounds(0, 0, width / Main.PPM, height / Main.PPM);
     }
@@ -74,9 +74,9 @@ public class IceShard extends Sprite {
     public void update(float dt) {
         stateTime += dt;
         if (setToDestroy) {
-            iceShard = collisionAnimation.getKeyFrame(stateTime, true);
+            iceShard = waterCollisionAnimation.getKeyFrame(stateTime, true);
         } else {
-            iceShard = shardAnimation.getKeyFrame(stateTime, true);
+            iceShard = waterShardAnimation.getKeyFrame(stateTime, true);
         }
         if (shootDirection == Player.shootDirection.LEFT && !iceShard.isFlipX()) {
             iceShard.flip(true, false);

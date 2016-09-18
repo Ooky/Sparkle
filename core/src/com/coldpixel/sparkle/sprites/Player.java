@@ -116,6 +116,8 @@ public class Player extends Sprite {
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
+        
+        currentElement = elementType.WATER;
 
         //currentShootDirection = Player.shootDirection.RIGHT;
         frames = new Array<TextureRegion>();
