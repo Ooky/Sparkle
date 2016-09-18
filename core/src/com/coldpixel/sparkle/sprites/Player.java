@@ -49,17 +49,32 @@ public class Player extends Sprite {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK,
     };
-    public enum elementType{
+
+    public enum elementType {
+
         WATER, FIRE, EARTH, AIR
     }
     public elementType currentElement;
-    
+
     public State currentState;
     public State previousState;
-    //Animation
-    private Animation playerStanding;
-    private Animation playerRunning;
-    private Animation playerAttack;
+    //Animation 
+    private Animation playerWaterStanding;
+    private Animation playerWaterRunning;
+    private Animation playerWaterAttack;
+    private Animation playerFireStanding;
+    private Animation playerFireRunning;
+    private Animation playerFireAttack;
+    private Animation playerEarthStanding;
+    private Animation playerEarthRunning;
+    private Animation playerEarthAttack;
+    private Animation playerAirStanding;
+    private Animation playerAirRunning;
+    private Animation playerAirAttack;
+    private Animation playerCurrentElementStanding;
+    private Animation playerCurrentElementRunning;
+    private Animation playerCurrentElementAttack;
+
     private float stateTimer;
     Array<TextureRegion> frames;
     private TextureRegion playerStand;
@@ -72,7 +87,7 @@ public class Player extends Sprite {
     //Attack
     private Boolean isAttacking;
     private Shard iceShard;
-    private ArrayList<Shard> iceShards;
+    private ArrayList<Shard> shards;
 
     //Player Stats
     private float movementSpeed;
@@ -105,7 +120,7 @@ public class Player extends Sprite {
 
         //Attack
         isAttacking = false;
-        iceShards = new ArrayList<Shard>();
+        shards = new ArrayList<Shard>();
         shapeRenderer = new ShapeRenderer();
 
         definePlayer();
@@ -116,32 +131,12 @@ public class Player extends Sprite {
         currentState = State.STANDING;
         previousState = State.STANDING;
         stateTimer = 0;
-        
+
         currentElement = elementType.WATER;
 
         //currentShootDirection = Player.shootDirection.RIGHT;
         frames = new Array<TextureRegion>();
-        //STANDING
-        for (int i = 0; i < 9; i++) {
-            //change to getTexture() later
-            frames.add(new TextureRegion(new Texture("Graphics/Character/mage.png"), i * playerWidth, 0, playerWidth, playerHeight));
-        }
-        playerStanding = new Animation(0.1f, frames, LOOP);
-        frames.clear();
-        //RUNNING
-        for (int i = 0; i < 9; i++) {
-            //change to getTexture() later
-            frames.add(new TextureRegion(new Texture("Graphics/Character/mageWalk.png"), i * playerWidth, 0, playerWidth, playerHeight));
-        }
-        playerRunning = new Animation(.1f, frames, LOOP);
-        frames.clear();
-        //ATTACK
-        for (int i = 0; i < 14; i++) {
-            //change to getTexture() later
-            frames.add(new TextureRegion(new Texture("Graphics/Character/mageAttack.png"), i * 64, 0, 64, playerHeight));
-        }
-        playerAttack = new Animation(.05f / attackSpeed, frames);
-        frames.clear();
+        generateFrames();
     }
 
     public void definePlayer() {
@@ -194,47 +189,48 @@ public class Player extends Sprite {
 //        } else if (currentState != Player.State.ATTACK) {
 //            currentState = getState();
 //        }
+        getCurrentElement();
         TextureRegion region;
         switch (currentState) {
             case STANDING:
-                region = playerStanding.getKeyFrame(stateTimer);
+                region = playerCurrentElementStanding.getKeyFrame(stateTimer);
                 break;
             case UP:
-                region = playerRunning.getKeyFrame(stateTimer, true);
+                region = playerCurrentElementRunning.getKeyFrame(stateTimer, true);
                 break;
             case DOWN:
-                region = playerRunning.getKeyFrame(stateTimer, true);
+                region = playerCurrentElementRunning.getKeyFrame(stateTimer, true);
                 break;
             case RIGHT:
-                region = playerRunning.getKeyFrame(stateTimer, true);
+                region = playerCurrentElementRunning.getKeyFrame(stateTimer, true);
                 break;
             case LEFT:
-                region = playerRunning.getKeyFrame(stateTimer, true);
+                region = playerCurrentElementRunning.getKeyFrame(stateTimer, true);
                 break;
             case ATTACK:
-                region = playerAttack.getKeyFrame(stateTimer, true);
+                region = playerCurrentElementAttack.getKeyFrame(stateTimer, true);
                 if (!region.isFlipX() && currentShootDirection == Player.shootDirection.RIGHT) {
                     region.flip(true, false);
                 } else if (region.isFlipX() && currentShootDirection == Player.shootDirection.LEFT) {
                     region.flip(true, false);
                 }
-                if (playerAttack.isAnimationFinished(stateTimer) && previousState == Player.State.ATTACK) {
+                if (playerCurrentElementAttack.isAnimationFinished(stateTimer) && previousState == Player.State.ATTACK) {
                     stateTimer = 0;
                     isAttacking = false;
                     switch (currentShootDirection) {
                         case RIGHT:
-                            iceShards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.RIGHT));
+                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.RIGHT));
                             directionRight = true;
                             break;
                         case LEFT:
-                            iceShards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.LEFT));
+                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.LEFT));
                             directionRight = false;
                             break;
                         case UP:
-                            iceShards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.UP));
+                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.UP));
                             break;
                         case DOWN:
-                            iceShards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN));
+                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN));
                             break;
                     }
                     if (b2Body.getLinearVelocity().x < 0.00001 && b2Body.getLinearVelocity().x > -0.00001) {
@@ -367,11 +363,134 @@ public class Player extends Sprite {
     }
 
     public ArrayList<Shard> getIceShards() {
-        return iceShards;
+        return shards;
     }
 
     public void healing() {
         health += healingFactor;
+    }
+
+    public void generateFrames() {
+        //----------------------------------------------------------------------
+        //WATER
+        //----------------------------------------------------------------------
+        //STANDING
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageWater.png"), i * playerWidth, 0, playerWidth, playerHeight));
+        }
+        playerWaterStanding = new Animation(0.1f, frames, LOOP);
+        frames.clear();
+        //RUNNING
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageWaterWalk.png"), i * playerWidth, 0, playerWidth, playerHeight));
+        }
+        playerWaterRunning = new Animation(.1f, frames, LOOP);
+        frames.clear();
+        //ATTACK
+        for (int i = 0; i < 14; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageWaterAttack.png"), i * 64, 0, 64, playerHeight));
+        }
+        playerWaterAttack = new Animation(.05f / attackSpeed, frames);
+        frames.clear();
+
+        //----------------------------------------------------------------------
+        //Fire
+        //----------------------------------------------------------------------
+        //STANDING
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageFire.png"), i * playerWidth, 0, playerWidth, playerHeight));
+        }
+        playerFireStanding = new Animation(0.1f, frames, LOOP);
+        frames.clear();
+        //RUNNING
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageFireWalk.png"), i * playerWidth, 0, playerWidth, playerHeight));
+        }
+        playerFireRunning = new Animation(.1f, frames, LOOP);
+        frames.clear();
+        //ATTACK
+        for (int i = 0; i < 14; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageFireAttack.png"), i * 64, 0, 64, playerHeight));
+        }
+        playerFireAttack = new Animation(.05f / attackSpeed, frames);
+        frames.clear();
+
+        //----------------------------------------------------------------------
+        //Earth
+        //----------------------------------------------------------------------
+        //STANDING
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageEarth.png"), i * playerWidth, 0, playerWidth, playerHeight));
+        }
+        playerEarthStanding = new Animation(0.1f, frames, LOOP);
+        frames.clear();
+        //RUNNING
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageEarthWalk.png"), i * playerWidth, 0, playerWidth, playerHeight));
+        }
+        playerEarthRunning = new Animation(.1f, frames, LOOP);
+        frames.clear();
+        //ATTACK
+        for (int i = 0; i < 14; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageEarthAttack.png"), i * 64, 0, 64, playerHeight));
+        }
+        playerEarthAttack = new Animation(.05f / attackSpeed, frames);
+        frames.clear();
+
+        //----------------------------------------------------------------------
+        //Air
+        //----------------------------------------------------------------------
+        //STANDING
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageAir.png"), i * playerWidth, 0, playerWidth, playerHeight));
+        }
+        playerAirStanding = new Animation(0.1f, frames, LOOP);
+        frames.clear();
+        //RUNNING
+        for (int i = 0; i < 9; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageAirWalk.png"), i * playerWidth, 0, playerWidth, playerHeight));
+        }
+        playerAirRunning = new Animation(.1f, frames, LOOP);
+        frames.clear();
+        //ATTACK
+        for (int i = 0; i < 14; i++) {
+            //change to getTexture() later
+            frames.add(new TextureRegion(new Texture("Graphics/Character/mageAirAttack.png"), i * 64, 0, 64, playerHeight));
+        }
+        playerAirAttack = new Animation(.05f / attackSpeed, frames);
+        frames.clear();
+    }
+
+    public void getCurrentElement() {
+        if (currentElement == Player.elementType.WATER) {
+            playerCurrentElementStanding = playerWaterStanding;
+            playerCurrentElementRunning = playerWaterRunning;
+            playerCurrentElementAttack = playerWaterAttack;
+        } else if (currentElement == Player.elementType.FIRE) {
+            playerCurrentElementStanding = playerFireStanding;
+            playerCurrentElementRunning = playerFireRunning;
+            playerCurrentElementAttack = playerFireAttack;
+        } else if (currentElement == Player.elementType.EARTH) {
+            playerCurrentElementStanding = playerEarthStanding;
+            playerCurrentElementRunning = playerEarthRunning;
+            playerCurrentElementAttack = playerEarthAttack;
+        } else if (currentElement == Player.elementType.AIR) {
+            playerCurrentElementStanding = playerAirStanding;
+            playerCurrentElementRunning = playerAirRunning;
+            playerCurrentElementAttack = playerAirAttack;
+        }
+
     }
 
 }
