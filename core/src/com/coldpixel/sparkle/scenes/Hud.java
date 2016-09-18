@@ -31,10 +31,10 @@ public class Hud implements Disposable {
     //Scene2D.ui Stage and its own Viewport for HUD
     public Stage stage;
     private final Viewport viewport;
-    private final Table table;
+    private final Table tableTop;
+    private Table tableBottom;
 
     private int playerLife;
-    private int timeValue;
     private int seconds;
     private int minutes;
     private int hours;
@@ -56,11 +56,18 @@ public class Hud implements Disposable {
     private BitmapFont font;
 
     private long startTime = 0;
+    private int timeValue;
+    private long startTimeElements = 0;
+    private int timeValueElements = 0;
+    private boolean cooldownReady = false;
 
     private Texture actionBar;
 
-    private Label cooldownLabel;
-    private int cooldownValue;
+    private Label cooldownLabel1;
+    private Label cooldownLabel2;
+    private Label cooldownLabel3;
+    private Label cooldownLabel4;
+    public int cooldownValue;
     private Color grey;
 
 //==============================================================================
@@ -70,14 +77,18 @@ public class Hud implements Disposable {
         maxLife = 100;
         playerLife = 100;
         scoreValue = 0;
-        timeValue = 86390;
+        timeValue = 0 //Testvalue = 86390
+                ;
         seconds = 0;
         minutes = 0;
         hours = 0;
         grey = new Color(0.05f, 0.05f, 0.05f, 0.8f);
 
-        cooldownValue = 0;
-        cooldownLabel = new Label(String.format("%01d", cooldownValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        cooldownValue = 3;
+        cooldownLabel1 = new Label(String.format("%01d", cooldownValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        cooldownLabel2 = new Label(String.format("%01d", cooldownValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        cooldownLabel3 = new Label(String.format("%01d", cooldownValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        cooldownLabel4 = new Label(String.format("%01d", cooldownValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         gap = Gdx.graphics.getHeight() / 48;
         shaperenderer = new ShapeRenderer();
@@ -116,22 +127,23 @@ public class Hud implements Disposable {
         viewport = new StretchViewport(Constants.getWINDOW_WIDTH(), Constants.getWINDOW_HEIGTH(), new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
-        table = new Table();
-        table.top();
-        table.setFillParent(true);//=size of the stage
+        tableTop = new Table();
+        tableTop.top();
+        tableTop.setFillParent(true);//=size of the stage
         playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         //scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         timeValueLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreValueLabel = new Label(String.format("%06d", scoreValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-//        table.setDebug(true);
-        table.drawDebug(shaperenderer);
-        table.add(playerLifeLabel).left().padTop(gap).padLeft(Gdx.graphics.getWidth() / 10);
-        table.add(timeValueLabel).expandX().padTop(gap);
-        table.add(scoreValueLabel).right().padTop(gap).padRight(gap);
-        table.row();
-        stage.addActor(table);
+//        tableTop.setDebug(true);
+        tableTop.drawDebug(shaperenderer);
+        tableTop.add(playerLifeLabel).left().padTop(gap).padLeft(Gdx.graphics.getWidth() / 10);
+        tableTop.add(timeValueLabel).expandX().padTop(gap);
+        tableTop.add(scoreValueLabel).right().padTop(gap).padRight(gap);
+        tableTop.row();
+
+        stage.addActor(tableTop);
 
         actionBar = new Texture(Gdx.files.internal("Graphics/Hud/Actionbar.png"));
     }
@@ -172,6 +184,7 @@ public class Hud implements Disposable {
     }
 
     public void drawActionbar(SpriteBatch batch, Player.elementType currentElement) {
+
         batch.begin();
         batch.draw(actionBar, (Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2), 0);
         batch.end();
@@ -203,32 +216,88 @@ public class Hud implements Disposable {
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 36 + 93, 9, 30, 30);
         }
         shaperenderer.end();
-        drawCooldown(currentElement);
 
     }
 
     public void drawCooldown(Player.elementType currentElement) {
+        tableBottom = new Table();
+        tableBottom.bottom();
+        tableBottom.setFillParent(true);
+        tableBottom.padBottom(14);
+        tableBottom.add(cooldownLabel1).width(10).padLeft(14).padRight(14);
+        tableBottom.add(cooldownLabel2).width(10).padLeft(14).padRight(14);
+        tableBottom.add(cooldownLabel3).width(10).padLeft(14).padRight(14);
+        tableBottom.add(cooldownLabel4).width(10).padLeft(14).padRight(14);
+
         Gdx.gl.glEnable(GL20.GL_BLEND);
-//        shaperenderer.setProjectionMatrix(stage.getCamera().combined);
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
         shaperenderer.setColor(grey);
+
+        if (TimeUtils.timeSinceNanos(startTimeElements) > 1000000000) {//Every second
+            if (timeValueElements < 3) {//3 Seconds
+                timeValueElements++;
+                cooldownValue--;
+            }
+            startTimeElements = TimeUtils.nanoTime();
+        }
+        if (cooldownValue <= 0) {
+            cooldownReady = true;
+        }
         switch (currentElement) {
             case WATER:
-                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7 +40, 7, 113, 33);
+                if (cooldownReady) {
+                    emptyLabel();
+                } else {
+                    shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7 + 40, 7, 113, 33);
+                    cooldownLabel1.setText("");
+                    cooldownLabel2.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel3.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel4.setText(String.format("%01d", cooldownValue));
+                }
+
                 break;
             case FIRE:
-                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 33, 33);
-                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 87, 7, 73, 33);
+                if (cooldownReady) {
+                    emptyLabel();
+                } else {
+                    shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 33, 33);
+                    shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 87, 7, 73, 33);
+                    cooldownLabel1.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel2.setText("");
+                    cooldownLabel3.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel4.setText(String.format("%01d", cooldownValue));
+                }
+                
                 break;
             case EARTH:
-                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 73, 33);
-                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 127, 7, 33, 33);
+                if (cooldownReady) {
+                    emptyLabel();
+                } else {
+                    shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 73, 33);
+                    shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 127, 7, 33, 33);
+                    cooldownLabel1.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel2.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel3.setText("");
+                    cooldownLabel4.setText(String.format("%01d", cooldownValue));
+                }
+
                 break;
             case AIR:
-                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 113, 33);
+                if (cooldownReady) {
+                    emptyLabel();
+                } else {
+                    shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 113, 33);
+                    cooldownLabel1.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel2.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel3.setText(String.format("%01d", cooldownValue));
+                    cooldownLabel4.setText("");
+                }
+
                 break;
         }
         shaperenderer.end();
+        stage.addActor(tableBottom);
+        stage.draw();
     }
 
     @Override
@@ -256,55 +325,11 @@ public class Hud implements Disposable {
             startTime = TimeUtils.nanoTime();
         }
     }
-}
 
-//old
-//    public Hud(SpriteBatch sb) {
-//        maxLife = 100;
-//        playerLife = 92;
-//        scoreValue = 57;
-//        timeValue = 0;
-//        gap = Gdx.graphics.getHeight() / 48;
-//
-//        shaperenderer = new ShapeRenderer();
-//        lifebarWidth = Gdx.graphics.getWidth() / 8;
-//        lifebarHeight = 20;
-//
-//        viewport = new StretchViewport(Constants.getWINDOW_WIDTH(), Constants.getWINDOW_HEIGTH(), new OrthographicCamera());
-//        stage = new Stage(viewport, sb);
-//
-//        table = new Table();
-//        table.top();
-//        table.setFillParent(true);//=size of the stage
-//        playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK)); //4 numbers
-//        timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-//        scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-//
-//        timeValueLabel = new Label(String.format("%04d", timeValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-//        scoreValueLabel = new Label(String.format("%06d", scoreValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-//
-////        table.setDebug(true);
-//        table.drawDebug(shaperenderer);
-//        table.add(playerLifeLabel).left().padTop(gap).padLeft(Gdx.graphics.getWidth()/10);
-//        table.add(timeLabel).expandX().padTop(gap);
-//        table.add(scoreLabel).right().padTop(gap).padRight(gap);
-//        table.row();
-//        table.add();
-//        table.add(timeValueLabel);
-//        table.add(scoreValueLabel).right().padRight(gap);
-//        stage.addActor(table);
-//    }
-//
-//    public void drawLifebar() {
-//        shaperenderer.setProjectionMatrix(stage.getCamera().combined);
-//        shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shaperenderer.setColor(Color.GREEN);
-//        shaperenderer.rect(gap-4, 
-//               playerLifeLabel.getY(),
-//                lifebarWidth, lifebarHeight);
-//        shaperenderer.end();
-//        
-//                System.out.println(playerLifeLabel.getMinWidth());
-//                System.out.println("Lifebar: " + lifebarWidth);
-//
-//    }
+    private void emptyLabel() {
+        cooldownLabel1.setText("");
+        cooldownLabel2.setText("");
+        cooldownLabel3.setText("");
+        cooldownLabel4.setText("");
+    }
+}

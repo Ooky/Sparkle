@@ -55,6 +55,7 @@ public class Player extends Sprite {
         WATER, FIRE, EARTH, AIR
     }
     public elementType currentElement;
+    private elementType startingElement = elementType.WATER;
 
     public State currentState;
     public State previousState;
@@ -88,6 +89,7 @@ public class Player extends Sprite {
     private Boolean isAttacking;
     private Shard iceShard;
     private ArrayList<Shard> shards;
+    public boolean cooldownReady = false;
 
     //Player Stats
     private float movementSpeed;
@@ -132,7 +134,7 @@ public class Player extends Sprite {
         previousState = State.STANDING;
         stateTimer = 0;
 
-        currentElement = elementType.WATER;
+        currentElement = startingElement;
 
         //currentShootDirection = Player.shootDirection.RIGHT;
         frames = new Array<TextureRegion>();
@@ -291,7 +293,7 @@ public class Player extends Sprite {
         }
     }
 
-    public void handleInput(float dt) {
+    public void handleInput(int cooldownValue) {
         //LinearImpulse:first:x/y,second: where to impulse from the body?->center!, third: will impulse awake obj?
         if ((Gdx.input.isKeyPressed(Input.Keys.W) /*|| (Gdx.input.isKeyPressed(Input.Keys.UP))*/) && this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
             //Check if Player isnt moving faster than he is allowed to 
@@ -327,16 +329,13 @@ public class Player extends Sprite {
             currentShootDirection = shootDirection.DOWN;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && cooldownValue <= 0) {
             currentElement = elementType.WATER;
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) && cooldownValue <= 0) {
             currentElement = elementType.FIRE;
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) && cooldownValue <= 0) {
             currentElement = elementType.EARTH;
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) && cooldownValue <= 0) {
             currentElement = elementType.AIR;
         }
 

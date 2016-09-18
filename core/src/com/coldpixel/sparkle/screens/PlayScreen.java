@@ -119,7 +119,7 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
-        player.handleInput(dt);
+        player.handleInput(hud.cooldownValue);
         world.step(1 / 60f, 6, 2);//60 times a second
 //        rayHandler.update();
         player.update(dt);
@@ -208,6 +208,7 @@ public class PlayScreen implements Screen {
 
         hud.drawHUD(player.getHealth());
         hud.drawActionbar(main.batch, player.currentElement);
+        hud.drawCooldown(player.currentElement);
     }
 
     @Override
