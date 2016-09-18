@@ -59,6 +59,10 @@ public class Hud implements Disposable {
 
     private Texture actionBar;
 
+    private Label cooldownLabel;
+    private int cooldownValue;
+    private Color grey;
+
 //==============================================================================
 //Methods
 //==============================================================================
@@ -70,6 +74,10 @@ public class Hud implements Disposable {
         seconds = 0;
         minutes = 0;
         hours = 0;
+        grey = new Color(0.05f, 0.05f, 0.05f, 0.8f);
+
+        cooldownValue = 0;
+        cooldownLabel = new Label(String.format("%01d", cooldownValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         gap = Gdx.graphics.getHeight() / 48;
         shaperenderer = new ShapeRenderer();
@@ -121,12 +129,8 @@ public class Hud implements Disposable {
         table.drawDebug(shaperenderer);
         table.add(playerLifeLabel).left().padTop(gap).padLeft(Gdx.graphics.getWidth() / 10);
         table.add(timeValueLabel).expandX().padTop(gap);
-//        table.add(scoreLabel).right().padTop(gap).padRight(gap);
         table.add(scoreValueLabel).right().padTop(gap).padRight(gap);
         table.row();
-//        table.add();
-//        table.add();
-//        table.add(scoreValueLabel).right().padRight(gap);
         stage.addActor(table);
 
         actionBar = new Texture(Gdx.files.internal("Graphics/Hud/Actionbar.png"));
@@ -197,6 +201,32 @@ public class Hud implements Disposable {
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 32 + 96, 8, 32, 32);
             shaperenderer.setColor(Color.WHITE);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 36 + 93, 9, 30, 30);
+        }
+        shaperenderer.end();
+        drawCooldown(currentElement);
+
+    }
+
+    public void drawCooldown(Player.elementType currentElement) {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+//        shaperenderer.setProjectionMatrix(stage.getCamera().combined);
+        shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shaperenderer.setColor(grey);
+        switch (currentElement) {
+            case WATER:
+                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7 +40, 7, 113, 33);
+                break;
+            case FIRE:
+                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 33, 33);
+                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 87, 7, 73, 33);
+                break;
+            case EARTH:
+                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 73, 33);
+                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 127, 7, 33, 33);
+                break;
+            case AIR:
+                shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 113, 33);
+                break;
         }
         shaperenderer.end();
     }
