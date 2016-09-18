@@ -55,7 +55,7 @@ public class Hud implements Disposable {
     private BitmapFont font;
 
     private long startTime = 0;
-    
+
     private Texture actionBar;
 
 //==============================================================================
@@ -110,7 +110,7 @@ public class Hud implements Disposable {
         table = new Table();
         table.top();
         table.setFillParent(true);//=size of the stage
-        playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK)); 
+        playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
         //scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         timeValueLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -151,7 +151,7 @@ public class Hud implements Disposable {
         shaperenderer.end();
         //Black Border around Lifebar
         shaperenderer.begin(ShapeRenderer.ShapeType.Line);
-        shaperenderer.rectLine(gap - 4, Constants.getWINDOW_HEIGTH()-lifebarHeight-4, lifebarWidth+gap-4, Constants.getWINDOW_HEIGTH()-lifebarHeight-4, lifebarHeight);
+        shaperenderer.rectLine(gap - 4, Constants.getWINDOW_HEIGTH() - lifebarHeight - 4, lifebarWidth + gap - 4, Constants.getWINDOW_HEIGTH() - lifebarHeight - 4, lifebarHeight);
         shaperenderer.end();
 
 //                System.out.println(playerLifeLabel.getMinWidth());
@@ -165,11 +165,35 @@ public class Hud implements Disposable {
         timer();
         stage.draw();
     }
-    
-    public void drawActionbar(SpriteBatch batch){
+
+    public void drawActionbar(SpriteBatch batch) {
         batch.begin();
-        batch.draw(actionBar, (Constants.WINDOW_WIDTH/2-actionBar.getWidth()/2), 0);
+        batch.draw(actionBar, (Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2), 0);
         batch.end();
+        shaperenderer.setAutoShapeType(true);
+        shaperenderer.begin();
+        //First Spell
+        shaperenderer.setColor(Color.BLUE);
+        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 8, 8, 32, 32);
+        shaperenderer.setColor(Color.CYAN);
+        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 9, 9, 30, 30);
+        //Second Spell
+        shaperenderer.setColor(Color.RED);
+        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 16+32, 8, 32, 32);
+        shaperenderer.setColor(Color.SALMON);
+        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 18+31, 9, 30, 30);
+        //Third Spell
+        shaperenderer.setColor(Color.GREEN);
+        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 24+64, 8, 32, 32);
+        shaperenderer.setColor(Color.CHARTREUSE);
+        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 27+62, 9, 30, 30);
+        //Fourth Spell
+        shaperenderer.setColor(Color.YELLOW);
+        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 32+96, 8, 32, 32);
+        shaperenderer.setColor(Color.WHITE);
+        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 36+93, 9, 30, 30);
+        
+        shaperenderer.end();
     }
 
     @Override
