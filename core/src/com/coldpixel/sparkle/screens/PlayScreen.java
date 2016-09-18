@@ -22,7 +22,6 @@ import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
 import com.coldpixel.sparkle.sprites.BonFire;
 import com.coldpixel.sparkle.sprites.Enemy;
-import com.coldpixel.sparkle.sprites.Soldier;
 import com.coldpixel.sparkle.tools.AssetHelper;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
@@ -208,7 +207,7 @@ public class PlayScreen implements Screen {
         main.batch.end();
 
         hud.drawHUD(player.getHealth());
-        hud.drawActionbar(main.batch);
+        hud.drawActionbar(main.batch, player.currentElement);
     }
 
     @Override

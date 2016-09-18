@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.sprites.Player;
 
 /**
  *
@@ -166,33 +167,40 @@ public class Hud implements Disposable {
         stage.draw();
     }
 
-    public void drawActionbar(SpriteBatch batch) {
+    public void drawActionbar(SpriteBatch batch, Player.elementType currentElement) {
         batch.begin();
         batch.draw(actionBar, (Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2), 0);
         batch.end();
         shaperenderer.setAutoShapeType(true);
         shaperenderer.begin();
         //First Spell
-        shaperenderer.setColor(Color.BLUE);
-        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 8, 8, 32, 32);
-        shaperenderer.setColor(Color.CYAN);
-        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 9, 9, 30, 30);
+        if (currentElement == Player.elementType.WATER) {
+            shaperenderer.setColor(Color.BLUE);
+            shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 8, 8, 32, 32);
+            shaperenderer.setColor(Color.CYAN);
+            shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 9, 9, 30, 30);
+        }
         //Second Spell
-        shaperenderer.setColor(Color.RED);
-        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 16+32, 8, 32, 32);
-        shaperenderer.setColor(Color.SALMON);
-        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 18+31, 9, 30, 30);
+        if (currentElement == Player.elementType.FIRE) {
+            shaperenderer.setColor(Color.RED);
+            shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 16 + 32, 8, 32, 32);
+            shaperenderer.setColor(Color.SALMON);
+            shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 18 + 31, 9, 30, 30);
+        }
         //Third Spell
-        shaperenderer.setColor(Color.GREEN);
-        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 24+64, 8, 32, 32);
-        shaperenderer.setColor(Color.CHARTREUSE);
-        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 27+62, 9, 30, 30);
+        if (currentElement == Player.elementType.EARTH) {
+            shaperenderer.setColor(Color.GREEN);
+            shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 24 + 64, 8, 32, 32);
+            shaperenderer.setColor(Color.CHARTREUSE);
+            shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 27 + 62, 9, 30, 30);
+        }
         //Fourth Spell
-        shaperenderer.setColor(Color.YELLOW);
-        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 32+96, 8, 32, 32);
-        shaperenderer.setColor(Color.WHITE);
-        shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 36+93, 9, 30, 30);
-        
+        if (currentElement == Player.elementType.AIR) {
+            shaperenderer.setColor(Color.YELLOW);
+            shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 32 + 96, 8, 32, 32);
+            shaperenderer.setColor(Color.WHITE);
+            shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 36 + 93, 9, 30, 30);
+        }
         shaperenderer.end();
     }
 

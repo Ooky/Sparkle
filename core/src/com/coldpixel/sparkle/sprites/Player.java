@@ -49,6 +49,11 @@ public class Player extends Sprite {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK,
     };
+    public enum elementType{
+        WATER, FIRE, EARTH, AIR
+    }
+    public elementType currentElement;
+    
     public State currentState;
     public State previousState;
     //Animation
@@ -58,9 +63,9 @@ public class Player extends Sprite {
     private float stateTimer;
     Array<TextureRegion> frames;
     private TextureRegion playerStand;
-    
+
     private ShapeRenderer shapeRenderer;
-    
+
     //healing
     private float healingFactor;
     private Boolean isHealing;
@@ -68,7 +73,7 @@ public class Player extends Sprite {
     private Boolean isAttacking;
     private IceShard iceShard;
     private ArrayList<IceShard> iceShards;
-    
+
     //Player Stats
     private float movementSpeed;
     private float maxSpeed;
@@ -87,22 +92,22 @@ public class Player extends Sprite {
         directionRight = true;
         this.world = screen.getWorld();
         this.screen = screen;
-        
+
         //Player Stats
         movementSpeed = 3.0f;
         maxSpeed = 4.0f;
         health = 100;
         attackSpeed = 1f;
-        
+
         //healing
         isHealing = false;
         healingFactor = 0.05f;
-        
+
         //Attack
         isAttacking = false;
         iceShards = new ArrayList<IceShard>();
         shapeRenderer = new ShapeRenderer();
-        
+
         definePlayer();
         //Animation
         playerStand = new TextureRegion(getTexture(), 0, 0, playerWidth, playerHeight);
@@ -152,20 +157,21 @@ public class Player extends Sprite {
 //        fDef.shape = shape;
         fDef.filter.categoryBits = Main.PLAYER_BIT;
         fDef.filter.maskBits = /*Main.GROUND_BIT | */ //Needed?
-                Main.BONFIRE_BIT |
-                Main.ENEMY_BIT |
-                Main.ENEMYMELEEATTACK_BIT |
-                Main.CRYSTAL_BIT |
-                Main.OBJECT_BIT;
+                Main.BONFIRE_BIT
+                | Main.ENEMY_BIT
+                | Main.ENEMYMELEEATTACK_BIT
+                | Main.CRYSTAL_BIT
+                | Main.OBJECT_BIT;
         fDef.shape = rectangleShape;
         b2Body.createFixture(fDef).setUserData(this);
     }
 
     public void update(float dt) {
-        setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK)?(directionRight? +16: -16)/Main.PPM:0)) / 2), b2Body.getPosition().y - getHeight() / 2);
+        setPosition(b2Body.getPosition().x - ((getWidth() + ((currentState == Player.State.ATTACK) ? (directionRight ? +16 : -16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
-        if(isHealing && health < maxHealth)
+        if (isHealing && health < maxHealth) {
             healing();
+        }
     }
 
 //==============================================================================
@@ -207,8 +213,8 @@ public class Player extends Sprite {
                 region = playerAttack.getKeyFrame(stateTimer, true);
                 if (!region.isFlipX() && currentShootDirection == Player.shootDirection.RIGHT) {
                     region.flip(true, false);
-                }else if (region.isFlipX() && currentShootDirection == Player.shootDirection.LEFT) {
-                    region.flip(true, false);                    
+                } else if (region.isFlipX() && currentShootDirection == Player.shootDirection.LEFT) {
+                    region.flip(true, false);
                 }
                 if (playerAttack.isAnimationFinished(stateTimer) && previousState == Player.State.ATTACK) {
                     stateTimer = 0;
@@ -229,8 +235,9 @@ public class Player extends Sprite {
                             iceShards.add(new IceShard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN));
                             break;
                     }
-                    if(b2Body.getLinearVelocity().x < 0.00001 && b2Body.getLinearVelocity().x > -0.00001)
+                    if (b2Body.getLinearVelocity().x < 0.00001 && b2Body.getLinearVelocity().x > -0.00001) {
                         b2Body.setLinearVelocity(0, b2Body.getLinearVelocity().y);
+                    }
                 }
                 break;
             default:
@@ -255,7 +262,7 @@ public class Player extends Sprite {
                     region.flip(true, false);
                 }
             } else if (region.isFlipX()) {
-                    region.flip(true, false);
+                region.flip(true, false);
             }
         }
 
@@ -307,19 +314,32 @@ public class Player extends Sprite {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             isAttacking = true;
             this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
-            currentShootDirection = Player.shootDirection.RIGHT;
+            currentShootDirection = shootDirection.RIGHT;
         } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             isAttacking = true;
             this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
-            currentShootDirection = Player.shootDirection.LEFT;
+            currentShootDirection = shootDirection.LEFT;
         } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             isAttacking = true;
             this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
-            currentShootDirection = Player.shootDirection.UP;
+            currentShootDirection = shootDirection.UP;
         } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             isAttacking = true;
             this.setBounds(getX() / Main.PPM, getY(), (playerWidth + 16) / Main.PPM, getHeight());
-            currentShootDirection = Player.shootDirection.DOWN;
+            currentShootDirection = shootDirection.DOWN;
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+            currentElement = elementType.WATER;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+            currentElement = elementType.FIRE;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+            currentElement = elementType.EARTH;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+            currentElement = elementType.AIR;
         }
 
     }
@@ -327,16 +347,16 @@ public class Player extends Sprite {
     public int getHealth() {
         return (int) health;
     }
-    
-    public void setIsHealing(boolean h){
+
+    public void setIsHealing(boolean h) {
         isHealing = h;
     }
-    
-    public void setHealingFactor(int factor){
+
+    public void setHealingFactor(int factor) {
         healingFactor = factor;
     }
-    
-    public void increaseHealth(int increase){
+
+    public void increaseHealth(int increase) {
         health += increase;
     }
 
@@ -347,8 +367,8 @@ public class Player extends Sprite {
     public ArrayList<IceShard> getIceShards() {
         return iceShards;
     }
-    
-    public void healing(){
+
+    public void healing() {
         health += healingFactor;
     }
 
