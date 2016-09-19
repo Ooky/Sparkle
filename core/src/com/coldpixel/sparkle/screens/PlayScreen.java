@@ -120,6 +120,7 @@ public class PlayScreen implements Screen {
 
     public void update(float dt) {
         player.handleInput(hud.cooldownValue);
+        //hud.setCooldownReady(player.getCooldownReady());
         world.step(1 / 60f, 6, 2);//60 times a second
 //        rayHandler.update();
         player.update(dt);

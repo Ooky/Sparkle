@@ -59,7 +59,7 @@ public class Hud implements Disposable {
     private int timeValue;
     private long startTimeElements = 0;
     private int timeValueElements = 0;
-    private boolean cooldownReady = false;
+  //  private boolean cooldownReady = false;
 
     private Texture actionBar;
 
@@ -232,7 +232,11 @@ public class Hud implements Disposable {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
         shaperenderer.setColor(grey);
-
+        if(Main.cooldownReady == false){
+            timeValueElements = 0;
+            cooldownValue = 3;
+            Main.cooldownReady = true;
+        }
         if (TimeUtils.timeSinceNanos(startTimeElements) > 1000000000) {//Every second
             if (timeValueElements < 3) {//3 Seconds
                 timeValueElements++;
@@ -240,66 +244,53 @@ public class Hud implements Disposable {
             }
             startTimeElements = TimeUtils.nanoTime();
         }
-        if (cooldownValue <= 0) {
-            cooldownReady = true;
-        }
-        switch (currentElement) {
-            case WATER:
-                if (cooldownReady) {
+      /*  if () {
+           // cooldownReady = true;
+           
+        }*/
+         if (cooldownValue <= 0) {
                     emptyLabel();
                 } else {
+        switch (currentElement) {
+            case WATER:
                     shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7 + 40, 7, 113, 33);
                     cooldownLabel1.setText("");
                     cooldownLabel2.setText(String.format("%01d", cooldownValue));
                     cooldownLabel3.setText(String.format("%01d", cooldownValue));
                     cooldownLabel4.setText(String.format("%01d", cooldownValue));
-                }
-
                 break;
             case FIRE:
-                if (cooldownReady) {
-                    emptyLabel();
-                } else {
                     shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 33, 33);
                     shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 87, 7, 73, 33);
                     cooldownLabel1.setText(String.format("%01d", cooldownValue));
                     cooldownLabel2.setText("");
                     cooldownLabel3.setText(String.format("%01d", cooldownValue));
                     cooldownLabel4.setText(String.format("%01d", cooldownValue));
-                }
                 
                 break;
             case EARTH:
-                if (cooldownReady) {
-                    emptyLabel();
-                } else {
                     shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 73, 33);
                     shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 127, 7, 33, 33);
                     cooldownLabel1.setText(String.format("%01d", cooldownValue));
                     cooldownLabel2.setText(String.format("%01d", cooldownValue));
                     cooldownLabel3.setText("");
                     cooldownLabel4.setText(String.format("%01d", cooldownValue));
-                }
-
+                
                 break;
             case AIR:
-                if (cooldownReady) {
-                    emptyLabel();
-                } else {
                     shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 7, 7, 113, 33);
                     cooldownLabel1.setText(String.format("%01d", cooldownValue));
                     cooldownLabel2.setText(String.format("%01d", cooldownValue));
                     cooldownLabel3.setText(String.format("%01d", cooldownValue));
                     cooldownLabel4.setText("");
-                }
-
                 break;
         }
+    }
         shaperenderer.end();
         stage.addActor(tableBottom);
         stage.draw();
+    
     }
-
     @Override
     public void dispose() {
         stage.dispose();
@@ -332,4 +323,8 @@ public class Hud implements Disposable {
         cooldownLabel3.setText("");
         cooldownLabel4.setText("");
     }
+    /*
+    public void setCooldownReady(Boolean cooldownReady) {
+        this.cooldownReady = cooldownReady;
+    }*/
 }

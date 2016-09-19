@@ -24,7 +24,7 @@ public class Main extends Game {
     public static final short ENEMYMELEEATTACK_BIT = 64;
     public static final short PLAYERATTACK_BIT = 128;
     public static final short CRYSTAL_BIT = 256;
-    
+    public static Boolean cooldownReady = true;
 
     private AssetHelper assetHelper;
 

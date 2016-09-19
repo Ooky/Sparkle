@@ -89,7 +89,7 @@ public class Player extends Sprite {
     private Boolean isAttacking;
     private Shard iceShard;
     private ArrayList<Shard> shards;
-    public boolean cooldownReady = false;
+  //  public boolean cooldownReady = true;
 
     //Player Stats
     private float movementSpeed;
@@ -331,14 +331,21 @@ public class Player extends Sprite {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && cooldownValue <= 0) {
             currentElement = elementType.WATER;
+            Main.cooldownReady = false;
+         //   setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) && cooldownValue <= 0) {
             currentElement = elementType.FIRE;
+            Main.cooldownReady = false;
+        //    setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) && cooldownValue <= 0) {
             currentElement = elementType.EARTH;
+            Main.cooldownReady = false;
+        //    setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) && cooldownValue <= 0) {
             currentElement = elementType.AIR;
+            Main.cooldownReady = false;
+        //    setCooldownReady(false);
         }
-
     }
 
     public int getHealth() {
@@ -491,5 +498,15 @@ public class Player extends Sprite {
         }
 
     }
+
+   /* public boolean getCooldownReady() {
+        return cooldownReady;
+    }
+
+    public void setCooldownReady(boolean cooldownReady) {
+        this.cooldownReady = cooldownReady;
+    }
+
+*/
 
 }
