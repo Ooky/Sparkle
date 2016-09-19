@@ -131,7 +131,7 @@ public class PlayScreen implements Screen {
             boneFire.update(dt);
         }
         for (Shard shard : player.getIceShards()) {
-            shard.update(dt, player.currentElement);
+            shard.update(dt);
         }
         for(Crystal crystal : b2WorldCreator.getCrystals()){
             crystal.update(dt); 

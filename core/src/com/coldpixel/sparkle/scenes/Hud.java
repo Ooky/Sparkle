@@ -59,7 +59,6 @@ public class Hud implements Disposable {
     private int timeValue;
     private long startTimeElements = 0;
     private int timeValueElements = 0;
-  //  private boolean cooldownReady = false;
 
     private Texture actionBar;
 

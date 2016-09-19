@@ -221,18 +221,18 @@ public class Player extends Sprite {
                     isAttacking = false;
                     switch (currentShootDirection) {
                         case RIGHT:
-                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.RIGHT));
+                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.RIGHT, currentElement));
                             directionRight = true;
                             break;
                         case LEFT:
-                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.LEFT));
+                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.LEFT, currentElement));
                             directionRight = false;
                             break;
                         case UP:
-                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.UP));
+                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.UP, currentElement));
                             break;
                         case DOWN:
-                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN));
+                            shards.add(new Shard(b2Body.getPosition().x, b2Body.getPosition().y, screen, shootDirection.DOWN, currentElement));
                             break;
                     }
                     if (b2Body.getLinearVelocity().x < 0.00001 && b2Body.getLinearVelocity().x > -0.00001) {

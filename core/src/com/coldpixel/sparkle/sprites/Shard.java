@@ -32,6 +32,7 @@ public class Shard extends Sprite {
     private Boolean setToDestroy;
     private Boolean destroyed;
     private short velocity;
+    private Player.elementType element;
     //animation
     private float stateTime;
     private Animation waterShardAnimation;
@@ -47,7 +48,7 @@ public class Shard extends Sprite {
 
     private Player player;
 
-    public Shard(float x, float y, PlayScreen screen, Player.shootDirection direction) {
+    public Shard(float x, float y, PlayScreen screen, Player.shootDirection direction, Player.elementType element) {
         this.x = x;
         this.y = y;
         width = 32;
@@ -60,7 +61,7 @@ public class Shard extends Sprite {
         stateTime = 0;
         frames = new Array<TextureRegion>();
         velocity = 5;
-
+        this.element = element;
         defineShard();
         createWaterAnimation();
         createFireAnimation();
@@ -69,10 +70,10 @@ public class Shard extends Sprite {
         setBounds(0, 0, width / Main.PPM, height / Main.PPM);
     }
 
-    public void update(float dt, Player.elementType currentElement) {
+    public void update(float dt) {
         stateTime += dt;
 
-        getElementFrame(currentElement);
+        getElementFrame();
 
         if (shootDirection == Player.shootDirection.LEFT && !shard.isFlipX()) {
             shard.flip(true, false);
@@ -220,26 +221,26 @@ public class Shard extends Sprite {
         frames.clear();
     }
 
-    public void getElementFrame(Player.elementType currentElement) {
-        if (currentElement == Player.elementType.WATER) {
+    public void getElementFrame() {
+        if (element == Player.elementType.WATER) {
             if (setToDestroy) {
                 shard = waterCollisionAnimation.getKeyFrame(stateTime, true);
             } else {
                 shard = waterShardAnimation.getKeyFrame(stateTime, true);
             }
-        } else if (currentElement == Player.elementType.FIRE) {
+        } else if (element == Player.elementType.FIRE) {
             if (setToDestroy) {
                 shard = fireCollisionAnimation.getKeyFrame(stateTime, true);
             } else {
                 shard = fireShardAnimation.getKeyFrame(stateTime, true);
             }
-        } else if (currentElement == Player.elementType.EARTH) {
+        } else if (element == Player.elementType.EARTH) {
             if (setToDestroy) {
                 shard = earthCollisionAnimation.getKeyFrame(stateTime, true);
             } else {
                 shard = earthShardAnimation.getKeyFrame(stateTime, true);
             }
-        } else if (currentElement == Player.elementType.AIR) {
+        } else if (element == Player.elementType.AIR) {
             if (setToDestroy) {
                 shard = airCollisionAnimation.getKeyFrame(stateTime, true);
             } else {
