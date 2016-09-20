@@ -210,6 +210,10 @@ public class PlayScreen implements Screen {
         hud.drawHUD(player.getHealth());
         hud.drawActionbar(main.batch, player.currentElement);
         hud.drawCooldown(player.currentElement);
+        if(player.getGameOver()){
+            main.setScreen(new GameOver(main));
+            dispose();
+        }
     }
 
     @Override

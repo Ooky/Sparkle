@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.screens.GameOver;
 import com.coldpixel.sparkle.screens.PlayScreen;
 import java.util.ArrayList;
 
@@ -96,6 +97,7 @@ public class Player extends Sprite {
     private float maxSpeed;
     private int maxHealth = 100;
     private float attackSpeed;
+    private Boolean gameOver = false;
 //==============================================================================
 //Methods
 //==============================================================================
@@ -171,6 +173,9 @@ public class Player extends Sprite {
         if (isHealing && health < maxHealth) {
             healing();
         }
+        if(health <= 0) {
+            gameOver = true;
+        } 
     }
 
 //==============================================================================
@@ -498,15 +503,9 @@ public class Player extends Sprite {
         }
 
     }
-
-   /* public boolean getCooldownReady() {
-        return cooldownReady;
+    
+    public Boolean getGameOver(){
+        return gameOver;
     }
-
-    public void setCooldownReady(boolean cooldownReady) {
-        this.cooldownReady = cooldownReady;
-    }
-
-*/
 
 }
