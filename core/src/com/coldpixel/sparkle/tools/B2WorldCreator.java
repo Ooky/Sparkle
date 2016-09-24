@@ -18,6 +18,7 @@ import com.coldpixel.sparkle.sprites.EnvironmentObject;
 import com.coldpixel.sparkle.sprites.Grass;
 import com.coldpixel.sparkle.sprites.Soldier;
 import com.coldpixel.sparkle.sprites.Crystal;
+import com.coldpixel.sparkle.sprites.Player;
 import java.util.ArrayList;
 
 /**
@@ -104,7 +105,7 @@ public class B2WorldCreator {
         soldiers = new ArrayList<Soldier>();
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) { 
             soldier = new Soldier(playScreen, ((RectangleMapObject)object).getRectangle().getX() / Main.PPM,
-                    ((RectangleMapObject)object).getRectangle().getY() / Main.PPM, playScreen.getPlayer());
+                    ((RectangleMapObject)object).getRectangle().getY() / Main.PPM, playScreen.getPlayer(), Soldier.elementType.WATER);
             soldiers.add(soldier);
         }
         
