@@ -403,10 +403,10 @@ public class Soldier extends Enemy {
                     attackAnimation = new Animation(0.15f, frames);
                     frames.clear();
                     //DeathAnimation
-                    for (int i = 0; i < 12; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierDeathFinalBlue.png"), i * (soldierWidth + 32), 0, soldierWidth + 32, soldierHeight));
+                    for (int i = 0; i < 15; i++) {
+                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierEarthDeathFire.png"), i * (soldierWidth + 32), 0, soldierWidth + 32, soldierHeight));
                     }
-                    deathAnimation = new Animation(0.3f, frames);
+                    deathAnimation = new Animation(0.2f, frames);
                     frames.clear();
                     break;
                 //Air
