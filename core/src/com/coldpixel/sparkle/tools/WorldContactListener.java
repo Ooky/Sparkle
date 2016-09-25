@@ -41,6 +41,7 @@ public class WorldContactListener implements ContactListener{
                     ((Shard)fixB.getUserData()).destroy();
                     //Sets filter for soldier to destroyed_bit to avoid collisions
                     if(((Soldier)fixA.getUserData()).getHealth() <= 0){
+                        ((Soldier)fixA.getUserData()).setDeathAnimation(((Shard)fixB.getUserData()).getElement());
                         ((Soldier)fixA.getUserData()).death();
                     }
                 }
@@ -48,6 +49,7 @@ public class WorldContactListener implements ContactListener{
                     ((Soldier)fixB.getUserData()).decreaseHealth(((Shard)fixA.getUserData()).getDamage()*elementHandler.getDamage(((Shard)fixA.getUserData()).getElement(), ((Soldier)fixB.getUserData()).getElement()));
                     ((Shard)fixA.getUserData()).destroy();
                     if(((Soldier)fixB.getUserData()).getHealth() <= 0){
+                        ((Soldier)fixB.getUserData()).setDeathAnimation(((Shard)fixA.getUserData()).getElement());
                         ((Soldier)fixB.getUserData()).death();
                     }
                 }
