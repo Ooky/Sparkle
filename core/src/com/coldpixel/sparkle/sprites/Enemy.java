@@ -31,7 +31,7 @@ public abstract class Enemy extends Sprite{
         defineEnemy();
     }
     
-    public void decreaseHealth(int decrease){        
+    public void decreaseHealth(float decrease){        
         health -= decrease;
     }
     

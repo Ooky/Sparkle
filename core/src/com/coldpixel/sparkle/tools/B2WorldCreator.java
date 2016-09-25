@@ -105,7 +105,7 @@ public class B2WorldCreator {
         soldiers = new ArrayList<Soldier>();
         for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) { 
             soldier = new Soldier(playScreen, ((RectangleMapObject)object).getRectangle().getX() / Main.PPM,
-                    ((RectangleMapObject)object).getRectangle().getY() / Main.PPM, playScreen.getPlayer(), Soldier.elementType.WATER);
+                    ((RectangleMapObject)object).getRectangle().getY() / Main.PPM, playScreen.getPlayer(), Main.elementType.WATER);
             soldiers.add(soldier);
         }
         

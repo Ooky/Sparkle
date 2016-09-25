@@ -47,12 +47,7 @@ public class Soldier extends Enemy {
     private Boolean destroyed;
     private Boolean avoidObject;
     private State avoidDirection;
-
-    public enum elementType {
-
-        WATER, FIRE, EARTH, AIR
-    }
-    private elementType element;
+    private Main.elementType element;
 
     public enum State {
 
@@ -61,7 +56,7 @@ public class Soldier extends Enemy {
     public Soldier.State currentState;
     public Soldier.State previousState;
 
-    public Soldier(PlayScreen screen, float x, float y, Player player, elementType element) {
+    public Soldier(PlayScreen screen, float x, float y, Player player, Main.elementType element) {
         super(screen, x, y);
         this.screen = screen;
         this.element = element;
@@ -472,6 +467,10 @@ public class Soldier extends Enemy {
 
     public float getMaxSpeed() {
         return maxSpeed;
+    }
+    
+    public Main.elementType getElement(){
+        return element;
     }
 
 }

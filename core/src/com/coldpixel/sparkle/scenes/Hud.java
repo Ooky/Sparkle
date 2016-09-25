@@ -182,7 +182,7 @@ public class Hud implements Disposable {
         stage.draw();
     }
 
-    public void drawActionbar(SpriteBatch batch, Player.elementType currentElement) {
+    public void drawActionbar(SpriteBatch batch, Main.elementType currentElement) {
 
         batch.begin();
         batch.draw(actionBar, (Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2), 0);
@@ -190,25 +190,25 @@ public class Hud implements Disposable {
         shaperenderer.setAutoShapeType(true);
         shaperenderer.begin();
         //First Spell
-        if (currentElement == Player.elementType.WATER) {
+        if (currentElement == Main.elementType.WATER) {
             shaperenderer.setColor(Color.BLUE);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 8, 8, 32, 32);
             shaperenderer.setColor(Color.CYAN);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 9, 9, 30, 30);
         } //Second Spell
-        else if (currentElement == Player.elementType.FIRE) {
+        else if (currentElement == Main.elementType.FIRE) {
             shaperenderer.setColor(Color.RED);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 16 + 32, 8, 32, 32);
             shaperenderer.setColor(Color.SALMON);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 18 + 31, 9, 30, 30);
         } //Third Spell
-        else if (currentElement == Player.elementType.EARTH) {
+        else if (currentElement == Main.elementType.EARTH) {
             shaperenderer.setColor(Color.GREEN);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 24 + 64, 8, 32, 32);
             shaperenderer.setColor(Color.CHARTREUSE);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 27 + 62, 9, 30, 30);
         } //Fourth Spell
-        else if (currentElement == Player.elementType.AIR) {
+        else if (currentElement == Main.elementType.AIR) {
             shaperenderer.setColor(Color.YELLOW);
             shaperenderer.rect(Constants.WINDOW_WIDTH / 2 - actionBar.getWidth() / 2 + 32 + 96, 8, 32, 32);
             shaperenderer.setColor(Color.WHITE);
@@ -218,7 +218,7 @@ public class Hud implements Disposable {
 
     }
 
-    public void drawCooldown(Player.elementType currentElement) {
+    public void drawCooldown(Main.elementType currentElement) {
         tableBottom = new Table();
         tableBottom.bottom();
         tableBottom.setFillParent(true);

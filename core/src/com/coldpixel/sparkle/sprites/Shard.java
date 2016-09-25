@@ -32,7 +32,7 @@ public class Shard extends Sprite {
     private Boolean setToDestroy;
     private Boolean destroyed;
     private short velocity;
-    private Player.elementType element;
+    private Main.elementType element;
     //animation
     private float stateTime;
     private Animation waterShardAnimation;
@@ -48,14 +48,14 @@ public class Shard extends Sprite {
 
     private Player player;
 
-    public Shard(float x, float y, PlayScreen screen, Player.shootDirection direction, Player.elementType element) {
+    public Shard(float x, float y, PlayScreen screen, Player.shootDirection direction, Main.elementType element) {
         this.x = x;
         this.y = y;
         width = 32;
         height = 32;
         world = screen.getWorld();
         shootDirection = direction;
-        damage = 25;
+        damage = 30;
         destroyed = false;
         setToDestroy = false;
         stateTime = 0;
@@ -222,25 +222,25 @@ public class Shard extends Sprite {
     }
 
     public void getElementFrame() {
-        if (element == Player.elementType.WATER) {
+        if (element == Main.elementType.WATER) {
             if (setToDestroy) {
                 shard = waterCollisionAnimation.getKeyFrame(stateTime, true);
             } else {
                 shard = waterShardAnimation.getKeyFrame(stateTime, true);
             }
-        } else if (element == Player.elementType.FIRE) {
+        } else if (element == Main.elementType.FIRE) {
             if (setToDestroy) {
                 shard = fireCollisionAnimation.getKeyFrame(stateTime, true);
             } else {
                 shard = fireShardAnimation.getKeyFrame(stateTime, true);
             }
-        } else if (element == Player.elementType.EARTH) {
+        } else if (element == Main.elementType.EARTH) {
             if (setToDestroy) {
                 shard = earthCollisionAnimation.getKeyFrame(stateTime, true);
             } else {
                 shard = earthShardAnimation.getKeyFrame(stateTime, true);
             }
-        } else if (element == Player.elementType.AIR) {
+        } else if (element == Main.elementType.AIR) {
             if (setToDestroy) {
                 shard = airCollisionAnimation.getKeyFrame(stateTime, true);
             } else {
@@ -248,5 +248,9 @@ public class Shard extends Sprite {
             }
         }
 
+    }
+    
+    public Main.elementType getElement(){
+        return this.element;
     }
 }

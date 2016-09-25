@@ -26,6 +26,9 @@ public class Main extends Game {
     public static final short CRYSTAL_BIT = 256;
     public static Boolean cooldownReady = true;
 
+    public static enum elementType {
+        WATER, FIRE, EARTH, AIR, NONE
+    }
     private AssetHelper assetHelper;
 
 //==============================================================================

@@ -16,7 +16,8 @@ import com.coldpixel.sparkle.sprites.Soldier;
  * @author Coldpixel
  */
 public class WorldContactListener implements ContactListener{
-
+    private ElementHandler elementHandler = new ElementHandler();
+    
     @Override
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
@@ -36,7 +37,7 @@ public class WorldContactListener implements ContactListener{
             //IceShard Enemy
             case Main.PLAYERATTACK_BIT | Main.ENEMY_BIT:
                     if(fixA.getFilterData().categoryBits == Main.ENEMY_BIT){
-                    ((Soldier)fixA.getUserData()).decreaseHealth(((Shard)fixB.getUserData()).getDamage());
+                    ((Soldier)fixA.getUserData()).decreaseHealth(((Shard)fixB.getUserData()).getDamage()*elementHandler.getDamage(((Shard)fixB.getUserData()).getElement(), ((Soldier)fixA.getUserData()).getElement()));
                     ((Shard)fixB.getUserData()).destroy();
                     //Sets filter for soldier to destroyed_bit to avoid collisions
                     if(((Soldier)fixA.getUserData()).getHealth() <= 0){
@@ -44,7 +45,7 @@ public class WorldContactListener implements ContactListener{
                     }
                 }
                 else {
-                    ((Soldier)fixB.getUserData()).decreaseHealth(((Shard)fixA.getUserData()).getDamage());
+                    ((Soldier)fixB.getUserData()).decreaseHealth(((Shard)fixA.getUserData()).getDamage()*elementHandler.getDamage(((Shard)fixA.getUserData()).getElement(), ((Soldier)fixB.getUserData()).getElement()));
                     ((Shard)fixA.getUserData()).destroy();
                     if(((Soldier)fixB.getUserData()).getHealth() <= 0){
                         ((Soldier)fixB.getUserData()).death();

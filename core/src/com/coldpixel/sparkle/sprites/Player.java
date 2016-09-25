@@ -50,13 +50,8 @@ public class Player extends Sprite {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK,
     };
-
-    public enum elementType {
-
-        WATER, FIRE, EARTH, AIR
-    }
-    public elementType currentElement;
-    private elementType startingElement = elementType.WATER;
+    public Main.elementType currentElement;
+    private Main.elementType startingElement = Main.elementType.WATER;
 
     public State currentState;
     public State previousState;
@@ -335,19 +330,19 @@ public class Player extends Sprite {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && cooldownValue <= 0) {
-            currentElement = elementType.WATER;
+            currentElement = Main.elementType.WATER;
             Main.cooldownReady = false;
          //   setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) && cooldownValue <= 0) {
-            currentElement = elementType.FIRE;
+            currentElement = Main.elementType.FIRE;
             Main.cooldownReady = false;
         //    setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) && cooldownValue <= 0) {
-            currentElement = elementType.EARTH;
+            currentElement = Main.elementType.EARTH;
             Main.cooldownReady = false;
         //    setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) && cooldownValue <= 0) {
-            currentElement = elementType.AIR;
+            currentElement = Main.elementType.AIR;
             Main.cooldownReady = false;
         //    setCooldownReady(false);
         }
@@ -484,19 +479,19 @@ public class Player extends Sprite {
     }
 
     public void getCurrentElement() {
-        if (currentElement == Player.elementType.WATER) {
+        if (currentElement == Main.elementType.WATER) {
             playerCurrentElementStanding = playerWaterStanding;
             playerCurrentElementRunning = playerWaterRunning;
             playerCurrentElementAttack = playerWaterAttack;
-        } else if (currentElement == Player.elementType.FIRE) {
+        } else if (currentElement == Main.elementType.FIRE) {
             playerCurrentElementStanding = playerFireStanding;
             playerCurrentElementRunning = playerFireRunning;
             playerCurrentElementAttack = playerFireAttack;
-        } else if (currentElement == Player.elementType.EARTH) {
+        } else if (currentElement == Main.elementType.EARTH) {
             playerCurrentElementStanding = playerEarthStanding;
             playerCurrentElementRunning = playerEarthRunning;
             playerCurrentElementAttack = playerEarthAttack;
-        } else if (currentElement == Player.elementType.AIR) {
+        } else if (currentElement == Main.elementType.AIR) {
             playerCurrentElementStanding = playerAirStanding;
             playerCurrentElementRunning = playerAirRunning;
             playerCurrentElementAttack = playerAirAttack;
