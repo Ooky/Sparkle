@@ -321,8 +321,13 @@ public class Hud implements Disposable {
         cooldownLabel3.setText("");
         cooldownLabel4.setText("");
     }
+	
     /*
     public void setCooldownReady(Boolean cooldownReady) {
         this.cooldownReady = cooldownReady;
     }*/
+
+	public int getScoreValue() {
+		return scoreValue;
+	}
 }

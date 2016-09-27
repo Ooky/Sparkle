@@ -31,22 +31,29 @@ public class GameOver implements Screen {
     private Game game;
 	private BitmapFont bitmapFont = new BitmapFont();
 
-    public GameOver(Game game) {
+    public GameOver(Game game, int score, int deathCounter) {
         this.game = game;
         viewport = new FitViewport(Main.V_WIDTH, Main.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Main) game).batch);
 
         Label.LabelStyle font = new Label.LabelStyle(bitmapFont, Color.WHITE);
-
+		
+		
         Table table = new Table();
         table.center();
         table.setFillParent(true);//take up entire stage
 
         Label gameOverLabel = new Label("GAME OVER", font);
         Label playAgainLabel = new Label("Press space to play again!", font);
+		Label scoreLabel = new Label("Your Score: " + score, font);
+		Label killedEnemysLabel = new Label("Killed Enemeys: " + deathCounter, font);
         table.add(gameOverLabel).expandX();
 		table.row();
 		table.add(playAgainLabel).expandX().padTop(10f);
+		table.row();
+		table.add(scoreLabel).expandX().padTop(20);
+		table.row();
+		table.add(killedEnemysLabel).expandX();
 
         stage.addActor(table);
 

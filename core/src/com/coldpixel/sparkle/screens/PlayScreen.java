@@ -27,6 +27,7 @@ import com.coldpixel.sparkle.tools.B2WorldCreator;
 import com.coldpixel.sparkle.tools.WorldContactListener;
 import com.coldpixel.sparkle.sprites.Shard;
 import com.coldpixel.sparkle.sprites.Crystal;
+import com.coldpixel.sparkle.sprites.Soldier;
 
 /**
  *
@@ -211,7 +212,7 @@ public class PlayScreen implements Screen {
         hud.drawActionbar(main.batch, player.currentElement);
         hud.drawCooldown(player.currentElement);
         if(player.getGameOver()){
-            main.setScreen(new GameOver(main));
+            main.setScreen(new GameOver(main, hud.getScoreValue(), Soldier.getDeathCounter()));
             dispose();
         }
     }

@@ -59,6 +59,8 @@ public class Soldier extends Enemy {
     };
     public Soldier.State currentState;
     public Soldier.State previousState;
+	
+	private static int deathCounter=0;
 
     public Soldier(PlayScreen screen, float x, float y, Player player, Main.elementType element) {
         super(screen, x, y);
@@ -509,6 +511,7 @@ public class Soldier extends Enemy {
     public void death() {
         setCategoryFilter(Main.DESTROYED_BIT);
         setToDestroy = true;
+		deathCounter++;
     }
 
     public float getMovementSpeed() {
@@ -523,4 +526,7 @@ public class Soldier extends Enemy {
         return element;
     }
 
+	public static int getDeathCounter(){
+		return deathCounter;
+	}
 }
