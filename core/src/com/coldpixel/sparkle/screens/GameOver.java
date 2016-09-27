@@ -18,7 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.coldpixel.sparkle.Constants;
 import com.coldpixel.sparkle.Main;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 
 /**
  *
@@ -45,15 +47,16 @@ public class GameOver implements Screen {
 
         Label gameOverLabel = new Label("GAME OVER", font);
         Label playAgainLabel = new Label("Press space to play again!", font);
-		Label scoreLabel = new Label("Your Score: " + score, font);
-		Label killedEnemysLabel = new Label("Killed Enemeys: " + deathCounter, font);
+		Label scoreLabel = new Label("Total Score: " + score, font);
+		Label killedEnemysLabel = new Label("Total enemys killed: " + deathCounter, font);
+//		table.setDebug(true);
         table.add(gameOverLabel).expandX();
 		table.row();
 		table.add(playAgainLabel).expandX().padTop(10f);
 		table.row();
-		table.add(scoreLabel).expandX().padTop(20);
+		table.add(scoreLabel).padTop(80).left().padLeft(Constants.getWINDOW_WIDTH()/2.3f);
 		table.row();
-		table.add(killedEnemysLabel).expandX();
+		table.add(killedEnemysLabel).left().padLeft(Constants.getWINDOW_WIDTH()/2.3f);
 
         stage.addActor(table);
 
