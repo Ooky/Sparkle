@@ -47,3 +47,17 @@ public class Main extends Game {
         assetHelper.update();
     }
 }
+
+//ToDo DISPOSE shit
+//.xcf aufräumen (gimp, paint dot net)
+//Texturen ändern
+//code aufräumen
+//credits
+//paypal
+//resize->fuck it
+
+//game over
+//start game
+//game explanation
+//cleanup unused import/variables
+//array with end game notes(leave and shame or play again)

@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.coldpixel.sparkle.Main;
-import com.coldpixel.sparkle.sprites.Player;
 
 /**
  *
