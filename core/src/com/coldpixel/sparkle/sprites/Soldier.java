@@ -103,9 +103,9 @@ public class Soldier extends Enemy {
     }
 
     public void draw(Batch batch) {
-        if (!destroyed || stateTime < 15) {
+       // if (!destroyed || stateTime < 15) {
             super.draw(batch);
-        }
+       // }
     }
 
     protected void defineEnemy() {
