@@ -1,6 +1,6 @@
 
 pack.png
-size: 512,64
+size: 1024,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -11,9 +11,23 @@ Blue
   orig: 166, 56
   offset: 0, 0
   index: -1
-Grey
+Green
   rotate: false
   xy: 170, 2
+  size: 166, 56
+  orig: 166, 56
+  offset: 0, 0
+  index: -1
+Grey
+  rotate: false
+  xy: 338, 2
+  size: 166, 56
+  orig: 166, 56
+  offset: 0, 0
+  index: -1
+Red
+  rotate: false
+  xy: 506, 2
   size: 166, 56
   orig: 166, 56
   offset: 0, 0

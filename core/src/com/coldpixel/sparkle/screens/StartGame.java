@@ -37,7 +37,9 @@ public class StartGame implements Screen {
 	private TextButton howToPlay;
 	private TextButton credits;
 	private TextButton quitGame;
-	private TextButtonStyle buttonStyle;
+	private TextButtonStyle buttonStyleBlue;
+	private TextButtonStyle buttonStyleRed;
+	private TextButtonStyle buttonStyleGreen;
 	private BitmapFont font;
 	private Skin skin;
 	private TextureAtlas buttonAtlas;
@@ -49,16 +51,28 @@ public class StartGame implements Screen {
 		Gdx.input.setInputProcessor(stage);
 		font = new BitmapFont();
 		skin = new Skin();
-		buttonAtlas = new TextureAtlas(Gdx.files.internal("Buttons/buttons.atlas"));
+		buttonAtlas = new TextureAtlas(Gdx.files.internal("Buttons/pack.atlas"));
 		skin.addRegions(buttonAtlas);
-		buttonStyle = new TextButtonStyle();
-		buttonStyle.font = font;
-		buttonStyle.up = skin.getDrawable("Blue");
-		buttonStyle.down = skin.getDrawable("Grey");
-		startGameButton = new TextButton("Start Game", buttonStyle);
-		howToPlay = new TextButton("How to Play", buttonStyle);
-		credits = new TextButton("Credits", buttonStyle);
-		quitGame = new TextButton("Quit Game", buttonStyle);
+		//Blue
+		buttonStyleBlue = new TextButtonStyle();
+		buttonStyleBlue.font = font;
+		buttonStyleBlue.up = skin.getDrawable("Blue");
+		buttonStyleBlue.down = skin.getDrawable("Grey");
+		//Red
+		buttonStyleRed = new TextButtonStyle();
+		buttonStyleRed.font = font;
+		buttonStyleRed.up = skin.getDrawable("Red");
+		buttonStyleRed.down = skin.getDrawable("Grey");
+		//Green
+		buttonStyleGreen = new TextButtonStyle();
+		buttonStyleGreen.font = font;
+		buttonStyleGreen.up = skin.getDrawable("Green");
+		buttonStyleGreen.down = skin.getDrawable("Grey");
+		
+		startGameButton = new TextButton("Start Game", buttonStyleGreen);
+		howToPlay = new TextButton("How to Play", buttonStyleBlue);
+		credits = new TextButton("Credits", buttonStyleBlue);
+		quitGame = new TextButton("Quit Game", buttonStyleRed);
 
 		Table table = new Table();
 		table.center();
