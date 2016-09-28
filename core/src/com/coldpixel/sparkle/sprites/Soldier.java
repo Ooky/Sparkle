@@ -60,7 +60,7 @@ public class Soldier extends Enemy {
     public Soldier.State currentState;
     public Soldier.State previousState;
 	
-	private static int deathCounter=0;
+	private static int deathCounter;
 
     public Soldier(PlayScreen screen, float x, float y, Player player, Main.elementType element) {
         super(screen, x, y);
@@ -80,6 +80,7 @@ public class Soldier extends Enemy {
         setBounds(0, 0, soldierWidth / Main.PPM, soldierHeight / Main.PPM);
         currentState = Soldier.State.STANDING;
         victim = player;
+		deathCounter = 0;
     }
 
     public void update(float dt, Hud hud) {

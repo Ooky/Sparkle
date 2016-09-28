@@ -3,6 +3,7 @@ package com.coldpixel.sparkle;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.coldpixel.sparkle.screens.PlayScreen;
+import com.coldpixel.sparkle.screens.StartGame;
 import com.coldpixel.sparkle.tools.AssetHelper;
 
 public class Main extends Game {
@@ -39,6 +40,7 @@ public class Main extends Game {
         batch = new SpriteBatch();
         assetHelper = new AssetHelper();
         setScreen(new PlayScreen(this));
+		setScreen(new StartGame(this));
     }
 
     @Override
@@ -61,3 +63,4 @@ public class Main extends Game {
 //game explanation
 //cleanup unused import/variables
 //array with end game notes(leave and shame or play again)
+//Delete unnecessary comments

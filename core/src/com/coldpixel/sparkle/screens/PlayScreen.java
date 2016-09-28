@@ -4,6 +4,7 @@ import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.coldpixel.sparkle.sprites.Player;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -137,6 +138,9 @@ public class PlayScreen implements Screen {
         for(Crystal crystal : b2WorldCreator.getCrystals()){
             crystal.update(dt); 
         } 
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+			main.setScreen(new StartGame(main));
+		}
         cam.update();
         renderer.setView(cam);
     }
