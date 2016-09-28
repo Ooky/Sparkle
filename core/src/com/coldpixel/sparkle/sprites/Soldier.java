@@ -375,7 +375,7 @@ public class Soldier extends Enemy {
                 break;
             case EARTH:
                 deathAnimation = deathAnimationEarth;
-                this.setBounds(getX(), getY(), (soldierWidth + 32) / Main.PPM, getHeight());
+                this.setBounds(getX(), getY(),  80 / Main.PPM, 80 / Main.PPM);
                 break;
             case FIRE:
                 deathAnimation = deathAnimationFire;
@@ -428,6 +428,12 @@ public class Soldier extends Enemy {
                     }
                     deathAnimationAir = new Animation(0.3f, frames);
                     frames.clear();
+					 //DeathAnimation Earth
+                    for (int i = 0; i < 14; i++) {
+                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierEarthDeathEarth.png"), i * 80, 0, 80, 80));
+                    }
+                    deathAnimationEarth = new Animation(0.3f, frames);
+                    frames.clear();
                     break;
                 case WATER:
                     //Water
@@ -461,6 +467,12 @@ public class Soldier extends Enemy {
                     }
                     deathAnimationAir = new Animation(0.3f, frames);
                     frames.clear();
+					 //DeathAnimation Earth
+                    for (int i = 0; i < 14; i++) {
+                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWaterDeathEarth.png"), i * 80, 0, 80, 80));
+                    }
+                    deathAnimationEarth = new Animation(0.3f, frames);
+                    frames.clear();
                     break;
                 case FIRE:
                     //walkAnimation
@@ -493,6 +505,12 @@ public class Soldier extends Enemy {
                     }
                     deathAnimationAir = new Animation(0.3f, frames);
                     frames.clear();
+					 //DeathAnimation Earth
+                    for (int i = 0; i < 14; i++) {
+                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierFireDeathEarth.png"), i * 80, 0, 80, 80));
+                    }
+                    deathAnimationEarth = new Animation(0.3f, frames);
+                    frames.clear();
                     break;
                 case AIR:
                     //walkAnimation
@@ -524,6 +542,12 @@ public class Soldier extends Enemy {
                         frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAirDeathAir.png"), i * 80, 0, 80, 80));
                     }
                     deathAnimationAir = new Animation(0.3f, frames);
+                    frames.clear();
+					 //DeathAnimation Earth
+                    for (int i = 0; i < 14; i++) {
+                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAirDeathEarth.png"), i * 80, 0, 80, 80));
+                    }
+                    deathAnimationEarth = new Animation(0.3f, frames);
                     frames.clear();
                     break;
                 default:
