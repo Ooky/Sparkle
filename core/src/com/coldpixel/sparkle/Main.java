@@ -57,6 +57,7 @@ public class Main extends Game {
 //credits
 //paypal
 //resize->fuck it
+//Fix music(start new game-> go back, start new game
 
 //game over
 //start game

@@ -16,7 +16,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Main;
-import com.coldpixel.sparkle.screens.GameOver;
 import com.coldpixel.sparkle.screens.PlayScreen;
 import java.util.ArrayList;
 
