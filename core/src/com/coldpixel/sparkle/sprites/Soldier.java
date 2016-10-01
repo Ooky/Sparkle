@@ -184,7 +184,7 @@ public class Soldier extends Enemy {
                 region = walkAnimation.getKeyFrame(stateTime, true);
                 break;
         }
-        if (previousState == Soldier.State.ATTACK && currentState != Soldier.State.ATTACK && attackAnimation.isAnimationFinished(stateTime)) {
+        if (!destroyed && !setToDestroy && previousState == Soldier.State.ATTACK && currentState != Soldier.State.ATTACK && attackAnimation.isAnimationFinished(stateTime)) {
             this.setBounds(getX(), getY(), soldierWidth / Main.PPM, getHeight());
         }
         stateTime = currentState == previousState ? stateTime + dt : 0;
@@ -276,7 +276,7 @@ public class Soldier extends Enemy {
 
     public void setAttack(boolean attack) {
         isAttacking = attack;
-        if (isAttacking) {
+        if (isAttacking && (!destroyed || setToDestroy)) {
             this.setBounds(getX() - 13 / Main.PPM, getY(), (soldierWidth + 16) / Main.PPM, getHeight());
         }
     }
