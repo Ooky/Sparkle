@@ -28,6 +28,7 @@ public class Main extends Game {
     public static Boolean cooldownReady = true;
 
     public static enum elementType {
+
         WATER, FIRE, EARTH, AIR, NONE
     }
     private AssetHelper assetHelper;
@@ -39,14 +40,13 @@ public class Main extends Game {
     public void create() {
         batch = new SpriteBatch();
         assetHelper = new AssetHelper();
-        setScreen(new PlayScreen(this));
-		setScreen(new StartGame(this));
+        setScreen(new StartGame(this));
     }
 
     @Override
     public void render() {
         super.render(); //Delegate the render-methode to the active screen
-        assetHelper.update();
+        assetHelper.dispose();
     }
 }
 
@@ -58,7 +58,6 @@ public class Main extends Game {
 //paypal
 //resize->fuck it
 //Fix music(start new game-> go back, start new game
-
 //game over
 //start game
 //game explanation

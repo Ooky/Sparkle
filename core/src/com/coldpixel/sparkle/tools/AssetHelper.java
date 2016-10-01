@@ -37,16 +37,35 @@ public class AssetHelper extends AssetManager {
     }
 
     public void musicBackground(Boolean setLooping) {
-        music = manager.get("audio/music/determination.mp3", Music.class);
+        loadMusic();
         music.setLooping(setLooping);
         music.setVolume(volume);
         music.play();
     }
 
-    public Sound soundBonfire(Boolean setLooping) {
-        sound = manager.get("audio/sounds/fire_1.wav", Sound.class);
+    public void soundBonfire(Boolean setLooping) {
+        loadSound();
         soundID = sound.play(volume);
         sound.setLooping(soundID, setLooping);
-        return sound;
+    }
+
+    public void stopMusic() {
+        if (music.isPlaying()) {
+            music.stop();
+            music.dispose();
+        }
+    }
+
+    public void stopSound() {
+        sound.stop();
+        sound.dispose();
+    }
+
+    public void loadMusic() {
+        music = manager.get("audio/music/determination.mp3", Music.class);
+    }
+
+    public void loadSound() {
+        sound = manager.get("audio/sounds/fire_1.wav", Sound.class);
     }
 }

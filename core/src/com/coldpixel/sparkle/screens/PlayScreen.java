@@ -95,11 +95,10 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2DebugRenderer = new Box2DDebugRenderer();
-        
+
         player = new Player(this);
 
         b2WorldCreator = new B2WorldCreator(this);
-
 
         world.setContactListener(new WorldContactListener());
 
@@ -126,8 +125,9 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);//60 times a second
 //        rayHandler.update();
         player.update(dt);
-        for(Enemy enemy : b2WorldCreator.getSoldiers())
+        for (Enemy enemy : b2WorldCreator.getSoldiers()) {
             enemy.update(dt, hud);
+        }
         //bonfire animation
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
@@ -135,12 +135,14 @@ public class PlayScreen implements Screen {
         for (Shard shard : player.getIceShards()) {
             shard.update(dt);
         }
-        for(Crystal crystal : b2WorldCreator.getCrystals()){
-            crystal.update(dt); 
-        } 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-			main.setScreen(new StartGame(main));
-		}
+        for (Crystal crystal : b2WorldCreator.getCrystals()) {
+            crystal.update(dt);
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            assetHelper.stopMusic();
+            assetHelper.stopSound();
+            main.setScreen(new StartGame(main));
+        }
         cam.update();
         renderer.setView(cam);
     }
@@ -189,14 +191,15 @@ public class PlayScreen implements Screen {
         main.batch.setProjectionMatrix(cam.combined);
         rayHandler.setCombinedMatrix(cam);
         dayNightCycle();
-        
+
         main.batch.begin();
-        for(Enemy enemy : b2WorldCreator.getSoldiers())
+        for (Enemy enemy : b2WorldCreator.getSoldiers()) {
             enemy.draw(main.batch);
-        for(Crystal crystal : b2WorldCreator.getCrystals()){
+        }
+        for (Crystal crystal : b2WorldCreator.getCrystals()) {
             crystal.draw(main.batch);
         }
-        player.draw(main.batch);        
+        player.draw(main.batch);
         main.batch.end();
         rayHandler.updateAndRender();
 //        rayHandler.render();
@@ -207,16 +210,17 @@ public class PlayScreen implements Screen {
         for (Shard ice : player.getIceShards()) {
             ice.draw(main.batch);
         }
-        for(Crystal crystal : b2WorldCreator.getCrystals()){
-            crystal.draw(main.batch); 
-        } 
+        for (Crystal crystal : b2WorldCreator.getCrystals()) {
+            crystal.draw(main.batch);
+        }
         main.batch.end();
 
         hud.drawHUD(player.getHealth());
         hud.drawActionbar(main.batch, player.currentElement);
         hud.drawCooldown(player.currentElement);
-        if(player.getGameOver()){
-            main.setScreen(new GameOver(main, hud.getScoreValue(), Soldier.getDeathCounter()));
+        if (player.getGameOver()) {
+            main.setScreen(new GameOver(main, hud.getScoreValue(), Soldier.getDeathCounter(), assetHelper));
+            assetHelper.dispose();
             dispose();
         }
     }
@@ -273,8 +277,8 @@ public class PlayScreen implements Screen {
     public Main getMain() {
         return main;
     }
-    
-    public Player getPlayer(){
+
+    public Player getPlayer() {
         return player;
     }
 
