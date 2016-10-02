@@ -64,3 +64,5 @@ public class Main extends Game {
 //cleanup unused import/variables
 //array with end game notes(leave and shame or play again)
 //Delete unnecessary comments
+//credits geben
+//Link should be clickable

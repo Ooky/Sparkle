@@ -126,8 +126,8 @@ public class StartGame implements Screen {
 
             @Override
             public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
-                System.out.println("ADD WINDOW FOR RULES/IMAGE/WHATEVER!");
-                System.out.println("CREDITS/PAYPAL(Support us...)");
+                game.setScreen(new HTPCredits((Main) game));
+                dispose();
             }
         });
         //QuitGame
@@ -154,9 +154,11 @@ public class StartGame implements Screen {
             switch (currentButtonState) {
                 case BUTTON1:
                     game.setScreen(new PlayScreen((Main) game));
+                    dispose();
                     break;
                 case BUTTON2:
-                    System.out.println("ADD SCREEN! Method handleInput in Class Startgame!");
+                    game.setScreen(new HTPCredits((Main) game));
+                    dispose();
                     break;
                 case BUTTON3:
                     Gdx.app.exit();
