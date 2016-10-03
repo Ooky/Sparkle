@@ -21,6 +21,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Constants;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.tools.AssetHelper;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -32,11 +34,14 @@ public class GameOver implements Screen {
     private Stage stage;
     private Game game;
     private BitmapFont bitmapFont = new BitmapFont();
+	private ArrayList<String> deathMessages = new ArrayList<String>();
+	private Random rnd = new Random();
 
     public GameOver(Game game, int score, int deathCounter, AssetHelper assetHelper) {
         this.game = game;
         viewport = new FitViewport(Main.V_WIDTH, Main.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Main) game).batch);
+		initDeathMessages();
 
         Label.LabelStyle font = new Label.LabelStyle(bitmapFont, Color.WHITE);
 
@@ -45,13 +50,17 @@ public class GameOver implements Screen {
         table.setFillParent(true);//take up entire stage
 
         Label gameOverLabel = new Label("GAME OVER", font);
+		Label deathMessage = new Label(rndArrItem(),font);
+		deathMessage.setColor(new Color(Color.CHARTREUSE));
         Label playAgainLabel = new Label("Press SPACE to play again!", font);
         Label scoreLabel = new Label("Total Score: " + score, font);
         Label killedEnemysLabel = new Label("Total enemys killed: " + deathCounter, font);
 //		table.setDebug(true);
         table.add(gameOverLabel).expandX();
         table.row();
-        table.add(playAgainLabel).expandX().padTop(10f);
+		table.add(deathMessage).padTop(5);
+		table.row();
+        table.add(playAgainLabel).expandX().padTop(20f);
         table.row();
         table.add(scoreLabel).padTop(80).left().padLeft(Constants.getWINDOW_WIDTH() / 2.3f);
         table.row();
@@ -77,6 +86,25 @@ public class GameOver implements Screen {
         }
         stage.draw();
     }
+	
+	private void initDeathMessages(){
+		deathMessages.add("Leave and shame or play and gain.");
+		deathMessages.add("Wanna try again?");
+		deathMessages.add("You can do it if you really want!");
+		deathMessages.add("You've came so far, to lose it all.");
+		deathMessages.add("Dont lose hope.");
+		deathMessages.add("You died...nothing more to say.");
+		deathMessages.add("Did you even try?");
+		deathMessages.add("Holy Crap! You died!");
+		deathMessages.add("This is the Game Over screen, which means you lost.");
+		deathMessages.add("Git gud");
+	}
+	
+	private String rndArrItem(){
+		int index = rnd.nextInt(deathMessages.size());
+		String deathMessage = deathMessages.get(index);
+		return deathMessage;
+	}
 
     public void update(float dt) {
 

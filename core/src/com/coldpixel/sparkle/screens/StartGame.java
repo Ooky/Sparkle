@@ -150,7 +150,7 @@ public class StartGame implements Screen {
         if (Gdx.input.isKeyJustPressed(Keys.UP)|| (Gdx.input.isKeyJustPressed(Keys.W))) {
             moveBorderDOWN();
         }
-        if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isKeyJustPressed(Keys.E))) {
+        if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isKeyJustPressed(Keys.E)) || (Gdx.input.isKeyJustPressed(Keys.SPACE))) {
             switch (currentButtonState) {
                 case BUTTON1:
                     game.setScreen(new PlayScreen((Main) game));

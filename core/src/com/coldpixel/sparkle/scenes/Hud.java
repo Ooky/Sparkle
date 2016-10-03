@@ -89,35 +89,7 @@ public class Hud implements Disposable {
 		gap = Gdx.graphics.getHeight() / 48;
 		shaperenderer = new ShapeRenderer();
 		startTime = TimeUtils.nanoTime();
-		switch (Main.V_WIDTH) {
-			case 3840:
-				lifebarWidth = 440;
-				break;
-			case 1920:
-				lifebarWidth = 240;
-				break;
-			case 1280:
-				lifebarWidth = 180;
-				break;
-			case 1024:
-				lifebarWidth = 156;
-				break;
-			case 800:
-				lifebarWidth = 135;
-				break;
-			case 720:
-				lifebarWidth = 125;
-				break;
-			case 640:
-				lifebarWidth = 120;
-				break;
-			case 480:
-				lifebarWidth = 110;
-				break;
-			default:
-				lifebarWidth = Gdx.graphics.getWidth() / 8;
-		}
-
+		lifebarWidth = 180;
 		lifebarHeight = 20;
 
 		viewport = new StretchViewport(Constants.getWINDOW_WIDTH(), Constants.getWINDOW_HEIGTH(), new OrthographicCamera());
@@ -127,8 +99,7 @@ public class Hud implements Disposable {
 		tableTop.top();
 		tableTop.setFillParent(true);//=size of the stage
 		playerLifeLabel = new Label(String.format("%03d", playerLife) + " / " + maxLife, new Label.LabelStyle(new BitmapFont(), Color.BLACK));
-		//scoreLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
+		
 		timeValueLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		scoreValueLabel = new Label(String.format("%06d", scoreValue), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
@@ -321,10 +292,6 @@ public class Hud implements Disposable {
 		cooldownLabel4.setText("");
 	}
 
-	/*
-	 public void setCooldownReady(Boolean cooldownReady) {
-	 this.cooldownReady = cooldownReady;
-	 }*/
 	public int getScoreValue() {
 		return scoreValue;
 	}

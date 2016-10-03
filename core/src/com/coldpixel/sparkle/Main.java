@@ -2,7 +2,6 @@ package com.coldpixel.sparkle;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.coldpixel.sparkle.screens.PlayScreen;
 import com.coldpixel.sparkle.screens.StartGame;
 import com.coldpixel.sparkle.tools.AssetHelper;
 
@@ -54,15 +53,12 @@ public class Main extends Game {
 //.xcf aufräumen (gimp, paint dot net)
 //Texturen ändern
 //code aufräumen
-//credits
 //paypal
-//resize->fuck it
-//Fix music(start new game-> go back, start new game
-//game over
+//game over probably better
 //start game
 //game explanation
 //cleanup unused import/variables
 //array with end game notes(leave and shame or play again)
 //Delete unnecessary comments
 //credits geben
-//Link should be clickable
+//Button should link to a paypal account
