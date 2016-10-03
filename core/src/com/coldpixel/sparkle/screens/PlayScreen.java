@@ -29,6 +29,8 @@ import com.coldpixel.sparkle.tools.WorldContactListener;
 import com.coldpixel.sparkle.sprites.Shard;
 import com.coldpixel.sparkle.sprites.Crystal;
 import com.coldpixel.sparkle.sprites.Soldier;
+import com.coldpixel.sparkle.tools.Wave;
+import java.util.ArrayList;
 
 /**
  *
@@ -72,6 +74,9 @@ public class PlayScreen implements Screen {
     //Music
     private AssetHelper assetHelper;
 
+	//Wave
+	private Wave waveHandler;
+	private ArrayList<Soldier> soldiersArray;
 //==============================================================================
 //Methods
 //==============================================================================
@@ -82,7 +87,8 @@ public class PlayScreen implements Screen {
         ambientLight = 0.8f;
         isDay = true;
         cycleTime = TimeUtils.nanoTime();
-
+		soldiersArray = new ArrayList<Soldier>();
+		
         this.main = main;
         cam = new OrthographicCamera();
         gamePort = new StretchViewport(Main.V_WIDTH / Main.PPM, Main.V_HEIGHT / Main.PPM, cam);
@@ -96,8 +102,8 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2DebugRenderer = new Box2DDebugRenderer();
 
-        player = new Player(this);
-
+        player = new Player(this);		
+		waveHandler = new Wave(this,player);
         b2WorldCreator = new B2WorldCreator(this);
 
         world.setContactListener(new WorldContactListener());
@@ -125,6 +131,10 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);//60 times a second
 //        rayHandler.update();
         player.update(dt);
+		waveHandler.update();		
+		for(Enemy enemy : soldiersArray){
+			enemy.update(dt, hud);
+		}
         for (Enemy enemy : b2WorldCreator.getSoldiers()) {
             enemy.update(dt, hud);
         }
@@ -143,6 +153,7 @@ public class PlayScreen implements Screen {
             assetHelper.stopSound();
             main.setScreen(new StartGame(main));
         }
+		
         cam.update();
         renderer.setView(cam);
     }
@@ -193,6 +204,9 @@ public class PlayScreen implements Screen {
         dayNightCycle();
 
         main.batch.begin();
+		for(Enemy enemy : soldiersArray){
+			enemy.draw(main.batch);
+		}
         for (Enemy enemy : b2WorldCreator.getSoldiers()) {
             enemy.draw(main.batch);
         }
@@ -282,4 +296,7 @@ public class PlayScreen implements Screen {
         return player;
     }
 
+	public void addSoldierArray(ArrayList<Soldier> arr){
+		this.soldiersArray.addAll(arr);
+	}
 }
