@@ -144,10 +144,10 @@ public class StartGame implements Screen {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+        if (Gdx.input.isKeyJustPressed(Keys.DOWN) || (Gdx.input.isKeyJustPressed(Keys.S))) {
             moveBorderUP();
         }
-        if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+        if (Gdx.input.isKeyJustPressed(Keys.UP)|| (Gdx.input.isKeyJustPressed(Keys.W))) {
             moveBorderDOWN();
         }
         if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isKeyJustPressed(Keys.E))) {

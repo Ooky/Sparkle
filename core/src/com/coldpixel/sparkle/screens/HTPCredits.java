@@ -7,6 +7,7 @@ package com.coldpixel.sparkle.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -52,11 +53,14 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
 
 		Label howToPlayTitle = new Label("HOW TO PLAY", font);
 		Label howToPlay = new Label("You deal more Damage depending on your and the enemys current element."
-				+ "\n"
-				+ "\nWater -> Fire"
-				+ "\nFire -> Earth"
-				+ "\nEarth -> Air"
+				+ "\nYour goal is to kill as many enemys as possible, you will die anyways."
+				+ "\nIf you are in the center, near the crystal, you'll regain some health over time.", font);
+		Label elementsControls = new Label(""
+				+ "\nWater -> Fire                                                                   WSAD = Movement"
+				+ "\nFire -> Earth                                                ARROW-KEYS = Shootdirection"
+				+ "\nEarth -> Air                                                                          ESC = Mainmenu"
 				+ "\nAir -> Water", font);
+
 		Label creditsTitle = new Label("CREDITS", font);
 		Label credits = new Label("We did barely all on our own except the background music and sound."
 				+ "\nProbably Email?"
@@ -81,16 +85,20 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
 			}
 		});
 
-		Label stars1 = new Label("****************************", font);
-		Label stars2 = new Label("****************************", font);
-		Label stars3 = new Label("****************************", font);
+		Label stars1 = new Label("************************************************************************************", font);
+		Label stars2 = new Label("************************************************************************************", font);
+		Label stars3 = new Label("************************************************************************************", font);
 
-//        table.setDebug(true);
+		Label escape = new Label("Press \"ESC\" or \"C\" to go back", font);
+
+//		table.setDebug(true);
 		table.add(howToPlayTitle).expandX();
 		table.row();
 		table.add(stars1);
 		table.row();
 		table.add(howToPlay).expandX();
+		table.row();
+		table.add(elementsControls).padTop(10f);
 		table.row();
 		table.add(creditsTitle).expandX().padTop(30f);
 		table.row();
@@ -104,7 +112,9 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
 		table.row();
 		table.add(supportUS).expandX();
 		table.row();
-		table.add(button).expandX().padTop(20f);
+		table.add(button).expandX().padTop(100f);
+		table.row();
+		table.add(escape).expandX().padTop(120);
 
 		stage.addActor(table);
 	}
@@ -113,6 +123,10 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
 	public void render(float f) {
 		Gdx.gl.glClearColor(42 / 255f, 47 / 255f, 48 / 255f, 1);//0-1, Float.
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || (Gdx.input.isKeyJustPressed(Input.Keys.C))) {
+			game.setScreen(new StartGame((Main) game));
+			dispose();
+		}
 		stage.draw();
 	}
 
