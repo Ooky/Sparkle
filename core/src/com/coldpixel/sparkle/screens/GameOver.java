@@ -90,7 +90,7 @@ public class GameOver implements Screen {
 	private void initDeathMessages(){
 		deathMessages.add("Leave and shame or play and gain.");
 		deathMessages.add("Wanna try again?");
-		deathMessages.add("You can do it if you really want!");
+		deathMessages.add("You can do it if you really try!");
 		deathMessages.add("You've came so far, to lose it all.");
 		deathMessages.add("Dont lose hope.");
 		deathMessages.add("You died...nothing more to say.");

@@ -8,17 +8,17 @@
  </tileset>
  <layer name="grass" width="20" height="12">
   <data encoding="base64" compression="zlib">
-   eJyNklEKgDAMQ2WX6f6X+59NBIUaX4YfgVHTZ7tF4ziqSbeu82wq8HmtoE+h/lfVONr46Jugr4J/gRJbxnpqvXfHT/sIWGmP5//uS3PSTMTV+O4u4C/r373vGu878GwQj5Tuuc9QxkzcAs4ElvdRTlJuPP9/lTJI3hN6lyv1
+   eJxTZ2JgUB/Fo3gUD0kMAGT4JnE=
   </data>
  </layer>
  <layer name="dirt" width="20" height="12">
   <data encoding="base64" compression="zlib">
-   eJytkl0KwDAIg33RW2/n2G7bvgjZh60bLCCUNib+1OwfhJy94cXmvdJTHDPOJlc5YU9P1nbNuJuakrPSe9NP5hKZr3qqST/qZTjO9NCgD3V47wutVT3aV9VvpZfgfqu9JUd76fbLOr3gcDa7f6y+1cyJL5zOWz0HSCUKgA==
+   eJyNUssOwkAINPzMbrVHql59XPv4/69xGiVBAgWSyQR2mIVtG53S4ETTyEfkFZ1V/AbwGej09eoGe+0CjHTsJX4T+KpqelfR3MD3oh/Tf2/7zaVrVuehOxzp9VvYeSo67142uefnvZfu1fse3anxAJ7B7OL3Ar+T7yAxI1+c/4VVvgJbwcuGN1/Un/lFu0YawQd5YR0b
   </data>
  </layer>
- <layer name="objects" width="20" height="12">
+ <layer name="objects" width="20" height="12" visible="0">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUDFUAAAPAAAE=
+   eJyNkksKwCAQQ8XLaD/bfvbtvr3/aTqFimmIn4GAzsRHFJ3LFfxfvfV6o/Azr5eZeOhP5wfT2OBN1p+/WfRZireYVpozd7P97nMu5kXKU7s395GXCvk4q51lBcFT3F7hXbnHeXitMiMPGaV/gKzDdBY4/E6qx9ku093IpaTeqOWtMXt56HkAnzkdTg==
   </data>
  </layer>
  <objectgroup name="hitbox">
