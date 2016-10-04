@@ -36,9 +36,11 @@ public class GameOver implements Screen {
     private BitmapFont bitmapFont = new BitmapFont();
 	private ArrayList<String> deathMessages = new ArrayList<String>();
 	private Random rnd = new Random();
-
+	private int score = 0;
+	
     public GameOver(Game game, int score, int deathCounter, AssetHelper assetHelper) {
         this.game = game;
+		this.score = score;
         viewport = new FitViewport(Main.V_WIDTH, Main.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Main) game).batch);
 		initDeathMessages();
@@ -98,11 +100,23 @@ public class GameOver implements Screen {
 		deathMessages.add("Holy Crap! You died!");
 		deathMessages.add("This is the Game Over screen, which means you lost.");
 		deathMessages.add("Git gud");
+		deathMessages.add("Don't turn your back on me now");
+		deathMessages.add("So many dumb ways to die");
+		deathMessages.add("This ain't Hogwarts, this is serious");
+		deathMessages.add("Get your magic together");
+		deathMessages.add("Next time I wanna be stronger, next time ...");
+		deathMessages.add("Once a loser, always a loser");
+		deathMessages.add("I heard a rumor that there is a surprise  if you get a score over 9000");
 	}
 	
 	private String rndArrItem(){
-		int index = rnd.nextInt(deathMessages.size());
-		String deathMessage = deathMessages.get(index);
+		String deathMessage = "";
+		if(score < 9000){
+			int index = rnd.nextInt(deathMessages.size());
+			deathMessage = deathMessages.get(index);
+		}else{
+			deathMessage = "I guess you are here for the boobs. So here you go: (.)(.)";
+		}
 		return deathMessage;
 	}
 
