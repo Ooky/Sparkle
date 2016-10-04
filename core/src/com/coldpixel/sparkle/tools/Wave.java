@@ -21,10 +21,12 @@ public class Wave {
 
 	private long startTime = 0;
 	private int timeValue = 0;
-	private int increaseSpawnTime = 0;
+	private int increaseSpawnTime = 2;
 	private PlayScreen screen;
 	private	Random rand = new Random();
 	private Player player;
+	private ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+	private Soldier randomSoldier;
 	
 	public Wave(PlayScreen pl, Player player) {
 		screen = pl;
@@ -34,9 +36,12 @@ public class Wave {
 
 	public void update() {
 		if (TimeUtils.timeSinceNanos(startTime) > 1000000000) {//Every second
-			if (timeValue < (10 + increaseSpawnTime)) {
+			if (timeValue < (8 + increaseSpawnTime)) {
+				if(soldiers.size() < increaseSpawnTime){
+					addEnemy();
+				}
 				timeValue++;
-			} else if (timeValue >= (10 + increaseSpawnTime)) {
+			} else if (timeValue >= (8 + increaseSpawnTime)) {
 				spawnEnemys();
 				increaseSpawnTime += 2;
 				timeValue = 0;
@@ -46,42 +51,48 @@ public class Wave {
 	}
 	
 	private void spawnEnemys(){
-		ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
-		for(int i = 0; i < (3 + increaseSpawnTime); i++){
-			Main.elementType element;
-			switch(getRandomNumber(1, 4)){
-				case 1:
-					element = Main.elementType.AIR;
-					break;
-				case 2:
-					element = Main.elementType.EARTH;
-					break;
-				case 3:
-					element = Main.elementType.FIRE;
-					break;
-				case 4:
-					element = Main.elementType.WATER;
-					break;
-				default:
-					element = Main.elementType.AIR;
-					break;
-			}
-			switch(getRandomNumber(1, 4)){
-				case 1: 
-					soldiers.add(new Soldier(screen, 50/Main.PPM, 50/Main.PPM, player, element));
-					break;
-				case 2: 
-					soldiers.add(new Soldier(screen, 50/Main.PPM, 680/Main.PPM, player, element));
-					break;
-				case 3: 
-					soldiers.add(new Soldier(screen, 1100/Main.PPM, 50/Main.PPM, player, element));
-					break;
-				case 4: 
-					soldiers.add(new Soldier(screen, 1100/Main.PPM, 680/Main.PPM, player, element));
-					break;
-			}
+		for(Soldier soldier : soldiers){
+			soldier.b2Body.setActive(true);
 		}
 		screen.addSoldierArray(soldiers);
+		soldiers.clear();
+	}
+	
+	private void addEnemy(){
+		Main.elementType element;
+		switch(getRandomNumber(1, 4)){
+			case 1:
+				element = Main.elementType.AIR;
+				break;
+			case 2:
+				element = Main.elementType.EARTH;
+				break;
+			case 3:
+				element = Main.elementType.FIRE;
+				break;
+			case 4:
+				element = Main.elementType.WATER;
+				break;
+			default:
+				element = Main.elementType.AIR;
+				break;
+		}
+		switch(getRandomNumber(1, 4)){
+			case 1: 
+				randomSoldier = new Soldier(screen, 50/Main.PPM, 50/Main.PPM, player, element);
+				break;
+			case 2: 
+				randomSoldier = new Soldier(screen, 50/Main.PPM, 680/Main.PPM , player, element);
+				break;
+			case 3: 
+				randomSoldier = new Soldier(screen, 1100/Main.PPM, 50/Main.PPM, player, element);
+				break;
+			case 4: 
+				randomSoldier = new Soldier(screen, 1100/Main.PPM, 680/Main.PPM, player, element);
+				break;
+		}
+		randomSoldier.b2Body.setActive(false);
+		soldiers.add(randomSoldier);
 	}
 	
 	private int getRandomNumber(int min, int max){
