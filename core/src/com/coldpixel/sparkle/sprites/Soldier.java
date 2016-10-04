@@ -91,6 +91,7 @@ public class Soldier extends Enemy {
         stateTime += dt;
         if (setToDestroy && !destroyed) {
             world.destroyBody(b2Body);
+			//b2Body.setActive(false);
             destroyed = true;
             //change texture region
         } else if (!destroyed) {
@@ -577,5 +578,9 @@ public class Soldier extends Enemy {
 
 	public static int getDeathCounter(){
 		return deathCounter;
+	}
+	
+	public void setDestroyed(Boolean des){
+		this.destroyed = des;
 	}
 }

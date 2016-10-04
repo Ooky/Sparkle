@@ -26,19 +26,30 @@ public class Wave {
 	private	Random rand = new Random();
 	private Player player;
 	private ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+	private ArrayList<Soldier> rubishSoldiers = new ArrayList<Soldier>();
 	private Soldier randomSoldier;
 	
 	public Wave(PlayScreen pl, Player player) {
 		screen = pl;
 		this.player = player;
 		startTime = TimeUtils.nanoTime();
+		for(int i = 0; i < 80; i++){
+			addEnemy();
+		}
 	}
 
 	public void update() {
 		if (TimeUtils.timeSinceNanos(startTime) > 1000000000) {//Every second
 			if (timeValue < (8 + increaseSpawnTime)) {
-				if(soldiers.size() < increaseSpawnTime){
+				/*if(soldiers.size() < increaseSpawnTime){
 					addEnemy();
+				}*/
+				if((soldiers.size() < 3) /*|| (increaseSpawnTime > 10 && soldiers.size() < 20)*/){
+					for(int i = 0; i < 30; i++){
+						addEnemy();
+					}
+					//soldiers.addAll(rubishSoldiers);
+					//rubishSoldiers.clear();
 				}
 				timeValue++;
 			} else if (timeValue >= (8 + increaseSpawnTime)) {
@@ -51,11 +62,17 @@ public class Wave {
 	}
 	
 	private void spawnEnemys(){
-		for(Soldier soldier : soldiers){
+		/*for(Soldier soldier : soldiers){
 			soldier.b2Body.setActive(true);
+		}*/
+		for(int i = 0; i < increaseSpawnTime; i++){
+			soldiers.get(1).b2Body.setActive(true);
+			soldiers.get(1).setDestroyed(false);
+			screen.addSoldier(soldiers.get(1));
+			rubishSoldiers.add(soldiers.get(1));
+			soldiers.remove(1);
 		}
-		screen.addSoldierArray(soldiers);
-		soldiers.clear();
+		//soldiers.clear();
 	}
 	
 	private void addEnemy(){
@@ -97,5 +114,8 @@ public class Wave {
 	
 	private int getRandomNumber(int min, int max){
 		return rand.nextInt((max - min) + 1) + min;
+	}
+	public void clearArray(){
+		soldiers.clear();
 	}
 }

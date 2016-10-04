@@ -235,6 +235,7 @@ public class PlayScreen implements Screen {
         if (player.getGameOver()) {
             main.setScreen(new GameOver(main, hud.getScoreValue(), Soldier.getDeathCounter(), assetHelper));
             assetHelper.dispose();
+			waveHandler.clearArray();
             dispose();
         }
     }
@@ -296,7 +297,11 @@ public class PlayScreen implements Screen {
         return player;
     }
 
-	public void addSoldierArray(ArrayList<Soldier> arr){
+	/*public void addSoldierArray(ArrayList<Soldier> arr){
 		this.soldiersArray.addAll(arr);
+	}*/
+
+	public void addSoldier(Soldier soldier){
+		this.soldiersArray.add(soldier);
 	}
 }
