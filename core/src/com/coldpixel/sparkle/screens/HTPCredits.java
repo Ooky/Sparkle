@@ -63,6 +63,9 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
 
 		Label creditsTitle = new Label("CREDITS", font);
 		Label credits = new Label("We did barely all on our own except the background music and sound."
+				+"\nCredit for the background music goes to artisticdude from opengameart.org"
+				+"\nCredit for the bonfire sound goes to AntumDeluge from opengameart.org"
+				+"\nCredit for assets that we used to test stuff and for inspiration goes to Kenny from kenney.nl"
 				+ "\nProbably Email?"
 				+ "\nProbably copyright?", font);
 		Label supportUSTitle = new Label("WANT TO SUPPORT US?", font);
@@ -92,7 +95,7 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
 		Label escape = new Label("Press \"ESC\" or \"C\" to go back", font);
 
 //		table.setDebug(true);
-		table.add(howToPlayTitle).expandX();
+		table.add(howToPlayTitle).expandX().padTop(50);
 		table.row();
 		table.add(stars1);
 		table.row();
