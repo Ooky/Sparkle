@@ -113,7 +113,7 @@ public class GameOver implements Screen {
 		String deathMessage = "";
 		if(score < 9000){
 			int index = rnd.nextInt(deathMessages.size());
-			deathMessage = "I heard a rumor that there is a surprise  if you get a score of over 9000";
+			deathMessage = deathMessages.get(index);
 		}else{
 			deathMessage = "I guess you are here for the boobs. So here you go: (.)(.)";
 		}
