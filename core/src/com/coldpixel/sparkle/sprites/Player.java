@@ -98,8 +98,8 @@ public class Player extends Sprite {
 
     public Player(PlayScreen screen) {
         super(screen.getAtlas().findRegion("Player48x64"));
-        startPosX = 180;
-        startPosY = 60;
+        startPosX = 580;
+        startPosY = 280;
         playerWidth = 48;
         playerHeight = 64;
         directionRight = true;

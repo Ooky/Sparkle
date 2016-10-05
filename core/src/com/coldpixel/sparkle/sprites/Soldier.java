@@ -40,8 +40,8 @@ public class Soldier extends Enemy {
 
     private float x;
     private float y;
-    protected int soldierWidth = 48;
-    protected int soldierHeight = 64;
+    protected final int soldierWidth = 48;
+    protected final int soldierHeight = 64;
     private float movementSpeed;
     private float maxSpeed;
 
@@ -90,7 +90,8 @@ public class Soldier extends Enemy {
         }
         stateTime += dt;
         if (setToDestroy && !destroyed) {
-            world.destroyBody(b2Body);
+			// world.destroyBody(b2Body);
+			b2Body.setActive(false);
 			//b2Body.setActive(false);
             destroyed = true;
             //change texture region
@@ -107,7 +108,7 @@ public class Soldier extends Enemy {
     }
 
     public void draw(Batch batch) {
-       // if (!destroyed || stateTime < 15) {
+        //if (!destroyed || stateTime < 50) {
             super.draw(batch);
        // }
     }
@@ -559,10 +560,26 @@ public class Soldier extends Enemy {
     }
 
     public void death() {
-        setCategoryFilter(Main.DESTROYED_BIT);
+       // setCategoryFilter(Main.DESTROYED_BIT);
         setToDestroy = true;
 		deathCounter++;
     }
+	
+	public void revive(){
+		this.setBounds(getX(), getY(), soldierWidth / Main.PPM, soldierHeight / Main.PPM);
+		stateTime = 0;
+		health = 100;
+		previousHealth = 100;
+        destroyed = false;
+        setToDestroy = false;
+        avoidObject = false;
+        movementSpeed = .8f;
+        maxSpeed = 1.0f;
+        isFlipped = false;
+        setBounds(0, 0, soldierWidth / Main.PPM, soldierHeight / Main.PPM);
+        currentState = Soldier.State.STANDING;
+        currentState = Soldier.State.STANDING;
+	}
 
     public float getMovementSpeed() {
         return movementSpeed;
@@ -582,5 +599,9 @@ public class Soldier extends Enemy {
 	
 	public void setDestroyed(Boolean des){
 		this.destroyed = des;
+	}
+	
+	public Boolean getSetToDestroy(){
+		return setToDestroy;
 	}
 }

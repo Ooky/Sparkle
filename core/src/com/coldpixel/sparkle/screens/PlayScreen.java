@@ -197,7 +197,7 @@ public class PlayScreen implements Screen {
         //render gamemap
         renderer.render();
         //render Box2DDebugLines
-        //b2DebugRenderer.render(world, cam.combined);
+        b2DebugRenderer.render(world, cam.combined);
 
         main.batch.setProjectionMatrix(cam.combined);
         rayHandler.setCombinedMatrix(cam);
@@ -302,6 +302,8 @@ public class PlayScreen implements Screen {
 	}*/
 
 	public void addSoldier(Soldier soldier){
+		soldier.b2Body.setActive(true);
+		soldier.revive();
 		this.soldiersArray.add(soldier);
 	}
 }

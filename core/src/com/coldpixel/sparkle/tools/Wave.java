@@ -5,6 +5,7 @@
  */
 package com.coldpixel.sparkle.tools;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.screens.PlayScreen;
@@ -26,33 +27,33 @@ public class Wave {
 	private	Random rand = new Random();
 	private Player player;
 	private ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
-	private ArrayList<Soldier> rubishSoldiers = new ArrayList<Soldier>();
+	private ArrayList<Soldier> deadSoldiers = new ArrayList<Soldier>();
 	private Soldier randomSoldier;
 	
 	public Wave(PlayScreen pl, Player player) {
 		screen = pl;
 		this.player = player;
 		startTime = TimeUtils.nanoTime();
-		for(int i = 0; i < 80; i++){
+		for(int i = 0; i < 27; i++){
 			addEnemy();
 		}
 	}
 
 	public void update() {
 		if (TimeUtils.timeSinceNanos(startTime) > 1000000000) {//Every second
-			if (timeValue < (8 + increaseSpawnTime)) {
+			if (timeValue < (1 + increaseSpawnTime)) {
 				/*if(soldiers.size() < increaseSpawnTime){
 					addEnemy();
 				}*/
-				if((soldiers.size() < 3) /*|| (increaseSpawnTime > 10 && soldiers.size() < 20)*/){
-					for(int i = 0; i < 30; i++){
+				//if((soldiers.size() < 3) /*|| (increaseSpawnTime > 10 && soldiers.size() < 20)*/){
+				/*	for(int i = 0; i < 30; i++){
 						addEnemy();
 					}
 					//soldiers.addAll(rubishSoldiers);
 					//rubishSoldiers.clear();
-				}
+				}*/
 				timeValue++;
-			} else if (timeValue >= (8 + increaseSpawnTime)) {
+			} else if (timeValue >= (1 + increaseSpawnTime)) {
 				spawnEnemys();
 				increaseSpawnTime += 2;
 				timeValue = 0;
@@ -65,12 +66,27 @@ public class Wave {
 		/*for(Soldier soldier : soldiers){
 			soldier.b2Body.setActive(true);
 		}*/
-		for(int i = 0; i < increaseSpawnTime; i++){
-			soldiers.get(1).b2Body.setActive(true);
-			soldiers.get(1).setDestroyed(false);
-			screen.addSoldier(soldiers.get(1));
-			rubishSoldiers.add(soldiers.get(1));
-			soldiers.remove(1);
+	if(soldiers.size() <= 1){
+			for(Soldier soldier : deadSoldiers){
+				if(soldier.getSetToDestroy()){
+					setSoldierRandomPosition(soldier);
+					soldiers.add(soldier);
+				}
+			}
+		}
+		for(int i = 0; i < (soldiers.size()>=increaseSpawnTime?increaseSpawnTime:soldiers.size()) ;i++){
+			soldiers.get(0).b2Body.setActive(true);
+			screen.addSoldier(soldiers.get(0));
+			deadSoldiers.add(soldiers.get(0));
+			soldiers.remove(0);
+			if(soldiers.size() <= 1){
+				for(Soldier soldier : deadSoldiers){
+					if(soldier.getSetToDestroy()){
+						setSoldierRandomPosition(soldier);
+						soldiers.add(soldier);
+					}
+				}
+			}
 		}
 		//soldiers.clear();
 	}
@@ -112,10 +128,32 @@ public class Wave {
 		soldiers.add(randomSoldier);
 	}
 	
+	private void setSoldierRandomPosition(Soldier soldier){
+		switch(getRandomNumber(1, 4)){
+			case 1: 
+				soldier.b2Body.setTransform(50/Main.PPM , 50/Main.PPM,soldier.b2Body.getAngle());
+				break;
+			case 2: 
+				soldier.b2Body.setTransform(50/Main.PPM , 680/Main.PPM,soldier.b2Body.getAngle());
+				break;
+			case 3: 
+				soldier.b2Body.setTransform(1100/Main.PPM , 50/Main.PPM,soldier.b2Body.getAngle());
+				break;
+			case 4: 
+				soldier.b2Body.setTransform(1100/Main.PPM , 680/Main.PPM,soldier.b2Body.getAngle());
+				break;
+		}
+	}
+	
 	private int getRandomNumber(int min, int max){
 		return rand.nextInt((max - min) + 1) + min;
 	}
+	
 	public void clearArray(){
 		soldiers.clear();
+	}
+	
+	public void addDeadSoldier(Soldier soldier){
+		deadSoldiers.add(soldier);
 	}
 }
