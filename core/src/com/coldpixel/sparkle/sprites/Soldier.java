@@ -53,6 +53,8 @@ public class Soldier extends Enemy {
     private State avoidDirection;
     private Main.elementType element;
 
+	private Boolean isSpawned = false;
+	
     public enum State {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK, DESTROYED
@@ -88,7 +90,7 @@ public class Soldier extends Enemy {
             hud.addScore(previousHealth - health);
             previousHealth = health;
         }
-        stateTime += dt;
+        //stateTime += dt;
         if (setToDestroy && !destroyed) {
 			// world.destroyBody(b2Body);
 			b2Body.setActive(false);
@@ -104,13 +106,14 @@ public class Soldier extends Enemy {
             setPosition((b2Body.getPosition().x) - ((getWidth() + ((currentState == Soldier.State.ATTACK) ? (isFlipped ? -16 : +16) / Main.PPM : 0)) / 2), b2Body.getPosition().y - (getHeight() / 2));
         }
         setRegion(getFrame(dt));
-
     }
 
     public void draw(Batch batch) {
-        //if (!destroyed || stateTime < 50) {
+        if (!destroyed || stateTime < 50) {
             super.draw(batch);
-       // }
+		}else if(isSpawned){
+			this.setIsSpawned(false);
+		}
     }
 
     protected void defineEnemy() {
@@ -456,7 +459,7 @@ public class Soldier extends Enemy {
                     for (int i = 0; i < 12; i++) {
                         frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierDeathFinalBlue.png"), i * (soldierWidth + 32), 0, soldierWidth + 32, soldierHeight));
                     }
-                    deathAnimationWater = new Animation(0.2f, frames);
+                    deathAnimationWater = new Animation(0.3f, frames);
                     frames.clear();
                      //DeathAnimation Fire
                     for (int i = 0; i < 15; i++) {
@@ -566,8 +569,6 @@ public class Soldier extends Enemy {
     }
 	
 	public void revive(){
-		this.setBounds(getX(), getY(), soldierWidth / Main.PPM, soldierHeight / Main.PPM);
-		stateTime = 0;
 		health = 100;
 		previousHealth = 100;
         destroyed = false;
@@ -577,8 +578,9 @@ public class Soldier extends Enemy {
         maxSpeed = 1.0f;
         isFlipped = false;
         setBounds(0, 0, soldierWidth / Main.PPM, soldierHeight / Main.PPM);
-        currentState = Soldier.State.STANDING;
-        currentState = Soldier.State.STANDING;
+        currentState = Soldier.State.RIGHT;
+        previousState = Soldier.State.RIGHT;
+		isSpawned = false;
 	}
 
     public float getMovementSpeed() {
@@ -604,4 +606,13 @@ public class Soldier extends Enemy {
 	public Boolean getSetToDestroy(){
 		return setToDestroy;
 	}
+	
+	public Boolean getIsSpawned(){
+		return isSpawned;
+	}
+
+	public void setIsSpawned(Boolean isSpawned) {
+		this.isSpawned = isSpawned;
+	}
+	
 }

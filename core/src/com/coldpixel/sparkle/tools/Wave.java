@@ -27,21 +27,22 @@ public class Wave {
 	private	Random rand = new Random();
 	private Player player;
 	private ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
-	private ArrayList<Soldier> deadSoldiers = new ArrayList<Soldier>();
+	//private ArrayList<Soldier> deadSoldiers = new ArrayList<Soldier>();
 	private Soldier randomSoldier;
 	
 	public Wave(PlayScreen pl, Player player) {
 		screen = pl;
 		this.player = player;
 		startTime = TimeUtils.nanoTime();
-		for(int i = 0; i < 27; i++){
+		for(int i = 0; i < 30; i++){
 			addEnemy();
 		}
+		screen.setSoldiers(soldiers);
 	}
 
 	public void update() {
 		if (TimeUtils.timeSinceNanos(startTime) > 1000000000) {//Every second
-			if (timeValue < (1 + increaseSpawnTime)) {
+			//if (timeValue < (1/* + increaseSpawnTime*/)) {
 				/*if(soldiers.size() < increaseSpawnTime){
 					addEnemy();
 				}*/
@@ -52,9 +53,12 @@ public class Wave {
 					//soldiers.addAll(rubishSoldiers);
 					//rubishSoldiers.clear();
 				}*/
-				timeValue++;
-			} else if (timeValue >= (1 + increaseSpawnTime)) {
-				spawnEnemys();
+			/*	timeValue++;
+			} else */
+			timeValue++;
+			if (timeValue >= (1 + increaseSpawnTime)) {
+				//spawnEnemys();
+				screen.spawnSoldiers(increaseSpawnTime);
 				increaseSpawnTime += 2;
 				timeValue = 0;
 			}
@@ -66,8 +70,8 @@ public class Wave {
 		/*for(Soldier soldier : soldiers){
 			soldier.b2Body.setActive(true);
 		}*/
-	if(soldiers.size() <= 1){
-			for(Soldier soldier : deadSoldiers){
+	//if(soldiers.size() <= 4){
+		/*	for(Soldier soldier : deadSoldiers){
 				if(soldier.getSetToDestroy()){
 					setSoldierRandomPosition(soldier);
 					soldiers.add(soldier);
@@ -75,19 +79,10 @@ public class Wave {
 			}
 		}
 		for(int i = 0; i < (soldiers.size()>=increaseSpawnTime?increaseSpawnTime:soldiers.size()) ;i++){
-			soldiers.get(0).b2Body.setActive(true);
 			screen.addSoldier(soldiers.get(0));
 			deadSoldiers.add(soldiers.get(0));
 			soldiers.remove(0);
-			if(soldiers.size() <= 1){
-				for(Soldier soldier : deadSoldiers){
-					if(soldier.getSetToDestroy()){
-						setSoldierRandomPosition(soldier);
-						soldiers.add(soldier);
-					}
-				}
-			}
-		}
+		}*/
 		//soldiers.clear();
 	}
 	
@@ -128,7 +123,7 @@ public class Wave {
 		soldiers.add(randomSoldier);
 	}
 	
-	private void setSoldierRandomPosition(Soldier soldier){
+	public void setSoldierRandomPosition(Soldier soldier){
 		switch(getRandomNumber(1, 4)){
 			case 1: 
 				soldier.b2Body.setTransform(50/Main.PPM , 50/Main.PPM,soldier.b2Body.getAngle());
@@ -153,7 +148,7 @@ public class Wave {
 		soldiers.clear();
 	}
 	
-	public void addDeadSoldier(Soldier soldier){
+	/*public void addDeadSoldier(Soldier soldier){
 		deadSoldiers.add(soldier);
-	}
+	}*/
 }
