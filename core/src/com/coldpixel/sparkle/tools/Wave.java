@@ -22,7 +22,7 @@ public class Wave {
 
 	private long startTime = 0;
 	private int timeValue = 0;
-	private int increaseSpawnTime = 2;
+	private int increaseSpawnTime = 0;
 	private PlayScreen screen;
 	private	Random rand = new Random();
 	private Player player;
@@ -56,7 +56,7 @@ public class Wave {
 			/*	timeValue++;
 			} else */
 			timeValue++;
-			if (timeValue >= (1 + increaseSpawnTime)) {
+			if (timeValue >= (5 + increaseSpawnTime)) {
 				//spawnEnemys();
 				screen.spawnSoldiers(increaseSpawnTime);
 				increaseSpawnTime += 2;
