@@ -25,7 +25,7 @@ import com.coldpixel.sparkle.screens.PlayScreen;
  * @author mike
  */
 public class Soldier extends Enemy {
-
+	private static int counter=0;
     //animation
     private float stateTime;
     private Animation walkAnimation;
@@ -51,8 +51,8 @@ public class Soldier extends Enemy {
     private State avoidDirection;
     private Main.elementType element;
 
-    private Boolean isSpawned = false;
-
+	private Boolean isSpawned = false;
+	private int number;
     public enum State {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK, DESTROYED
@@ -72,6 +72,8 @@ public class Soldier extends Enemy {
 
     public Soldier(PlayScreen screen, float x, float y, Player player, Main.elementType element) {
         super(screen, x, y);
+		counter++;
+		this.number = counter;
         this.screen = screen;
         this.element = element;
         frames = new Array<TextureRegion>();
@@ -363,11 +365,9 @@ public class Soldier extends Enemy {
     }
 
     public void draw(Batch batch) {
-        if (!destroyed || stateTime < 50) {
+        //if (!destroyed || stateTime < 50) {
             super.draw(batch);
-        } else if (isSpawned) {
-            this.setIsSpawned(false);
-        }
+       // }
     }
 
     protected void defineEnemy() {
@@ -656,15 +656,14 @@ public class Soldier extends Enemy {
         previousHealth = 100;
         destroyed = false;
         setToDestroy = false;
-        avoidObject = false;
-        movementSpeed = .8f;
-        maxSpeed = 1.0f;
+       avoidObject = false;
+       movementSpeed = .8f;
+       maxSpeed = 1.0f;
         isFlipped = false;
         setBounds(0, 0, soldierWidth / Main.PPM, soldierHeight / Main.PPM);
         currentState = Soldier.State.RIGHT;
         previousState = Soldier.State.RIGHT;
-        isSpawned = false;
-    }
+	}
 
     public float getMovementSpeed() {
         return movementSpeed;
@@ -682,20 +681,19 @@ public class Soldier extends Enemy {
         return deathCounter;
     }
 
-    public void setDestroyed(Boolean des) {
-        this.destroyed = des;
-    }
+	public void setIsSpawned(Boolean isSpawned) {
+		this.isSpawned = isSpawned;
+		
+	}
 
-    public Boolean getSetToDestroy() {
-        return setToDestroy;
-    }
+	public int getNumber() {
+		return number;
+	}
 
-    public Boolean getIsSpawned() {
-        return isSpawned;
-    }
-
-    public void setIsSpawned(Boolean isSpawned) {
-        this.isSpawned = isSpawned;
-    }
-
+	public void setNumber(int number) {
+		this.number = number;
+	}
+	
+	
+	
 }

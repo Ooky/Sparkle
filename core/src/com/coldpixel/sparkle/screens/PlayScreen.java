@@ -74,10 +74,10 @@ public class PlayScreen implements Screen {
     //Music
     private AssetHelper assetHelper;
 
-    //Wave
-    private Wave waveHandler;
-    private ArrayList<Soldier> soldiersArray;
-    private int soldierSpawned = -1;
+	//Wave
+	private Wave waveHandler;
+	private ArrayList<Soldier> soldiersArray;
+	private int soldierSpawned = 0;
 //==============================================================================
 //Methods
 //==============================================================================
@@ -133,15 +133,13 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);//60 times a second
 //        rayHandler.update();
         player.update(dt);
-        waveHandler.update(this);
-        if (soldierSpawned >= 27) {
-            refillSoldierArray();
-        }
-        for (Soldier enemy : soldiersArray) {
-            if (enemy.getIsSpawned()) {
-                enemy.update(dt, hud);
-            }
-        }
+		waveHandler.update();	
+		
+		for(Soldier enemy : soldiersArray){
+			if(enemy.getIsSpawned()){
+				enemy.update(dt, hud);
+			}
+		}
         for (Enemy enemy : b2WorldCreator.getSoldiers()) {
             enemy.update(dt, hud);
         }
@@ -307,28 +305,56 @@ public class PlayScreen implements Screen {
         this.soldiersArray = soldiers;
     }
 
-    public void spawnSoldiers(int count) {
-        int i = 1;
-        while (i < count) {
-            if (soldiersArray.size() > soldierSpawned + i) {
-                if (!soldiersArray.get(soldierSpawned + i).b2Body.isActive()) {
-                    soldiersArray.get(soldierSpawned + i).b2Body.setActive(true);
-                    soldiersArray.get(soldierSpawned + i).setIsSpawned(true);
-                }
-            }
-            i++;
-        }
-        soldierSpawned += i;
-    }
-
-    public void refillSoldierArray() {
-        for (Soldier soldier : soldiersArray) {
-            if (soldier.getSetToDestroy() || !soldier.getIsSpawned()) {
-                soldier.revive();
-                soldier.setIsSpawned(false);
-                waveHandler.setSoldierRandomPosition(soldier);
-            }
-        }
-        soldierSpawned = 0;
-    }
+	/*public void addSoldier(Soldier soldier){
+		soldier.b2Body.setActive(true);
+		if(soldier.getSetToDestroy()){
+			soldier.revive();
+		}
+		this.soldiersArray.add(soldier);
+	}*/
+	public void setSoldiers(ArrayList<Soldier> soldiers){
+		this.soldiersArray = soldiers;
+	}
+	
+	public void spawnSoldiers(int count){
+		int i = 0;
+		for(Soldier soldier: soldiersArray){
+			if(!soldier.b2Body.isActive() && i < count){
+				i++;
+				soldier.revive();
+				soldier.b2Body.setActive(true);
+				waveHandler.setSoldierRandomPosition(soldier);
+				soldier.setIsSpawned(true);
+			}
+		}
+		/*int i = 1;
+		int j = 1;
+		while(i < count){
+			if(j > soldiersArray.size()){
+				i+=500;
+			}
+			if(soldiersArray.size() > soldierSpawned+i && !soldiersArray.get(soldierSpawned+i).b2Body.isActive()){
+					soldiersArray.get(soldierSpawned+i).revive();
+					soldiersArray.get(soldierSpawned+i).b2Body.setActive(true);
+					soldiersArray.get(soldierSpawned+i).setIsSpawned(true);
+					System.out.println(soldiersArray.get(soldierSpawned+i).getNumber());
+					System.out.println(soldiersArray.get(soldierSpawned+i).getSetToDestroy());
+					i++;
+					soldierSpawned++;
+			}
+			j++;
+		}*/
+	}
+	
+	public void refillSoldierArray(){
+	//	System.out.println("refillArray");
+		/*for(Soldier soldier : soldiersArray){
+			if(soldier.getSetToDestroy()){
+				waveHandler.setSoldierRandomPosition(soldier);
+				soldier.revive();
+				//soldier.setIsSpawned(false);				
+			}
+		}*/
+	//	soldierSpawned = -1;
+	}
 }

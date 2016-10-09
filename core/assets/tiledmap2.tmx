@@ -42,7 +42,12 @@
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup name="Soldier"/>
+ <objectgroup name="Soldier">
+  <object id="58" x="64" y="64" width="64" height="64"/>
+  <object id="141" x="64" y="640" width="64" height="64"/>
+  <object id="142" x="1152" y="64" width="64" height="64"/>
+  <object id="144" x="1152" y="640" width="64" height="64"/>
+ </objectgroup>
  <objectgroup name="Crystal" offsetx="0" offsety="-1">
   <object id="61" x="605" y="320" width="64" height="64"/>
  </objectgroup>
