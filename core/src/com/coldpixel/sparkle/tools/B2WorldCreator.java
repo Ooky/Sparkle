@@ -18,12 +18,11 @@ import com.coldpixel.sparkle.sprites.EnvironmentObject;
 import com.coldpixel.sparkle.sprites.Grass;
 import com.coldpixel.sparkle.sprites.Soldier;
 import com.coldpixel.sparkle.sprites.Crystal;
-import com.coldpixel.sparkle.sprites.Player;
 import java.util.ArrayList;
 
 /**
  *
- * @author Coldpixel
+ * @author Creat-if
  */
 public class B2WorldCreator {
 
@@ -38,25 +37,22 @@ public class B2WorldCreator {
     private Grass grass;
     private Dirt dirt;
     private EnvironmentObject environmentObject;
-    
+
     private ArrayList<BonFire> bonefires;
     private BonFire boneFire;
-    
+
     private ArrayList<Soldier> soldiers;
     private Soldier soldier;
-    
+
     private ArrayList<Crystal> crystals;
     private Crystal crystal;
-    
-    private AssetHelper assetHelper;
+
 //==============================================================================
 //Methods
 //==============================================================================  
     public B2WorldCreator(PlayScreen playScreen) {
         World world = playScreen.getWorld();
         TiledMap map = playScreen.getMap();
-//        Main main = playScreen.getMain();
-        assetHelper = new AssetHelper();
         bDef = new BodyDef();
         polygonShape = new PolygonShape();
         fDef = new FixtureDef();
@@ -72,7 +68,7 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             dirt = new Dirt(playScreen, rect);
         }
-        
+
         //Create Object
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -82,7 +78,7 @@ public class B2WorldCreator {
         //Create hitbox
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            
+
             bDef.type = BodyDef.BodyType.StaticBody;
             bDef.position.set((rect.getX() + rect.getWidth() / 2) / Main.PPM, (rect.getY() + rect.getHeight() / 2) / Main.PPM);
 
@@ -93,40 +89,40 @@ public class B2WorldCreator {
             fDef.filter.categoryBits = Main.OBJECT_BIT;
             body.createFixture(fDef).setUserData(rect);
         }
-        
+
         //Create light
         bonefires = new ArrayList<BonFire>();
-        for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) { 
+        for (MapObject object : map.getLayers().get(4).getObjects().getByType(EllipseMapObject.class)) {
             boneFire = new BonFire(((EllipseMapObject) object), playScreen);
             bonefires.add(boneFire);
         }
-        
+
         //Create Soldiers
         soldiers = new ArrayList<Soldier>();
-        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) { 
-            soldier = new Soldier(playScreen, ((RectangleMapObject)object).getRectangle().getX() / Main.PPM,
-                    ((RectangleMapObject)object).getRectangle().getY() / Main.PPM, playScreen.getPlayer(), Main.elementType.FIRE);
+        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
+            soldier = new Soldier(playScreen, ((RectangleMapObject) object).getRectangle().getX() / Main.PPM,
+                    ((RectangleMapObject) object).getRectangle().getY() / Main.PPM, playScreen.getPlayer(), Main.elementType.FIRE);
             soldiers.add(soldier);
         }
-        
+
         //Create Soldiers
         crystals = new ArrayList<Crystal>();
-        for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) { 
-            crystal = new Crystal(playScreen, ((RectangleMapObject)object).getRectangle().getX(),
-                    ((RectangleMapObject)object).getRectangle().getY());
+        for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+            crystal = new Crystal(playScreen, ((RectangleMapObject) object).getRectangle().getX(),
+                    ((RectangleMapObject) object).getRectangle().getY());
             crystals.add(crystal);
         }
     }
-    
-    public ArrayList<BonFire> getBonFires(){
+
+    public ArrayList<BonFire> getBonFires() {
         return bonefires;
     }
-    
-        public ArrayList<Soldier> getSoldiers(){
+
+    public ArrayList<Soldier> getSoldiers() {
         return soldiers;
     }
-        
-    public ArrayList<Crystal> getCrystals(){
+
+    public ArrayList<Crystal> getCrystals() {
         return crystals;
     }
 }
