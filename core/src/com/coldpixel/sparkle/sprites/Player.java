@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Coldpixel
+ * @author Creat-if
  */
 public class Player extends Sprite {
 
@@ -38,22 +38,22 @@ public class Player extends Sprite {
 
         RIGHT, LEFT, UP, DOWN
     };
-    public shootDirection currentShootDirection;
+    private shootDirection currentShootDirection;
     private float health;
-    public World world;
+    private World world;
     private PlayScreen screen;
     public Body b2Body;
 
     //Player Stats
-    public enum State {
+    private enum State {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK,
     };
     public Main.elementType currentElement;
     private Main.elementType startingElement = Main.elementType.WATER;
 
-    public State currentState;
-    public State previousState;
+    private State currentState;
+    private State previousState;
     //Animation 
     private Animation playerWaterStanding;
     private Animation playerWaterRunning;
@@ -82,9 +82,7 @@ public class Player extends Sprite {
     private Boolean isHealing;
     //Attack
     private Boolean isAttacking;
-    private Shard iceShard;
     private ArrayList<Shard> shards;
-  //  public boolean cooldownReady = true;
 
     //Player Stats
     private float movementSpeed;
@@ -114,7 +112,7 @@ public class Player extends Sprite {
 
         //healing
         isHealing = false;
-        healingFactor = 0.05f;
+        healingFactor = 0.1f;
 
         //Attack
         isAttacking = false;
@@ -137,7 +135,7 @@ public class Player extends Sprite {
         generateFrames();
     }
 
-    public void definePlayer() {
+    private void definePlayer() {
         BodyDef bDef = new BodyDef();
         bDef.position.set(startPosX / Main.PPM, startPosY / Main.PPM);
         bDef.type = BodyDef.BodyType.DynamicBody;
@@ -146,13 +144,9 @@ public class Player extends Sprite {
         FixtureDef fDef = new FixtureDef();
         PolygonShape rectangleShape = new PolygonShape();
         rectangleShape.setAsBox(playerWidth / 2 / Main.PPM, playerHeight / 2 / Main.PPM); //Starts from the center
-
-//        CircleShape shape = new CircleShape();
-//        shape.setRadius(50);
-//        fDef.shape = shape;
         fDef.filter.categoryBits = Main.PLAYER_BIT;
-        fDef.filter.maskBits = /*Main.GROUND_BIT | */ //Needed?
-                Main.BONFIRE_BIT
+        fDef.filter.maskBits
+                = Main.BONFIRE_BIT
                 | Main.ENEMY_BIT
                 | Main.ENEMYMELEEATTACK_BIT
                 | Main.CRYSTAL_BIT
@@ -167,29 +161,16 @@ public class Player extends Sprite {
         if (isHealing && health < maxHealth) {
             healing();
         }
-        if(health <= 0) {
+        if (health <= 0) {
             gameOver = true;
-        } 
+        }
     }
 
 //==============================================================================
 //Getter
 //==============================================================================
-    public float getMovementSpeed() {
-        return movementSpeed;
-    }
-
-    public float getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public TextureRegion getFrame(float dt) {
+    private TextureRegion getFrame(float dt) {
         currentState = getState();
-//        if (currentState == Player.State.ATTACK && !isAttacking) {
-//            currentState = getState();
-//        } else if (currentState != Player.State.ATTACK) {
-//            currentState = getState();
-//        }
         getCurrentElement();
         TextureRegion region;
         switch (currentState) {
@@ -276,7 +257,7 @@ public class Player extends Sprite {
 
     }
 
-    public State getState() {
+    private State getState() {
         if (isAttacking) {
             return Player.State.ATTACK;
         } else if (b2Body.getLinearVelocity().y > 0.001) {
@@ -294,18 +275,18 @@ public class Player extends Sprite {
 
     public void handleInput(int cooldownValue) {
         //LinearImpulse:first:x/y,second: where to impulse from the body?->center!, third: will impulse awake obj?
-        if ((Gdx.input.isKeyPressed(Input.Keys.W) /*|| (Gdx.input.isKeyPressed(Input.Keys.UP))*/) && this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
+        if ((Gdx.input.isKeyPressed(Input.Keys.W) ) && this.b2Body.getLinearVelocity().y <= maxSpeed) {
             //Check if Player isnt moving faster than he is allowed to 
-            this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+            this.b2Body.applyLinearImpulse(new Vector2(0, movementSpeed), this.b2Body.getWorldCenter(), true);
         }
-        if ((Gdx.input.isKeyPressed(Input.Keys.A) /*|| (Gdx.input.isKeyPressed(Input.Keys.LEFT))*/) && this.b2Body.getLinearVelocity().x >= -this.getMaxSpeed()) {
-            this.b2Body.applyLinearImpulse(new Vector2(-this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+        if ((Gdx.input.isKeyPressed(Input.Keys.A) ) && this.b2Body.getLinearVelocity().x >= -maxSpeed) {
+            this.b2Body.applyLinearImpulse(new Vector2(-movementSpeed, 0), this.b2Body.getWorldCenter(), true);
         }
-        if ((Gdx.input.isKeyPressed(Input.Keys.S) /*|| (Gdx.input.isKeyPressed(Input.Keys.DOWN))*/) && this.b2Body.getLinearVelocity().y >= -this.getMaxSpeed()) {
-            this.b2Body.applyLinearImpulse(new Vector2(0, -this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+        if ((Gdx.input.isKeyPressed(Input.Keys.S) ) && this.b2Body.getLinearVelocity().y >= -maxSpeed) {
+            this.b2Body.applyLinearImpulse(new Vector2(0, -movementSpeed), this.b2Body.getWorldCenter(), true);
         }
-        if ((Gdx.input.isKeyPressed(Input.Keys.D) /*|| (Gdx.input.isKeyPressed(Input.Keys.RIGHT))*/) && this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()) {
-            this.b2Body.applyLinearImpulse(new Vector2(this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+        if ((Gdx.input.isKeyPressed(Input.Keys.D) ) && this.b2Body.getLinearVelocity().x <= maxSpeed) {
+            this.b2Body.applyLinearImpulse(new Vector2(movementSpeed, 0), this.b2Body.getWorldCenter(), true);
         }
 
         this.b2Body.setLinearDamping(60.0f);//Slow down
@@ -331,19 +312,19 @@ public class Player extends Sprite {
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) && cooldownValue <= 0) {
             currentElement = Main.elementType.WATER;
             Main.cooldownReady = false;
-         //   setCooldownReady(false);
+            //   setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) && cooldownValue <= 0) {
             currentElement = Main.elementType.FIRE;
             Main.cooldownReady = false;
-        //    setCooldownReady(false);
+            //    setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) && cooldownValue <= 0) {
             currentElement = Main.elementType.EARTH;
             Main.cooldownReady = false;
-        //    setCooldownReady(false);
+            //    setCooldownReady(false);
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4) && cooldownValue <= 0) {
             currentElement = Main.elementType.AIR;
             Main.cooldownReady = false;
-        //    setCooldownReady(false);
+            //    setCooldownReady(false);
         }
     }
 
@@ -355,13 +336,7 @@ public class Player extends Sprite {
         isHealing = h;
     }
 
-    public void setHealingFactor(int factor) {
-        healingFactor = factor;
-    }
 
-    public void increaseHealth(int increase) {
-        health += increase;
-    }
 
     public void decreaseHealth(int decrease) {
         health -= decrease;
@@ -375,7 +350,7 @@ public class Player extends Sprite {
         health += healingFactor;
     }
 
-    public void generateFrames() {
+    private void generateFrames() {
         //----------------------------------------------------------------------
         //WATER
         //----------------------------------------------------------------------
@@ -477,7 +452,7 @@ public class Player extends Sprite {
         frames.clear();
     }
 
-    public void getCurrentElement() {
+    private void getCurrentElement() {
         if (currentElement == Main.elementType.WATER) {
             playerCurrentElementStanding = playerWaterStanding;
             playerCurrentElementRunning = playerWaterRunning;
@@ -497,8 +472,8 @@ public class Player extends Sprite {
         }
 
     }
-    
-    public Boolean getGameOver(){
+
+    public Boolean getGameOver() {
         return gameOver;
     }
 

@@ -5,6 +5,10 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.coldpixel.sparkle.Main;
 
+/**
+ *
+ * @author Creat-if
+ */
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
@@ -16,7 +20,7 @@ public class DesktopLauncher {
             Constants.setWINDOW_WIDTH(LwjglApplicationConfiguration.getDesktopDisplayMode().width);
             Constants.setWINDOW_HEIGTH(LwjglApplicationConfiguration.getDesktopDisplayMode().height);
         }
-        
+
         config.width = Constants.getWINDOW_WIDTH();
         config.height = Constants.getWINDOW_HEIGTH();
         config.title = Constants.GAMENAME;
@@ -26,7 +30,6 @@ public class DesktopLauncher {
         if (Constants.borderlessWindow) {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
         }
-
 
         if (Constants.MAX_FPS) {
             //Shows the "real" fps, 0 disables throttling 

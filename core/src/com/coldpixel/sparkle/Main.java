@@ -5,6 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.coldpixel.sparkle.screens.StartGame;
 import com.coldpixel.sparkle.tools.AssetHelper;
 
+/**
+ *
+ * @author Creat-if
+ */
 public class Main extends Game {
 
 //==============================================================================
@@ -51,14 +55,24 @@ public class Main extends Game {
 
 //ToDo DISPOSE shit
 //.xcf aufräumen (gimp, paint dot net)
-//Texturen ändern
-//code aufräumen
+//cleanup code
 //paypal
 //game over probably better
-//start game
-//game explanation
-//cleanup unused import/variables
-//array with end game notes(leave and shame or play again)
 //Delete unnecessary comments
-//credits geben
 //Button should link to a paypal account
+//Remove unecessary images
+//pack images
+//assetmanager?
+//Credits->How to play->image with fire->green->air->water->fire..
+//Change icon(top left corner, CONSTANTS)
+//change as much methods from public to private
+//Tests if bugs occur
+//Add HIT-Sounds?
+
+//CHECK CREDITS->EMAIL?
+//CHECK CREDITS->CopyRight?
+
+//Spawn more enemys? more enemys at start array?
+//player->generateFrames->cleanup!  //same with shard
+//Check enemy line: 103, 104,56, 29
+//day'night cycle->maybe change value? or switch it with a key instead of timer?

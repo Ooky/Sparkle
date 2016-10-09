@@ -11,7 +11,7 @@ import com.badlogic.gdx.audio.Sound;
 
 /**
  *
- * @author Coldpixel
+ * @author Creat-if
  */
 public class AssetHelper extends AssetManager {
 

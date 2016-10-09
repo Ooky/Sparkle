@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Coldpixel
+ * @author Creat-if
  */
 public class PlayScreen implements Screen {
 
@@ -61,7 +61,6 @@ public class PlayScreen implements Screen {
     private PointLight pointLight;
     private float ambientLight;
 
-    // private PointLight myLight;
     //Character
     private Player player;
     private TextureAtlas atlas;
@@ -77,7 +76,6 @@ public class PlayScreen implements Screen {
     //Wave
     private Wave waveHandler;
     private ArrayList<Soldier> soldiersArray;
-    private int soldierSpawned = 0;
 //==============================================================================
 //Methods
 //==============================================================================
@@ -127,7 +125,7 @@ public class PlayScreen implements Screen {
         assetHelper.soundBonfire(true);
     }
 
-    public void update(float dt) {
+    private void update(float dt) {
         player.handleInput(hud.cooldownValue);
         //hud.setCooldownReady(player.getCooldownReady());
         world.step(1 / 60f, 6, 2);//60 times a second
@@ -163,10 +161,6 @@ public class PlayScreen implements Screen {
     }
 
     private void dayNightCycle() {
-//        System.out.println(ambientLight);
-//        System.out.println(TimeUtils.timeSinceNanos(cycleTime));
-//        System.out.println(TimeUtils.timeSinceNanos(startTime));
-//        System.out.println(toggleDayTime);
         if (TimeUtils.timeSinceNanos(cycleTime) > 900000000000L && !isDay) {//15Min  900000000000L
             if (TimeUtils.timeSinceNanos(startTime) > 50000000L) {//1Sec= 1000000000
                 ambientLight += 0.005f;
@@ -198,7 +192,6 @@ public class PlayScreen implements Screen {
         update(delta);
         Gdx.gl.glClearColor(42 / 255f, 47 / 255f, 48 / 255f, 1);//0-1, Float.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //render gamemap
         renderer.render();
         //render Box2DDebugLines
         b2DebugRenderer.render(world, cam.combined);
@@ -222,7 +215,6 @@ public class PlayScreen implements Screen {
         player.draw(main.batch);
         main.batch.end();
         rayHandler.updateAndRender();
-//        rayHandler.render();
         main.batch.begin();
         for (BonFire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.draw(main.batch);
@@ -292,9 +284,6 @@ public class PlayScreen implements Screen {
         return world;
     }
 
-    public Main getMain() {
-        return main;
-    }
 
     public Player getPlayer() {
         return player;
@@ -315,34 +304,5 @@ public class PlayScreen implements Screen {
                 soldier.setIsSpawned(true);
             }
         }
-        /*int i = 1;
-         int j = 1;
-         while(i < count){
-         if(j > soldiersArray.size()){
-         i+=500;
-         }
-         if(soldiersArray.size() > soldierSpawned+i && !soldiersArray.get(soldierSpawned+i).b2Body.isActive()){
-         soldiersArray.get(soldierSpawned+i).revive();
-         soldiersArray.get(soldierSpawned+i).b2Body.setActive(true);
-         soldiersArray.get(soldierSpawned+i).setIsSpawned(true);
-         System.out.println(soldiersArray.get(soldierSpawned+i).getNumber());
-         System.out.println(soldiersArray.get(soldierSpawned+i).getSetToDestroy());
-         i++;
-         soldierSpawned++;
-         }
-         j++;
-         }*/
-    }
-
-    public void refillSoldierArray() {
-	//	System.out.println("refillArray");
-		/*for(Soldier soldier : soldiersArray){
-         if(soldier.getSetToDestroy()){
-         waveHandler.setSoldierRandomPosition(soldier);
-         soldier.revive();
-         //soldier.setIsSpawned(false);				
-         }
-         }*/
-        //	soldierSpawned = -1;
     }
 }

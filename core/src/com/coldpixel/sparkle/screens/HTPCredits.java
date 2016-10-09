@@ -28,134 +28,134 @@ import com.coldpixel.sparkle.Main;
 
 /**
  *
- * @author Coldpixel
+ * @author Creat-if
  */
 public class HTPCredits implements Screen {//HowToPlayCredits Screen
 
-	private Viewport viewport;
-	private Stage stage;
-	private Game game;
-	private BitmapFont bitmapFont = new BitmapFont();
-	private TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("Buttons/pack.atlas"));
-	private Skin skin = new Skin();
+    private Viewport viewport;
+    private Stage stage;
+    private Game game;
+    private BitmapFont bitmapFont = new BitmapFont();
+    private TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("Buttons/pack.atlas"));
+    private Skin skin = new Skin();
 
-	public HTPCredits(final Game game) {
-		this.game = game;
-		viewport = new FitViewport(Main.V_WIDTH, Main.V_HEIGHT, new OrthographicCamera());
-		stage = new Stage(viewport, ((Main) game).batch);
+    public HTPCredits(final Game game) {
+        this.game = game;
+        viewport = new FitViewport(Main.V_WIDTH, Main.V_HEIGHT, new OrthographicCamera());
+        stage = new Stage(viewport, ((Main) game).batch);
 
-		Label.LabelStyle font = new Label.LabelStyle(bitmapFont, Color.WHITE);
+        Label.LabelStyle font = new Label.LabelStyle(bitmapFont, Color.WHITE);
 
-		Table table = new Table();
-		table.center();
-		table.setFillParent(true);
-		Gdx.input.setInputProcessor(stage);
+        Table table = new Table();
+        table.center();
+        table.setFillParent(true);
+        Gdx.input.setInputProcessor(stage);
 
-		Label howToPlayTitle = new Label("HOW TO PLAY", font);
-		Label howToPlay = new Label("You deal more Damage depending on your and the enemys current element."
-				+ "\nYour goal is to kill as many enemys as possible, you will die anyways."
-				+ "\nIf you are in the center, near the crystal, you'll regain some health over time.", font);
-		Label elementsControls = new Label(""
-				+ "\nWater -> Fire                                                                   WSAD = Movement"
-				+ "\nFire -> Earth                                                ARROW-KEYS = Shootdirection"
-				+ "\nEarth -> Air                                                                          ESC = Mainmenu"
-				+ "\nAir -> Water", font);
+        Label howToPlayTitle = new Label("HOW TO PLAY", font);
+        Label howToPlay = new Label("You deal more Damage depending on your and the enemys current element."
+                + "\nYour goal is to kill as many enemys as possible, you will die anyways."
+                + "\nIf you are in the center, near the crystal, you'll regain some health over time.", font);
+        Label elementsControls = new Label(""
+                + "\nWater -> Fire                                                                   WSAD = Movement"
+                + "\nFire -> Earth                                                ARROW-KEYS = Shootdirection"
+                + "\nEarth -> Air                                                                          ESC = Mainmenu"
+                + "\nAir -> Water", font);
 
-		Label creditsTitle = new Label("CREDITS", font);
-		Label credits = new Label("We did barely all on our own except the background music and sound."
-				+"\nCredit for the background music goes to artisticdude from opengameart.org"
-				+"\nCredit for the bonfire sound goes to AntumDeluge from opengameart.org"
-				+"\nCredit for assets that we used to test stuff and for inspiration goes to Kenny from kenney.nl"
-				+ "\nProbably Email?"
-				+ "\nProbably copyright?", font);
-		Label supportUSTitle = new Label("WANT TO SUPPORT US?", font);
-		Label supportUS = new Label("This is our first released game. It would help us a lot if you donate something."
-				+ "\nWe'd appreciate every amount.", font);
+        Label creditsTitle = new Label("CREDITS", font);
+        Label credits = new Label("We did barely all on our own except the background music and sound."
+                + "\nCredits for background music goes to artisticdude from opengameart.org"
+                + "\nCredits for bonfire sound goes to AntumDeluge from opengameart.org"
+                + "\nCredits for test-assets and for inspiration goes to Kenny from kenney.nl"
+                + "\nProbably Email?"
+                + "\nProbably copyright?", font);
+        Label supportUSTitle = new Label("WANT TO SUPPORT US?", font);
+        Label supportUS = new Label("This is our first released game. It would help us a lot if you donate something."
+                + "\nWe'd appreciate every amount.", font);
 
-		skin.addRegions(buttonAtlas);
-		TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-		buttonStyle.font = new BitmapFont();
-		buttonStyle.up = skin.getDrawable("Blue");
-		buttonStyle.down = skin.getDrawable("Grey");
+        skin.addRegions(buttonAtlas);
+        TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = new BitmapFont();
+        buttonStyle.up = skin.getDrawable("Blue");
+        buttonStyle.down = skin.getDrawable("Grey");
 
-		TextButton button = new TextButton("Donate", buttonStyle);
-		button.addListener(new ChangeListener() {
+        TextButton button = new TextButton("Donate", buttonStyle);
+        button.addListener(new ChangeListener() {
 
-			@Override
-			public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
-				System.out.println("hi");
-				Gdx.net.openURI("https://www.google.com");
-			}
-		});
+            @Override
+            public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
+                System.out.println("hi");
+                Gdx.net.openURI("https://www.google.com");
+            }
+        });
 
-		Label stars1 = new Label("************************************************************************************", font);
-		Label stars2 = new Label("************************************************************************************", font);
-		Label stars3 = new Label("************************************************************************************", font);
+        Label stars1 = new Label("************************************************************************************", font);
+        Label stars2 = new Label("************************************************************************************", font);
+        Label stars3 = new Label("************************************************************************************", font);
 
-		Label escape = new Label("Press \"ESC\" or \"C\" to go back", font);
+        Label escape = new Label("Press \"ESC\" or \"C\" to go back", font);
 
 //		table.setDebug(true);
-		table.add(howToPlayTitle).expandX().padTop(50);
-		table.row();
-		table.add(stars1);
-		table.row();
-		table.add(howToPlay).expandX();
-		table.row();
-		table.add(elementsControls).padTop(10f);
-		table.row();
-		table.add(creditsTitle).expandX().padTop(30f);
-		table.row();
-		table.add(stars2);
-		table.row();
-		table.add(credits).expandX().padRight(35);
-		table.row();
-		table.add(supportUSTitle).expandX().padTop(30f);
-		table.row();
-		table.add(stars3);
-		table.row();
-		table.add(supportUS).expandX();
-		table.row();
-		table.add(button).expandX().padTop(100f);
-		table.row();
-		table.add(escape).expandX().padTop(120);
+        table.add(howToPlayTitle).expandX().padTop(50);
+        table.row();
+        table.add(stars1);
+        table.row();
+        table.add(howToPlay).expandX();
+        table.row();
+        table.add(elementsControls).padTop(10f).padRight(4);
+        table.row();
+        table.add(creditsTitle).expandX().padTop(30f);
+        table.row();
+        table.add(stars2);
+        table.row();
+        table.add(credits).expandX().padRight(24);
+        table.row();
+        table.add(supportUSTitle).expandX().padTop(30f);
+        table.row();
+        table.add(stars3);
+        table.row();
+        table.add(supportUS).expandX().padLeft(2);
+        table.row();
+        table.add(button).expandX().padTop(100f);
+        table.row();
+        table.add(escape).expandX().padTop(120);
 
-		stage.addActor(table);
-	}
+        stage.addActor(table);
+    }
 
-	@Override
-	public void render(float f) {
-		Gdx.gl.glClearColor(42 / 255f, 47 / 255f, 48 / 255f, 1);//0-1, Float.
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || (Gdx.input.isKeyJustPressed(Input.Keys.C))) {
-			game.setScreen(new StartGame((Main) game));
-			dispose();
-		}
-		stage.draw();
-	}
+    @Override
+    public void render(float f) {
+        Gdx.gl.glClearColor(42 / 255f, 47 / 255f, 48 / 255f, 1);//0-1, Float.
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || (Gdx.input.isKeyJustPressed(Input.Keys.C))) {
+            game.setScreen(new StartGame((Main) game));
+            dispose();
+        }
+        stage.draw();
+    }
 
-	@Override
-	public void show() {
-	}
+    @Override
+    public void show() {
+    }
 
-	@Override
-	public void resize(int i, int i1) {
-	}
+    @Override
+    public void resize(int i, int i1) {
+    }
 
-	@Override
-	public void pause() {
-	}
+    @Override
+    public void pause() {
+    }
 
-	@Override
-	public void resume() {
-	}
+    @Override
+    public void resume() {
+    }
 
-	@Override
-	public void hide() {
-	}
+    @Override
+    public void hide() {
+    }
 
-	@Override
-	public void dispose() {
-		stage.dispose();
-	}
+    @Override
+    public void dispose() {
+        stage.dispose();
+    }
 
 }

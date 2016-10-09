@@ -2,7 +2,7 @@ package com.coldpixel.sparkle;
 
 /**
  *
- * @author Coldpixel
+ * @author Creat-if
  */
 public class Constants {
 
@@ -14,7 +14,7 @@ public class Constants {
     public static int PPM = 100;//PixelPerMeter
     public static final boolean fullscreen = false;
     public static final boolean borderlessWindow = false;
-    public static final String GAMENAME = "Coldpixel - Sparkle";
+    public static final String GAMENAME = "Creat-if - Sparkle";
     public static final boolean RESZIABLE = false;
     public static final String FAVICON = "Graphics/Icon/Icon.png";
     public static final boolean MAX_FPS = false;

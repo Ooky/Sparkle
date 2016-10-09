@@ -5,7 +5,7 @@ import com.coldpixel.sparkle.screens.PlayScreen;
 
 /**
  *
- * @author Coldpixel
+ * @author Creat-if
  */
 public class EnvironmentObject extends InteractiveTileObject {
     

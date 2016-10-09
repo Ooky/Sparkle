@@ -22,9 +22,9 @@ import com.coldpixel.sparkle.Main;
 
 /**
  *
- * @author mike
+ * @author Creat-if
  */
-public class Crystal extends Sprite {
+public final class Crystal extends Sprite {
 
 
     private float posX;
@@ -36,7 +36,7 @@ public class Crystal extends Sprite {
     private World world;
     private Animation rotating;
     private float stateTimer;
-    Array<TextureRegion> frames;
+    private Array<TextureRegion> frames;
     
 
     public Crystal(PlayScreen screen, float x, float y) {
@@ -59,7 +59,7 @@ public class Crystal extends Sprite {
         rotating = new Animation(.13f, frames);
     }
 
-    public void defineCrystal() {
+    private void defineCrystal() {
         BodyDef bDef = new BodyDef();
         bDef.position.set(posX / Main.PPM, posY / Main.PPM);
         bDef.type = BodyDef.BodyType.StaticBody;

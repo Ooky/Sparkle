@@ -22,7 +22,7 @@ import com.coldpixel.sparkle.screens.PlayScreen;
 
 /**
  *
- * @author mike
+ * @author Creat-if
  */
 public class Soldier extends Enemy {
 
@@ -59,8 +59,8 @@ public class Soldier extends Enemy {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK, DESTROYED
     };
-    public Soldier.State currentState;
-    public Soldier.State previousState;
+    private Soldier.State currentState;
+    private Soldier.State previousState;
 
     private static int deathCounter;
 
@@ -358,7 +358,7 @@ public class Soldier extends Enemy {
         b2Body.createFixture(fDef).setUserData(this);
     }
 
-    public TextureRegion getFrame(float dt) {
+    private TextureRegion getFrame(float dt) {
         if (currentState == Soldier.State.ATTACK
                 && attackAnimation.isAnimationFinished(stateTime)) {
             currentState = getState();
@@ -416,7 +416,7 @@ public class Soldier extends Enemy {
         return region;
     }
 
-    public Soldier.State getState() {
+    private Soldier.State getState() {
         if (setToDestroy) {
             return Soldier.State.DESTROYED;
         } else if (isAttacking) {
@@ -436,52 +436,52 @@ public class Soldier extends Enemy {
 
     private void moveAi() {
         if (Math.abs(this.getX() - victim.getX()) > .5) {
-            if (this.getX() > victim.getX() && this.b2Body.getLinearVelocity().x >= -this.getMaxSpeed()) {
-                this.b2Body.applyLinearImpulse(new Vector2(-this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+            if (this.getX() > victim.getX() && this.b2Body.getLinearVelocity().x >= -maxSpeed) {
+                this.b2Body.applyLinearImpulse(new Vector2(-movementSpeed, 0), this.b2Body.getWorldCenter(), true);
 
-            } else if (this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()) {
-                this.b2Body.applyLinearImpulse(new Vector2(this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+            } else if (this.b2Body.getLinearVelocity().x <= maxSpeed) {
+                this.b2Body.applyLinearImpulse(new Vector2(movementSpeed, 0), this.b2Body.getWorldCenter(), true);
             }
         }
         if (Math.abs(this.getY() - victim.getY()) > 1) {
-            if (this.getY() > victim.getY() && this.b2Body.getLinearVelocity().y >= -this.getMaxSpeed()) {
-                this.b2Body.applyLinearImpulse(new Vector2(0, -this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+            if (this.getY() > victim.getY() && this.b2Body.getLinearVelocity().y >= -maxSpeed) {
+                this.b2Body.applyLinearImpulse(new Vector2(0, -movementSpeed), this.b2Body.getWorldCenter(), true);
 
-            } else if (this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
-                this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+            } else if (this.b2Body.getLinearVelocity().y <= maxSpeed) {
+                this.b2Body.applyLinearImpulse(new Vector2(0, movementSpeed), this.b2Body.getWorldCenter(), true);
             }
         }
     }
 
-    public void avoidObject() {
+    private void avoidObject() {
         if (this.b2Body.getLinearVelocity().x == 0
                 && this.b2Body.getLinearVelocity().y == 0) {
             this.avoidDirection = getRandomState();
         }
         switch (avoidDirection) {
             case UP:
-                if (this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
-                    this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+                if (this.b2Body.getLinearVelocity().y <= maxSpeed) {
+                    this.b2Body.applyLinearImpulse(new Vector2(0, movementSpeed), this.b2Body.getWorldCenter(), true);
                 }
                 break;
             case DOWN:
-                if (this.b2Body.getLinearVelocity().y >= -this.getMaxSpeed()) {
-                    this.b2Body.applyLinearImpulse(new Vector2(0, -this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+                if (this.b2Body.getLinearVelocity().y >= -maxSpeed) {
+                    this.b2Body.applyLinearImpulse(new Vector2(0, -movementSpeed), this.b2Body.getWorldCenter(), true);
                 }
                 break;
             case RIGHT:
-                if (this.b2Body.getLinearVelocity().x <= this.getMaxSpeed()) {
-                    this.b2Body.applyLinearImpulse(new Vector2(this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+                if (this.b2Body.getLinearVelocity().x <= maxSpeed) {
+                    this.b2Body.applyLinearImpulse(new Vector2(movementSpeed, 0), this.b2Body.getWorldCenter(), true);
                 }
                 break;
             case LEFT:
-                if (this.b2Body.getLinearVelocity().x >= -this.getMaxSpeed()) {
-                    this.b2Body.applyLinearImpulse(new Vector2(-this.getMovementSpeed(), 0), this.b2Body.getWorldCenter(), true);
+                if (this.b2Body.getLinearVelocity().x >= -maxSpeed) {
+                    this.b2Body.applyLinearImpulse(new Vector2(-movementSpeed, 0), this.b2Body.getWorldCenter(), true);
                 }
                 break;
             default:
-                if (this.b2Body.getLinearVelocity().y <= this.getMaxSpeed()) {
-                    this.b2Body.applyLinearImpulse(new Vector2(0, this.getMovementSpeed()), this.b2Body.getWorldCenter(), true);
+                if (this.b2Body.getLinearVelocity().y <= maxSpeed) {
+                    this.b2Body.applyLinearImpulse(new Vector2(0, movementSpeed), this.b2Body.getWorldCenter(), true);
                 }
                 break;
         }
@@ -619,13 +619,7 @@ public class Soldier extends Enemy {
         previousState = Soldier.State.RIGHT;
     }
 
-    public float getMovementSpeed() {
-        return movementSpeed;
-    }
 
-    public float getMaxSpeed() {
-        return maxSpeed;
-    }
 
     public Main.elementType getElement() {
         return element;
@@ -642,14 +636,6 @@ public class Soldier extends Enemy {
     public void setIsSpawned(Boolean isSpawned) {
         this.isSpawned = isSpawned;
 
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     private void initializeAnimationALL() {

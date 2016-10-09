@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -22,7 +21,7 @@ import com.coldpixel.sparkle.screens.PlayScreen;
 
 /**
  *
- * @author MikeSSD
+ * @author Creat-if
  */
 public final class BonFire extends Sprite {
 
@@ -38,7 +37,7 @@ public final class BonFire extends Sprite {
     private World world;
     private Animation burning;
     private float stateTimer;
-    Array<TextureRegion> frames;
+    private Array<TextureRegion> frames;
     private PointLight pointLight;
     private float currentDistance;
     private float previousDistance;
@@ -69,7 +68,7 @@ public final class BonFire extends Sprite {
         burning = new Animation(frameDuration, frames, LOOP);
     }
 
-    public void defineBonFire() {
+    private void defineBonFire() {
         BodyDef bDef = new BodyDef();
         bDef.position.set((posX + radius / 2) / Main.PPM, (posY + radius / 2) / Main.PPM);
         bDef.type = BodyDef.BodyType.StaticBody;
@@ -108,20 +107,9 @@ public final class BonFire extends Sprite {
         pointLight.setDistance(currentDistance);
     }
 
-    public float getPosX() {
-        return posX;
-    }
-
-    public float getPosY() {
-        return posY;
-    }
-
+    @Override
     public float getWidth() {
         return radius;
-    }
-
-    public Color getColor() {
-        return color;
     }
 
     public Body getBody() {

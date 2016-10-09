@@ -15,7 +15,7 @@ import java.util.Random;
 
 /**
  *
- * @author ColdPixel
+ * @author Creat-if
  */
 public class Wave {
 

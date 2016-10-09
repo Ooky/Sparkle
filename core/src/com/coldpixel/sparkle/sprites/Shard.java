@@ -17,9 +17,9 @@ import com.coldpixel.sparkle.screens.PlayScreen;
 
 /**
  *
- * @author mike
+ * @author Creat-if
  */
-public class Shard extends Sprite {
+public final class Shard extends Sprite {
 
     private int width;
     private int height;
@@ -160,7 +160,7 @@ public class Shard extends Sprite {
         stateTime = 0;
     }
 
-    public void createWaterAnimation() {
+    private void createWaterAnimation() {
         //fly Animation
         for (int i = 0; i < 3; i++) {
             frames.add(new TextureRegion(new Texture("Graphics/Attacks/Water/shard.png"), i * width, 0, width, height));
@@ -175,7 +175,7 @@ public class Shard extends Sprite {
         frames.clear();
     }
 
-    public void createFireAnimation() {
+    private void createFireAnimation() {
         //fly Animation
         for (int i = 0; i < 3; i++) {
             frames.add(new TextureRegion(new Texture("Graphics/Attacks/Fire/shard.png"), i * width, 0, width, height));
@@ -190,7 +190,7 @@ public class Shard extends Sprite {
         frames.clear();
     }
 
-    public void createEarthAnimation() {
+    private void createEarthAnimation() {
         //fly Animation
         for (int i = 0; i < 3; i++) {
             frames.add(new TextureRegion(new Texture("Graphics/Attacks/Earth/shard.png"), i * width, 0, width, height));
@@ -205,7 +205,7 @@ public class Shard extends Sprite {
         frames.clear();
     }
 
-    public void createAirAnimation() {
+    private void createAirAnimation() {
         //fly Animation
         for (int i = 0; i < 3; i++) {
             frames.add(new TextureRegion(new Texture("Graphics/Attacks/Air/shard.png"), i * width, 0, width, height));
@@ -220,7 +220,7 @@ public class Shard extends Sprite {
         frames.clear();
     }
 
-    public void getElementFrame() {
+    private void getElementFrame() {
         if (element == Main.elementType.WATER) {
             if (setToDestroy) {
                 shard = waterCollisionAnimation.getKeyFrame(stateTime, true);
