@@ -74,13 +74,14 @@ public class PlayScreen implements Screen {
     //Music
     private AssetHelper assetHelper;
 
-	//Wave
-	private Wave waveHandler;
-	private ArrayList<Soldier> soldiersArray;
-	private int soldierSpawned = -1;
+    //Wave
+    private Wave waveHandler;
+    private ArrayList<Soldier> soldiersArray;
+    private int soldierSpawned = -1;
 //==============================================================================
 //Methods
 //==============================================================================
+
     public PlayScreen(Main main) {
 
         atlas = new TextureAtlas("Player_and_Enemies.pack");
@@ -88,8 +89,8 @@ public class PlayScreen implements Screen {
         ambientLight = 0.8f;
         isDay = true;
         cycleTime = TimeUtils.nanoTime();
-		soldiersArray = new ArrayList<Soldier>();
-		
+        soldiersArray = new ArrayList<Soldier>();
+
         this.main = main;
         cam = new OrthographicCamera();
         gamePort = new StretchViewport(Main.V_WIDTH / Main.PPM, Main.V_HEIGHT / Main.PPM, cam);
@@ -103,8 +104,8 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
         b2DebugRenderer = new Box2DDebugRenderer();
 
-        player = new Player(this);		
-		waveHandler = new Wave(this,player);
+        player = new Player(this);
+        waveHandler = new Wave(this, player);
         b2WorldCreator = new B2WorldCreator(this);
 
         world.setContactListener(new WorldContactListener());
@@ -132,15 +133,15 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);//60 times a second
 //        rayHandler.update();
         player.update(dt);
-		waveHandler.update();	
-		if(soldierSpawned >= 27){
-			refillSoldierArray();
-		}
-		for(Soldier enemy : soldiersArray){
-			if(enemy.getIsSpawned()){
-				enemy.update(dt, hud);
-			}
-		}
+        waveHandler.update(this);
+        if (soldierSpawned >= 27) {
+            refillSoldierArray();
+        }
+        for (Soldier enemy : soldiersArray) {
+            if (enemy.getIsSpawned()) {
+                enemy.update(dt, hud);
+            }
+        }
         for (Enemy enemy : b2WorldCreator.getSoldiers()) {
             enemy.update(dt, hud);
         }
@@ -159,7 +160,7 @@ public class PlayScreen implements Screen {
             assetHelper.stopSound();
             main.setScreen(new StartGame(main));
         }
-		
+
         cam.update();
         renderer.setView(cam);
     }
@@ -210,11 +211,11 @@ public class PlayScreen implements Screen {
         dayNightCycle();
 
         main.batch.begin();
-		for(Soldier enemy : soldiersArray){
-			if(enemy.getIsSpawned()){
-				enemy.draw(main.batch);
-			}
-		}
+        for (Soldier enemy : soldiersArray) {
+            if (enemy.getIsSpawned()) {
+                enemy.draw(main.batch);
+            }
+        }
         for (Enemy enemy : b2WorldCreator.getSoldiers()) {
             enemy.draw(main.batch);
         }
@@ -243,7 +244,7 @@ public class PlayScreen implements Screen {
         if (player.getGameOver()) {
             main.setScreen(new GameOver(main, hud.getScoreValue(), Soldier.getDeathCounter(), assetHelper));
             assetHelper.dispose();
-			waveHandler.clearArray();
+            waveHandler.clearArray();
             dispose();
         }
     }
@@ -281,9 +282,6 @@ public class PlayScreen implements Screen {
         assetHelper.dispose();
     }
 
-//==============================================================================
-//Getter
-//==============================================================================
     public TextureAtlas getAtlas() {
         return atlas;
 
@@ -305,43 +303,32 @@ public class PlayScreen implements Screen {
         return player;
     }
 
-	/*public void addSoldierArray(ArrayList<Soldier> arr){
-		this.soldiersArray.addAll(arr);
-	}*/
+    public void setSoldiers(ArrayList<Soldier> soldiers) {
+        this.soldiersArray = soldiers;
+    }
 
-	/*public void addSoldier(Soldier soldier){
-		soldier.b2Body.setActive(true);
-		if(soldier.getSetToDestroy()){
-			soldier.revive();
-		}
-		this.soldiersArray.add(soldier);
-	}*/
-	public void setSoldiers(ArrayList<Soldier> soldiers){
-		this.soldiersArray = soldiers;
-	}
-	
-	public void spawnSoldiers(int count){
-		int i = 1;
-		while(i < count){
-			if(soldiersArray.size() > soldierSpawned+i){
-				if( !soldiersArray.get(soldierSpawned+i).b2Body.isActive()){
-					soldiersArray.get(soldierSpawned+i).b2Body.setActive(true);
-					soldiersArray.get(soldierSpawned+i).setIsSpawned(true);
-				}
-			}
-			i++;
-		}
-		soldierSpawned+=i;
-	}
-	
-	public void refillSoldierArray(){
-		for(Soldier soldier : soldiersArray){
-			if(soldier.getSetToDestroy() || !soldier.getIsSpawned()){
-				soldier.revive();
-				soldier.setIsSpawned(false);
-				waveHandler.setSoldierRandomPosition(soldier);
-			}
-		}
-		soldierSpawned = 0;
-	}
+    public void spawnSoldiers(int count) {
+        int i = 1;
+        while (i < count) {
+            if (soldiersArray.size() > soldierSpawned + i) {
+                if (!soldiersArray.get(soldierSpawned + i).b2Body.isActive()) {
+                    soldiersArray.get(soldierSpawned + i).b2Body.setActive(true);
+                    soldiersArray.get(soldierSpawned + i).setIsSpawned(true);
+                }
+            }
+            i++;
+        }
+        soldierSpawned += i;
+    }
+
+    public void refillSoldierArray() {
+        for (Soldier soldier : soldiersArray) {
+            if (soldier.getSetToDestroy() || !soldier.getIsSpawned()) {
+                soldier.revive();
+                soldier.setIsSpawned(false);
+                waveHandler.setSoldierRandomPosition(soldier);
+            }
+        }
+        soldierSpawned = 0;
+    }
 }

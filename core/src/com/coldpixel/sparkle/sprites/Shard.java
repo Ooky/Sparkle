@@ -46,7 +46,6 @@ public class Shard extends Sprite {
     private Array<TextureRegion> frames;
     private TextureRegion shard;
 
-    private Player player;
 
     public Shard(float x, float y, PlayScreen screen, Player.shootDirection direction, Main.elementType element) {
         this.x = x;

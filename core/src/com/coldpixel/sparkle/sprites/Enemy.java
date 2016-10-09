@@ -17,35 +17,38 @@ import com.coldpixel.sparkle.screens.PlayScreen;
  *
  * @author mike
  */
-public abstract class Enemy extends Sprite{
+public abstract class Enemy extends Sprite {
+
     protected World world;
     protected PlayScreen screen;
     public Body b2Body;
     protected int health;
     protected int previousHealth;
-    
-    public Enemy(PlayScreen screen, float x, float y){
+
+    public Enemy(PlayScreen screen, float x, float y) {
         this.world = screen.getWorld();
         this.screen = screen;
-        setPosition(x,y);
+        setPosition(x, y);
         defineEnemy();
     }
-    
-    public void decreaseHealth(float decrease){        
+
+    public void decreaseHealth(float decrease) {
         health -= decrease;
     }
-    
-    public void setCategoryFilter(short filterBit){
+
+    public void setCategoryFilter(short filterBit) {
         Filter filter = new Filter();
         filter.categoryBits = filterBit;
         for (Fixture fixture : b2Body.getFixtureList()) {
-            fixture.setFilterData(filter); 
+            fixture.setFilterData(filter);
         }
     }
-    
+
     protected abstract void defineEnemy();
+
     public abstract void update(float dt, Hud hud);
-    public int getHealth(){
+
+    public int getHealth() {
         return health;
     }
 }
