@@ -25,7 +25,8 @@ import com.coldpixel.sparkle.screens.PlayScreen;
  * @author mike
  */
 public class Soldier extends Enemy {
-	private static int counter=0;
+
+    private static int counter = 0;
     //animation
     private float stateTime;
     private Animation walkAnimation;
@@ -51,8 +52,9 @@ public class Soldier extends Enemy {
     private State avoidDirection;
     private Main.elementType element;
 
-	private Boolean isSpawned = false;
-	private int number;
+    private Boolean isSpawned = false;
+    private int number;
+
     public enum State {
 
         STANDING, UP, DOWN, RIGHT, LEFT, ATTACK, DESTROYED
@@ -63,17 +65,43 @@ public class Soldier extends Enemy {
     private static int deathCounter;
 
     private Texture textureSoldier;
+    //Earth
     private TextureRegion[] soldierWalkGreen;
     private TextureRegion[] soldierAttackGreen;
     private TextureRegion[] soldierGreenDeathWater;
     private TextureRegion[] soldierGreenDeathFire;
     private TextureRegion[] soldierGreenDeathAir;
     private TextureRegion[] soldierGreenDeathEarth;
+    //Water
+    private TextureRegion[] soldierWalkBlue;
+    private TextureRegion[] soldierAttackBlue;
+    private TextureRegion[] soldierBlueDeathWater;
+    private TextureRegion[] soldierBlueDeathFire;
+    private TextureRegion[] soldierBlueDeathAir;
+    private TextureRegion[] soldierBlueDeathEarth;
+    //Fire
+    private TextureRegion[] soldierWalkRed;
+    private TextureRegion[] soldierAttackRed;
+    private TextureRegion[] soldierRedDeathWater;
+    private TextureRegion[] soldierRedDeathFire;
+    private TextureRegion[] soldierRedDeathAir;
+    private TextureRegion[] soldierRedDeathEarth;
+    //Air
+    private TextureRegion[] soldierWalkYellow;
+    private TextureRegion[] soldierAttackYellow;
+    private TextureRegion[] soldierYellowDeathWater;
+    private TextureRegion[] soldierYellowDeathFire;
+    private TextureRegion[] soldierYellowDeathAir;
+    private TextureRegion[] soldierYellowDeathEarth;
+
+    private float walkAnimationSpeed = 0.1f;
+    private float attackAnimationSpeed = 0.15f;
+    private float deathAnimationSpeed = 0.15f;
 
     public Soldier(PlayScreen screen, float x, float y, Player player, Main.elementType element) {
         super(screen, x, y);
-		counter++;
-		this.number = counter;
+        counter++;
+        this.number = counter;
         this.screen = screen;
         this.element = element;
         frames = new Array<TextureRegion>();
@@ -92,12 +120,7 @@ public class Soldier extends Enemy {
         deathCounter = 0;
         //Textures
         textureSoldier = new Texture("Graphics/Enemy/All.png");
-        soldierWalkGreen();
-        soldierAttackGreen();
-        soldierGreenDeathWater();
-        soldierGreenDeathFire();
-        soldierGreenDeathAir();
-        soldierGreenDeathEarth();
+        initializeAnimationALL();
 
         generateFrames();
     }
@@ -112,235 +135,164 @@ public class Soldier extends Enemy {
                     for (int i = 0; i < 10; i++) {
                         frames.add(soldierWalkGreen[i]);
                     }
-                    walkAnimation = new Animation(0.1f, frames);
+                    walkAnimation = new Animation(walkAnimationSpeed, frames);
                     frames.clear();
                     //AttackAnimation
                     for (int i = 0; i < 4; i++) {
                         frames.add(soldierAttackGreen[i]);
                     }
-                    attackAnimation = new Animation(0.15f, frames);
+                    attackAnimation = new Animation(attackAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Water
                     for (int i = 0; i < 12; i++) {
                         frames.add(soldierGreenDeathWater[i]);
                     }
-                    deathAnimationWater = new Animation(0.3f, frames);
+                    deathAnimationWater = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
 
                     //DeathAnimation Fire
                     for (int i = 0; i < 15; i++) {
                         frames.add(soldierGreenDeathFire[i]);
                     }
-                    deathAnimationFire = new Animation(0.3f, frames);
+                    deathAnimationFire = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
 
                     //DeathAnimation Air
                     for (int i = 0; i < 16; i++) {
                         frames.add(soldierGreenDeathAir[i]);
                     }
-                    deathAnimationAir = new Animation(0.3f, frames);
+                    deathAnimationAir = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
 
-                    
-                    
-                    
-                    
-                    
                     //DeathAnimation Earth
                     for (int i = 0; i < 14; i++) {
                         frames.add(soldierGreenDeathEarth[i]);
                     }
-                    deathAnimationEarth = new Animation(0.3f, frames);
+                    deathAnimationEarth = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     break;
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+
                 case WATER:
                     //Water
                     //walkAnimation
                     for (int i = 0; i < 10; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWalkBlue.png"), i * soldierWidth, 0, soldierWidth, soldierHeight));
-                    }   //In case that we want to work with atlas later  frames.add(new TextureRegion(screen.getAtlas().findRegion("soldier"), i*soldierWidth, 0, soldierWidth, soldierHeight));            
-                    walkAnimation = new Animation(0.1f, frames);
+                        frames.add(soldierWalkBlue[i]);
+                    }
+                    walkAnimation = new Animation(walkAnimationSpeed, frames);
                     frames.clear();
                     //AttackAnimation
                     for (int i = 0; i < 4; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAttackBlue.png"), i * (soldierWidth + 16), 0, soldierWidth + 16, soldierHeight));
+                        frames.add(soldierAttackBlue[i]);
                     }
-                    attackAnimation = new Animation(0.15f, frames);
+                    attackAnimation = new Animation(attackAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation
                     for (int i = 0; i < 12; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierDeathFinalBlue.png"), i * (soldierWidth + 32), 0, soldierWidth + 32, soldierHeight));
+                        frames.add(soldierBlueDeathWater[i]);
                     }
-                    deathAnimationWater = new Animation(0.3f, frames);
+                    deathAnimationWater = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Fire
                     for (int i = 0; i < 15; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWaterDeathFire.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierBlueDeathFire[i]);
                     }
-                    deathAnimationFire = new Animation(0.3f, frames);
+                    deathAnimationFire = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Air
                     for (int i = 0; i < 16; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWaterDeathAir.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierBlueDeathAir[i]);
                     }
-                    deathAnimationAir = new Animation(0.3f, frames);
+                    deathAnimationAir = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Earth
                     for (int i = 0; i < 14; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWaterDeathEarth.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierBlueDeathEarth[i]);
                     }
-                    deathAnimationEarth = new Animation(0.3f, frames);
+                    deathAnimationEarth = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     break;
+
                 case FIRE:
                     //walkAnimation
                     for (int i = 0; i < 10; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWalkRed.png"), i * soldierWidth, 0, soldierWidth, soldierHeight));
-                    }   //In case that we want to work with atlas later  frames.add(new TextureRegion(screen.getAtlas().findRegion("soldier"), i*soldierWidth, 0, soldierWidth, soldierHeight));            
-                    walkAnimation = new Animation(0.1f, frames);
+                        frames.add(soldierWalkRed[i]);
+                    }
+                    walkAnimation = new Animation(walkAnimationSpeed, frames);
                     frames.clear();
                     //AttackAnimation
                     for (int i = 0; i < 4; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAttackRed.png"), i * (soldierWidth + 16), 0, soldierWidth + 16, soldierHeight));
+                        frames.add(soldierAttackRed[i]);
                     }
-                    attackAnimation = new Animation(0.15f, frames);
+                    attackAnimation = new Animation(attackAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation
                     for (int i = 0; i < 12; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierDeathFinalRed.png"), i * (soldierWidth + 32), 0, soldierWidth + 32, soldierHeight));
+                        frames.add(soldierRedDeathWater[i]);
                     }
-                    deathAnimationWater = new Animation(0.3f, frames);
+                    deathAnimationWater = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Fire
                     for (int i = 0; i < 15; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierFireDeathFire.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierRedDeathFire[i]);
                     }
-                    deathAnimationFire = new Animation(0.3f, frames);
+                    deathAnimationFire = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Air
                     for (int i = 0; i < 16; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierFireDeathAir.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierRedDeathAir[i]);
                     }
-                    deathAnimationAir = new Animation(0.3f, frames);
+                    deathAnimationAir = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Earth
                     for (int i = 0; i < 14; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierFireDeathEarth.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierRedDeathEarth[i]);
                     }
-                    deathAnimationEarth = new Animation(0.3f, frames);
+                    deathAnimationEarth = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     break;
                 case AIR:
                     //walkAnimation
                     for (int i = 0; i < 10; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierWalkYelow.png"), i * soldierWidth, 0, soldierWidth, soldierHeight));
-                    }   //In case that we want to work with atlas later  frames.add(new TextureRegion(screen.getAtlas().findRegion("soldier"), i*soldierWidth, 0, soldierWidth, soldierHeight));            
-                    walkAnimation = new Animation(0.1f, frames);
+                        frames.add(soldierWalkYellow[i]);
+                    }
+                    walkAnimation = new Animation(walkAnimationSpeed, frames);
                     frames.clear();
                     //AttackAnimation
                     for (int i = 0; i < 4; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAttackYelow.png"), i * (soldierWidth + 16), 0, soldierWidth + 16, soldierHeight));
+                        frames.add(soldierAttackYellow[i]);
                     }
-                    attackAnimation = new Animation(0.15f, frames);
+                    attackAnimation = new Animation(attackAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation
                     for (int i = 0; i < 12; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierDeathFinalYelow.png"), i * (soldierWidth + 32), 0, soldierWidth + 32, soldierHeight));
+                        frames.add(soldierYellowDeathWater[i]);
                     }
-                    deathAnimationWater = new Animation(0.3f, frames);
+                    deathAnimationWater = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Fire
                     for (int i = 0; i < 15; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAirDeathFire.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierYellowDeathFire[i]);
                     }
-                    deathAnimationFire = new Animation(0.3f, frames);
+                    deathAnimationFire = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Air
                     for (int i = 0; i < 16; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAirDeathAir.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierYellowDeathAir[i]);
                     }
-                    deathAnimationAir = new Animation(0.3f, frames);
+                    deathAnimationAir = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
                     //DeathAnimation Earth
                     for (int i = 0; i < 14; i++) {
-                        frames.add(new TextureRegion(new Texture("Graphics/Enemy/Soldier/soldierAirDeathEarth.png"), i * 80, 0, 80, 80));
+                        frames.add(soldierYellowDeathEarth[i]);
                     }
-                    deathAnimationEarth = new Animation(0.3f, frames);
+                    deathAnimationEarth = new Animation(deathAnimationSpeed, frames);
                     frames.clear();
-                    break;
-                default:
                     break;
             }
         }
     }
-    
-    private TextureRegion[] soldierGreenDeathEarth() {
-        soldierGreenDeathEarth = new TextureRegion[14];
-        int j = 0;
-        for(int i = 0; i <=1040; i+=80){
-            soldierGreenDeathEarth[j] = new TextureRegion(textureSoldier, i, 880, 80,80);
-            j++;
-        }
-        return soldierGreenDeathEarth;
-    }
 
-    private TextureRegion[] soldierGreenDeathAir() {
-        soldierGreenDeathAir = new TextureRegion[16];
-        int j = 0;
-        for (int i = 0; i <= 1200; i += 80) {
-            soldierGreenDeathAir[j] = new TextureRegion(textureSoldier, i, 240, 80, 80);
-            j++;
-        }
-        return soldierGreenDeathAir;
-    }
-
-    private TextureRegion[] soldierGreenDeathFire() {
-        soldierGreenDeathFire = new TextureRegion[15];
-        int j = 0;
-        for (int i = 0; i <= 1120; i += 80) {
-            soldierGreenDeathFire[j] = new TextureRegion(textureSoldier, i, 400, 80, 80);
-            j++;
-        }
-        return soldierGreenDeathFire;
-    }
-
-    private TextureRegion[] soldierGreenDeathWater() {
-        soldierGreenDeathWater = new TextureRegion[12];
-        int j = 0;
-        for (int i = 0; i <= 880; i += 80) {
-            soldierGreenDeathWater[j] = new TextureRegion(textureSoldier, i, 1088, 80, 64);
-            j++;
-        }
-        return soldierGreenDeathWater;
-    }
-
-    private TextureRegion[] soldierAttackGreen() {
-        soldierAttackGreen = new TextureRegion[4];
-        int j = 0;
-        for (int i = 1024; i <= 1216; i += 64) {
-            soldierAttackGreen[j] = new TextureRegion(textureSoldier, 960, i, 64, 64);
-            j++;
-        }
-        return soldierAttackGreen;
-    }
-
-    private TextureRegion[] soldierWalkGreen() {
-        soldierWalkGreen = new TextureRegion[10];
-        int j = 0;
-        for (int i = 640; i <= 1216; i += 64) {
-            soldierWalkGreen[j] = new TextureRegion(textureSoldier, 1232, i, 48, 64);
-            j++;
-        }
-        return soldierWalkGreen;
-    }
-
+    @Override
     public void update(float dt, Hud hud) {
         if (previousHealth != health) {
             hud.addScore(previousHealth - health);
@@ -364,12 +316,14 @@ public class Soldier extends Enemy {
         setRegion(getFrame(dt));
     }
 
+    @Override
     public void draw(Batch batch) {
         //if (!destroyed || stateTime < 50) {
-            super.draw(batch);
-       // }
+        super.draw(batch);
+        // }
     }
 
+    @Override
     protected void defineEnemy() {
         BodyDef bDef = new BodyDef();
         bDef.position.set(getX(), getY());
@@ -656,14 +610,14 @@ public class Soldier extends Enemy {
         previousHealth = 100;
         destroyed = false;
         setToDestroy = false;
-       avoidObject = false;
-       movementSpeed = .8f;
-       maxSpeed = 1.0f;
+        avoidObject = false;
+        movementSpeed = .8f;
+        maxSpeed = 1.0f;
         isFlipped = false;
         setBounds(0, 0, soldierWidth / Main.PPM, soldierHeight / Main.PPM);
         currentState = Soldier.State.RIGHT;
         previousState = Soldier.State.RIGHT;
-	}
+    }
 
     public float getMovementSpeed() {
         return movementSpeed;
@@ -681,19 +635,305 @@ public class Soldier extends Enemy {
         return deathCounter;
     }
 
-	public void setIsSpawned(Boolean isSpawned) {
-		this.isSpawned = isSpawned;
-		
-	}
+    public Boolean getIsSpawned() {
+        return isSpawned;
+    }
 
-	public int getNumber() {
-		return number;
-	}
+    public void setIsSpawned(Boolean isSpawned) {
+        this.isSpawned = isSpawned;
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
-	
-	
-	
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    private void initializeAnimationALL() {
+        //Earth
+        soldierWalkGreen();
+        soldierAttackGreen();
+        soldierGreenDeathWater();
+        soldierGreenDeathFire();
+        soldierGreenDeathAir();
+        soldierGreenDeathEarth();
+        //Water
+        soldierWalkBlue();
+        soldierAttackBlue();
+        soldierBlueDeathWater();
+        soldierBlueDeathFire();
+        soldierBlueDeathAir();
+        soldierBlueDeathEarth();
+        //Fire
+        soldierWalkRed();
+        soldierAttackRed();
+        soldierRedDeathWater();
+        soldierRedDeathFire();
+        soldierRedDeathAir();
+        soldierRedDeathEarth();
+        //Air
+        soldierWalkYellow();
+        soldierAttackYellow();
+        soldierYellowDeathWater();
+        soldierYellowDeathFire();
+        soldierYellowDeathAir();
+        soldierYellowDeathEarth();
+
+    }
+
+    //Soldier Air Yellow
+//------------------------------------------------------------------------------
+    private TextureRegion[] soldierYellowDeathEarth() {
+        soldierYellowDeathEarth = new TextureRegion[14];
+        int j = 0;
+        for (int i = 0; i <= 1040; i += 80) {
+            soldierYellowDeathEarth[j] = new TextureRegion(textureSoldier, i, 640, 80, 80);
+            j++;
+        }
+
+        return soldierYellowDeathEarth;
+    }
+
+    private TextureRegion[] soldierYellowDeathAir() {
+        soldierYellowDeathAir = new TextureRegion[16];
+        int j = 0;
+        for (int i = 0; i <= 1200; i += 80) {
+            soldierYellowDeathAir[j] = new TextureRegion(textureSoldier, i, 0, 80, 80);
+            j++;
+        }
+        return soldierYellowDeathAir;
+    }
+
+    private TextureRegion[] soldierYellowDeathFire() {
+        soldierYellowDeathFire = new TextureRegion[15];
+        int j = 0;
+        for (int i = 0; i <= 1120; i += 80) {
+            soldierYellowDeathFire[j] = new TextureRegion(textureSoldier, i, 320, 80, 80);
+            j++;
+        }
+        return soldierYellowDeathFire;
+    }
+
+    private TextureRegion[] soldierYellowDeathWater() {
+        soldierYellowDeathWater = new TextureRegion[12];
+        int j = 0;
+        for (int i = 0; i <= 880; i += 80) {
+            soldierYellowDeathWater[j] = new TextureRegion(textureSoldier, i, 960, 80, 64);
+            j++;
+        }
+
+        return soldierYellowDeathWater;
+    }
+
+    private TextureRegion[] soldierAttackYellow() {
+        soldierAttackYellow = new TextureRegion[4];
+        int j = 0;
+        for (int i = 1024; i <= 1216; i += 64) {
+            soldierAttackYellow[j] = new TextureRegion(textureSoldier, 1152, i, 64, 64);
+            j++;
+        }
+        return soldierAttackYellow;
+    }
+
+    private TextureRegion[] soldierWalkYellow() {
+        soldierWalkYellow = new TextureRegion[10];
+        int j = 0;
+        for (int i = 0; i <= 432; i += 48) {
+            soldierWalkYellow[j] = new TextureRegion(textureSoldier, i, 1216, 48, 64);
+            j++;
+        }
+        return soldierWalkYellow;
+    }
+
+//Soldier Water Blue
+//------------------------------------------------------------------------------
+    private TextureRegion[] soldierBlueDeathEarth() {
+        soldierBlueDeathEarth = new TextureRegion[14];
+        int j = 0;
+        for (int i = 0; i <= 1040; i += 80) {
+            soldierBlueDeathEarth[j] = new TextureRegion(textureSoldier, i, 800, 80, 80);
+            j++;
+        }
+
+        return soldierBlueDeathEarth;
+    }
+
+    private TextureRegion[] soldierBlueDeathAir() {
+        soldierBlueDeathAir = new TextureRegion[16];
+        int j = 0;
+        for (int i = 0; i <= 1200; i += 80) {
+            soldierBlueDeathAir[j] = new TextureRegion(textureSoldier, i, 80, 80, 80);
+            j++;
+        }
+        return soldierBlueDeathAir;
+    }
+
+    private TextureRegion[] soldierBlueDeathFire() {
+        soldierBlueDeathFire = new TextureRegion[15];
+        int j = 0;
+        for (int i = 0; i <= 1120; i += 80) {
+            soldierBlueDeathFire[j] = new TextureRegion(textureSoldier, i, 480, 80, 80);
+            j++;
+        }
+        return soldierBlueDeathFire;
+    }
+
+    private TextureRegion[] soldierBlueDeathWater() {
+        soldierBlueDeathWater = new TextureRegion[12];
+        int j = 0;
+        for (int i = 0; i <= 880; i += 80) {
+            soldierBlueDeathWater[j] = new TextureRegion(textureSoldier, i, 1024, 80, 64);
+            j++;
+        }
+
+        return soldierBlueDeathWater;
+    }
+
+    private TextureRegion[] soldierAttackBlue() {
+        soldierAttackBlue = new TextureRegion[4];
+        int j = 0;
+        for (int i = 1024; i <= 1216; i += 64) {
+            soldierAttackBlue[j] = new TextureRegion(textureSoldier, 1024, i, 64, 64);
+            j++;
+        }
+        return soldierAttackBlue;
+    }
+
+    private TextureRegion[] soldierWalkBlue() {
+        soldierWalkBlue = new TextureRegion[10];
+        int j = 0;
+        for (int i = 0; i <= 432; i += 48) {
+            soldierWalkBlue[j] = new TextureRegion(textureSoldier, i, 1280, 48, 64);
+            j++;
+        }
+        return soldierWalkBlue;
+    }
+
+//Soldier Fire Red
+//------------------------------------------------------------------------------
+    private TextureRegion[] soldierRedDeathEarth() {
+        soldierRedDeathEarth = new TextureRegion[14];
+        int j = 0;
+        for (int i = 0; i <= 1040; i += 80) {
+            soldierRedDeathEarth[j] = new TextureRegion(textureSoldier, i, 720, 80, 80);
+            j++;
+        }
+        return soldierRedDeathEarth;
+    }
+
+    private TextureRegion[] soldierRedDeathAir() {
+        soldierRedDeathAir = new TextureRegion[16];
+        int j = 0;
+        for (int i = 0; i <= 1200; i += 80) {
+            soldierRedDeathAir[j] = new TextureRegion(textureSoldier, i, 160, 80, 80);
+            j++;
+        }
+        return soldierRedDeathAir;
+    }
+
+    private TextureRegion[] soldierRedDeathFire() {
+        soldierRedDeathFire = new TextureRegion[15];
+        int j = 0;
+        for (int i = 0; i <= 1120; i += 80) {
+            soldierRedDeathFire[j] = new TextureRegion(textureSoldier, i, 560, 80, 80);
+            j++;
+        }
+        return soldierRedDeathFire;
+    }
+
+    private TextureRegion[] soldierRedDeathWater() {
+        soldierRedDeathWater = new TextureRegion[12];
+        int j = 0;
+        for (int i = 0; i <= 880; i += 80) {
+            soldierRedDeathWater[j] = new TextureRegion(textureSoldier, i, 1152, 80, 64);
+            j++;
+        }
+        return soldierRedDeathWater;
+    }
+
+    private TextureRegion[] soldierAttackRed() {
+        soldierAttackRed = new TextureRegion[4];
+        int j = 0;
+        for (int i = 1024; i <= 1216; i += 64) {
+            soldierAttackRed[j] = new TextureRegion(textureSoldier, 1088, i, 64, 64);
+            j++;
+        }
+        return soldierAttackRed;
+    }
+
+    private TextureRegion[] soldierWalkRed() {
+        soldierWalkRed = new TextureRegion[10];
+        int j = 0;
+        for (int i = 480; i <= 912; i += 48) {
+            soldierWalkRed[j] = new TextureRegion(textureSoldier, i, 1216, 48, 64);
+            j++;
+        }
+        return soldierWalkRed;
+    }
+
+//Soldier Earth Green
+//------------------------------------------------------------------------------
+    private TextureRegion[] soldierGreenDeathEarth() {
+        soldierGreenDeathEarth = new TextureRegion[14];
+        int j = 0;
+        for (int i = 0; i <= 1040; i += 80) {
+            soldierGreenDeathEarth[j] = new TextureRegion(textureSoldier, i, 880, 80, 80);
+            j++;
+        }
+        return soldierGreenDeathEarth;
+    }
+
+    private TextureRegion[] soldierGreenDeathAir() {
+        soldierGreenDeathAir = new TextureRegion[16];
+        int j = 0;
+        for (int i = 0; i <= 1200; i += 80) {
+            soldierGreenDeathAir[j] = new TextureRegion(textureSoldier, i, 240, 80, 80);
+            j++;
+        }
+        return soldierGreenDeathAir;
+    }
+
+    private TextureRegion[] soldierGreenDeathFire() {
+        soldierGreenDeathFire = new TextureRegion[15];
+        int j = 0;
+        for (int i = 0; i <= 1120; i += 80) {
+            soldierGreenDeathFire[j] = new TextureRegion(textureSoldier, i, 400, 80, 80);
+            j++;
+        }
+        return soldierGreenDeathFire;
+    }
+
+    private TextureRegion[] soldierGreenDeathWater() {
+        soldierGreenDeathWater = new TextureRegion[12];
+        int j = 0;
+        for (int i = 0; i <= 880; i += 80) {
+            soldierGreenDeathWater[j] = new TextureRegion(textureSoldier, i, 1088, 80, 64);
+            j++;
+        }
+        return soldierGreenDeathWater;
+    }
+
+    private TextureRegion[] soldierAttackGreen() {
+        soldierAttackGreen = new TextureRegion[4];
+        int j = 0;
+        for (int i = 1024; i <= 1216; i += 64) {
+            soldierAttackGreen[j] = new TextureRegion(textureSoldier, 960, i, 64, 64);
+            j++;
+        }
+        return soldierAttackGreen;
+    }
+
+    private TextureRegion[] soldierWalkGreen() {
+        soldierWalkGreen = new TextureRegion[10];
+        int j = 0;
+        for (int i = 640; i <= 1216; i += 64) {
+            soldierWalkGreen[j] = new TextureRegion(textureSoldier, 1232, i, 48, 64);
+            j++;
+        }
+        return soldierWalkGreen;
+    }
+
 }
