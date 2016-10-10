@@ -120,7 +120,7 @@ public class Soldier extends Enemy {
         deathCounter = 0;
         //Textures
         textureSoldier = new Texture("Graphics/Enemy/All.png");
-        initializeAnimationALL();
+        initializeAllAnimations();
 
         generateFrames();
     }
@@ -638,7 +638,7 @@ public class Soldier extends Enemy {
 
     }
 
-    private void initializeAnimationALL() {
+    private void initializeAllAnimations() {
         //Earth
         soldierWalkGreen();
         soldierAttackGreen();
