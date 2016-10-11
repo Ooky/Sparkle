@@ -55,13 +55,11 @@ public class Main extends Game {
 
 //ToDo DISPOSE shit
 //.xcf aufräumen (gimp, paint dot net)
-//cleanup code
 //paypal
 //game over probably better
 //Delete unnecessary comments
 //Button should link to a paypal account
 //Remove unecessary images
-//pack images
 //assetmanager?
 //Credits->How to play->image with fire->green->air->water->fire..
 //Change icon(top left corner, CONSTANTS)
@@ -76,3 +74,5 @@ public class Main extends Game {
 //player->generateFrames->cleanup!  //same with shard
 //Check enemy line: 103, 104,56, 29
 //day'night cycle->maybe change value? or switch it with a key instead of timer?
+
+//outsource player/soldier to assethelper(like shard)
