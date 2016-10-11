@@ -74,3 +74,5 @@ public class Main extends Game {
 //player->generateFrames->cleanup!  //same with shard
 //Check enemy line: 103, 104,56, 29
 //day'night cycle->maybe change value? or switch it with a key instead of timer?
+
+//outsource player/soldier to assethelper(like shard)
