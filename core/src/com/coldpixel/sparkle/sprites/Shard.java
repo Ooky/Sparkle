@@ -1,7 +1,5 @@
 package com.coldpixel.sparkle.sprites;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.screens.PlayScreen;
+import com.coldpixel.sparkle.tools.AssetHelper;
 
 /**
  *
@@ -35,32 +33,9 @@ public final class Shard extends Sprite {
 	private Main.elementType element;
 	//animation
 	private float stateTime;
-	private Animation waterShardAnimation;
-	private Animation fireShardAnimation;
-	private Animation earthShardAnimation;
-	private Animation airShardAnimation;
-	private Animation waterCollisionAnimation;
-	private Animation fireCollisionAnimation;
-	private Animation earthCollisionAnimation;
-	private Animation airCollisionAnimation;
-	private Array<TextureRegion> frames;
 	private TextureRegion shard;
-	private float flyAnimationSpeed = 0.1f;
-	private float collisionAnimationSpeed = .015f;
-	private short numbersOfFrames = 8;
-	private short shardWidth = 32;
-	private short shardHeight = 32;
-	//Texture
-	private Texture allShards = new Texture("Graphics/Attacks/ShardsALL.png");
-	//TextureRegion
-	private TextureRegion[] shardAir;
-	private TextureRegion[] shardCollisionAir;
-	private TextureRegion[] shardFire;
-	private TextureRegion[] shardCollisionFire;
-	private TextureRegion[] shardWater;
-	private TextureRegion[] shardCollisionWater;
-	private TextureRegion[] shardEarth;
-	private TextureRegion[] shardCollisionEarth;
+
+	private AssetHelper assetHelper = new AssetHelper();
 
 	public Shard(float x, float y, PlayScreen screen, Player.shootDirection direction, Main.elementType element) {
 		this.x = x;
@@ -73,15 +48,12 @@ public final class Shard extends Sprite {
 		destroyed = false;
 		setToDestroy = false;
 		stateTime = 0;
-		frames = new Array<TextureRegion>();
 		velocity = 5;
 		this.element = element;
 		defineShard();
 
-		initializeAllAnimations();
-
-		generateFrames();
-
+		assetHelper.initializeAllAnimationsShard();
+		assetHelper.generateFramesShard();
 		setBounds(0, 0, width / Main.PPM, height / Main.PPM);
 	}
 
@@ -176,90 +148,30 @@ public final class Shard extends Sprite {
 		stateTime = 0;
 	}
 
-	private void createWaterAnimation() {
-		//fly Animation
-		for (int i = 0; i < numbersOfFrames; i++) {
-			frames.add(shardWater[i]);
-		}
-		waterShardAnimation = new Animation(flyAnimationSpeed, frames);
-		frames.clear();
-		//Collision Animation
-		for (int i = 0; i < numbersOfFrames; i++) {
-			frames.add(shardCollisionWater[i]);
-		}
-		waterCollisionAnimation = new Animation(collisionAnimationSpeed, frames);
-		frames.clear();
-	}
-
-	private void createFireAnimation() {
-		//fly Animation
-		for (int i = 0; i < numbersOfFrames; i++) {
-			frames.add(shardFire[i]);
-		}
-		fireShardAnimation = new Animation(flyAnimationSpeed, frames);
-		frames.clear();
-		//Collision Animation
-		for (int i = 0; i < numbersOfFrames; i++) {
-			frames.add(shardCollisionFire[i]);
-		}
-		fireCollisionAnimation = new Animation(collisionAnimationSpeed, frames);
-		frames.clear();
-	}
-
-	private void createEarthAnimation() {
-		//fly Animation
-		for (int i = 0; i < numbersOfFrames; i++) {
-			frames.add(shardEarth[i]);
-		}
-		earthShardAnimation = new Animation(flyAnimationSpeed, frames);
-		frames.clear();
-		//Collision Animation
-		for (int i = 0; i < numbersOfFrames; i++) {
-			frames.add(shardCollisionEarth[i]);
-		}
-		earthCollisionAnimation = new Animation(collisionAnimationSpeed, frames);
-		frames.clear();
-	}
-
-	private void createAirAnimation() {
-		//fly Animation
-		for (int i = 0; i < numbersOfFrames; i++) {
-			frames.add(shardAir[i]);
-		}
-		airShardAnimation = new Animation(flyAnimationSpeed, frames);
-		frames.clear();
-		//Collision Animation
-		for (int i = 0; i < numbersOfFrames; i++) {
-			frames.add(shardCollisionAir[i]);
-		}
-		airCollisionAnimation = new Animation(collisionAnimationSpeed, frames);
-		frames.clear();
-	}
-
 	private void getElementFrame() {
 		if (element == Main.elementType.WATER) {
 			if (setToDestroy) {
-				shard = waterCollisionAnimation.getKeyFrame(stateTime, true);
+				shard = assetHelper.getWaterCollisionAnimation().getKeyFrame(stateTime, true);
 			} else {
-				shard = waterShardAnimation.getKeyFrame(stateTime, true);
+				shard = assetHelper.getWaterShardAnimation().getKeyFrame(stateTime, true);
 			}
 		} else if (element == Main.elementType.FIRE) {
 			if (setToDestroy) {
-				shard = fireCollisionAnimation.getKeyFrame(stateTime, true);
+				shard = assetHelper.getFireCollisionAnimation().getKeyFrame(stateTime, true);
 			} else {
-				shard = fireShardAnimation.getKeyFrame(stateTime, true);
+				shard = assetHelper.getFireShardAnimation().getKeyFrame(stateTime, true);
 			}
 		} else if (element == Main.elementType.EARTH) {
 			if (setToDestroy) {
-				shard = earthCollisionAnimation.getKeyFrame(stateTime, true);
+				shard = assetHelper.getEarthCollisionAnimation().getKeyFrame(stateTime, true);
 			} else {
-				shard = earthShardAnimation.getKeyFrame(stateTime, true);
+				shard = assetHelper.getEarthShardAnimation().getKeyFrame(stateTime, true);
 			}
 		} else if (element == Main.elementType.AIR) {
 			if (setToDestroy) {
-				shard = airCollisionAnimation.getKeyFrame(stateTime, true);
+				shard = assetHelper.getAirCollisionAnimation().getKeyFrame(stateTime, true);
 			} else {
-				shard = airShardAnimation.getKeyFrame(stateTime, true);
+				shard = assetHelper.getAirShardAnimation().getKeyFrame(stateTime, true);
 			}
 		}
 
@@ -268,104 +180,4 @@ public final class Shard extends Sprite {
 	public Main.elementType getElement() {
 		return this.element;
 	}
-
-	private TextureRegion[] shardAir() {
-		shardAir = new TextureRegion[numbersOfFrames];
-		int j = 0;
-		for (int i = 0; i <= 224; i += shardWidth) {
-			shardAir[j] = new TextureRegion(allShards, i, 0, shardWidth, shardHeight);
-			j++;
-		}
-		return shardAir;
-	}
-
-	private TextureRegion[] shardCollisionAir() {
-		shardCollisionAir = new TextureRegion[numbersOfFrames];
-		int j = 0;
-		for (int i = 0; i <= 224; i += shardWidth) {
-			shardCollisionAir[j] = new TextureRegion(allShards, i, 128, shardWidth, shardHeight);
-			j++;
-		}
-		return shardCollisionAir;
-	}
-
-	private TextureRegion[] shardFire() {
-		shardFire = new TextureRegion[numbersOfFrames];
-		int j = 0;
-		for (int i = 0; i <= 224; i += shardWidth) {
-			shardFire[j] = new TextureRegion(allShards, i, 64, shardWidth, shardHeight);
-			j++;
-		}
-		return shardFire;
-	}
-
-	private TextureRegion[] shardCollisionFire() {
-		shardCollisionFire = new TextureRegion[numbersOfFrames];
-		int j = 0;
-		for (int i = 0; i <= 224; i += shardWidth) {
-			shardCollisionFire[j] = new TextureRegion(allShards, i, 192, shardWidth, shardHeight);
-			j++;
-		}
-		return shardCollisionFire;
-	}
-
-	private TextureRegion[] shardWater() {
-		shardWater = new TextureRegion[numbersOfFrames];
-		int j = 0;
-		for (int i = 0; i <= 224; i += shardWidth) {
-			shardWater[j] = new TextureRegion(allShards, i, 32, shardWidth, shardHeight);
-			j++;
-		}
-		return shardWater;
-	}
-
-	private TextureRegion[] shardCollisionWater() {
-		shardCollisionWater = new TextureRegion[numbersOfFrames];
-		int j = 0;
-		for (int i = 0; i <= 224; i += shardWidth) {
-			shardCollisionWater[j] = new TextureRegion(allShards, i, 160, shardWidth, shardHeight);
-			j++;
-		}
-		return shardCollisionWater;
-	}
-
-	private TextureRegion[] shardEarth() {
-		shardEarth = new TextureRegion[numbersOfFrames];
-		int j = 0;
-		for (int i = 0; i <= 224; i += shardWidth) {
-			shardEarth[j] = new TextureRegion(allShards, i, 98, shardWidth, shardHeight);
-			j++;
-		}
-		return shardEarth;
-	}
-
-	private TextureRegion[] shardCollisionEarth() {
-		shardCollisionEarth = new TextureRegion[numbersOfFrames];
-		int j = 0;
-		for (int i = 0; i <= 224; i += shardWidth) {
-			shardCollisionEarth[j] = new TextureRegion(allShards, i, 224, shardWidth, shardHeight);
-			j++;
-		}
-		return shardCollisionEarth;
-	}
-
-	private void generateFrames() {
-		createWaterAnimation();
-		createAirAnimation();
-		createFireAnimation();
-		createEarthAnimation();
-
-	}
-
-	private void initializeAllAnimations() {
-		shardAir();
-		shardCollisionAir();
-		shardFire();
-		shardCollisionFire();
-		shardWater();
-		shardCollisionWater();
-		shardEarth();
-		shardCollisionEarth();
-	}
-
 }

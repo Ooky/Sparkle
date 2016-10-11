@@ -64,7 +64,7 @@ public class Soldier extends Enemy {
 
     private static int deathCounter;
 
-    private Texture textureSoldier;
+    private static Texture textureSoldier;
     //Earth
     private TextureRegion[] soldierWalkGreen;
     private TextureRegion[] soldierAttackGreen;
