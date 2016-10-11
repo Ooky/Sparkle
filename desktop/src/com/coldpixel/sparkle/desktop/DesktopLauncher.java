@@ -1,5 +1,6 @@
 package com.coldpixel.sparkle.desktop;
 
+import com.badlogic.gdx.Files;
 import com.coldpixel.sparkle.Constants;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -25,7 +26,7 @@ public class DesktopLauncher {
         config.height = Constants.getWINDOW_HEIGTH();
         config.title = Constants.GAMENAME;
         config.resizable = Constants.RESZIABLE;
-//        config.addIcon(Constants.FAVICON, Files.FileType.Internal);
+        config.addIcon(Constants.FAVICON, Files.FileType.Internal);
 
         if (Constants.borderlessWindow) {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
