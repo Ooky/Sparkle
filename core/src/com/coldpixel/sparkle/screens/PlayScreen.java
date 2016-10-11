@@ -161,9 +161,9 @@ public class PlayScreen implements Screen {
     }
 
     private void dayNightCycle() {
-        if (TimeUtils.timeSinceNanos(cycleTime) > 900000000000L && !isDay) {//15Min  900000000000L
+        if (TimeUtils.timeSinceNanos(cycleTime) > 10*50000000L && !isDay) {//15Min  900000000000L
             if (TimeUtils.timeSinceNanos(startTime) > 50000000L) {//1Sec= 1000000000
-                ambientLight += 0.005f;
+                ambientLight += 0.001f;
                 rayHandler.setAmbientLight(ambientLight);
                 startTime = TimeUtils.nanoTime();
                 if (ambientLight >= 0.8f) {
@@ -172,12 +172,12 @@ public class PlayScreen implements Screen {
                     cycleTime = TimeUtils.nanoTime();
                 }
             }
-        } else if (TimeUtils.timeSinceNanos(cycleTime) > 450000000000L && isDay) {//7.5Min  450000000000L
+        } else if (TimeUtils.timeSinceNanos(cycleTime) > 10*50000000L && isDay) {//7.5Min  450000000000L
             if (TimeUtils.timeSinceNanos(startTime) > 50000000L) {
-                ambientLight -= 0.005f;
+                ambientLight -= 0.0005f;
                 rayHandler.setAmbientLight(ambientLight);
                 startTime = TimeUtils.nanoTime();
-                if (ambientLight <= 0.08f) {
+                if (ambientLight <= 0.6f) {
                     startTime = 0;
                     isDay = false;
                     cycleTime = 0;
