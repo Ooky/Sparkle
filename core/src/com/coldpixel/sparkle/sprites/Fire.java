@@ -23,7 +23,7 @@ import com.coldpixel.sparkle.screens.PlayScreen;
  *
  * @author Creat-if
  */
-public final class BonFire extends Sprite {
+public final class Fire extends Sprite {
 
     private float posX;
     private float posY;
@@ -43,7 +43,7 @@ public final class BonFire extends Sprite {
     private float previousDistance;
     private float frameDuration;
 
-    public BonFire(EllipseMapObject ellipse, PlayScreen screen) {
+    public Fire(EllipseMapObject ellipse, PlayScreen screen) {
         this.world = screen.getWorld();
         e = ellipse.getEllipse();
         posX = e.x;
@@ -63,7 +63,7 @@ public final class BonFire extends Sprite {
         frames = new Array<TextureRegion>();
         //Animation
         for (int i = 0; i < 10; i++) {
-            frames.add(new TextureRegion(new Texture("Graphics/Terrain/BonFire5.png"), i * 32, 0, 32, 64));
+            frames.add(new TextureRegion(new Texture("Graphics/Terrain/Fire.png"), i * 32, 0, 32, 64));
         }
         burning = new Animation(frameDuration, frames, LOOP);
     }

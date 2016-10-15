@@ -112,7 +112,7 @@ public class Player extends Sprite {
 //Methods
 //==============================================================================
 	public Player(PlayScreen screen) {
-		super(screen.getAtlas().findRegion("Player48x64"));
+//		super(screen.getAtlas().findRegion("Player48x64"));
 		startPosX = 580;
 		startPosY = 280;
 		playerWidth = 48;
@@ -137,7 +137,7 @@ public class Player extends Sprite {
 
 		definePlayer();
 		//Animation
-		playerStand = new TextureRegion(getTexture(), 0, 0, playerWidth, playerHeight);
+		playerStand = new TextureRegion(characterTexture, 0, 0, playerWidth, playerHeight);
 		setBounds(0, 0, playerWidth / Main.PPM, playerHeight / Main.PPM);
 		setRegion(playerStand);
 		currentState = State.STANDING;

@@ -143,6 +143,8 @@ public class GameOver implements Screen {
 
     @Override
     public void dispose() {
+        bitmapFont.dispose();
+        game.dispose();
         stage.dispose();
     }
 

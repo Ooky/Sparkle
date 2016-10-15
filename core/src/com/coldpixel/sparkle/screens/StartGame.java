@@ -28,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
+import com.coldpixel.sparkle.tools.AssetHelper;
 
 /**
  *
@@ -67,6 +68,7 @@ public class StartGame implements Screen {
         BUTTON1, BUTTON2, BUTTON3
     }
     private buttonState currentButtonState = buttonState.BUTTON1;
+
 
     public StartGame(final Game game) {
         this.game = game;
@@ -183,7 +185,8 @@ public class StartGame implements Screen {
         if (Gdx.input.isKeyJustPressed(Keys.UP) || (Gdx.input.isKeyJustPressed(Keys.W))) {
             moveBorderDOWN();
         }
-        if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isKeyJustPressed(Keys.E)) || (Gdx.input.isKeyJustPressed(Keys.SPACE))) {
+        if (Gdx.input.isKeyJustPressed(Keys.ENTER) || (Gdx.input.isKeyJustPressed(Keys.E))
+                || (Gdx.input.isKeyJustPressed(Keys.SPACE))) {
             switch (currentButtonState) {
                 case BUTTON1:
                     game.setScreen(new PlayScreen((Main) game));

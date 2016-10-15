@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="12" tilewidth="64" tileheight="64" nextobjectid="146">
- <tileset firstgid="1" name="tilesheet_complete" tilewidth="64" tileheight="64" tilecount="540" columns="27">
-  <image source="topdown-shooter/Tilesheet/tilesheet_complete.png" width="1728" height="1280"/>
- </tileset>
- <tileset firstgid="541" name="TiledSpreetTest" tilewidth="64" tileheight="64" spacing="2" tilecount="120" columns="12">
+ <tileset firstgid="1" name="TiledSpreetTest" tilewidth="64" tileheight="64" spacing="2" tilecount="120">
   <image source="Graphics/TiledSpreetTest.png" width="792" height="660"/>
  </tileset>
  <layer name="grass" width="20" height="12">
   <data encoding="base64" compression="zlib">
-   eJxTZ2JgUB/Fo3gUD0kMAGT4JnE=
+   eJzjZmBg4B7Fo3gUD0kMAG99ClE=
   </data>
  </layer>
  <layer name="dirt" width="20" height="12">
   <data encoding="base64" compression="zlib">
-   eJyNUssOwkAINPzMbrVHql59XPv4/69xGiVBAgWSyQR2mIVtG53S4ETTyEfkFZ1V/AbwGej09eoGe+0CjHTsJX4T+KpqelfR3MD3oh/Tf2/7zaVrVuehOxzp9VvYeSo67142uefnvZfu1fse3anxAJ7B7OL3Ar+T7yAxI1+c/4VVvgJbwcuGN1/Un/lFu0YawQd5YR0b
+   eJyNkkkKwCAMRd1rh6Udth22He5/tv6CwidNqsKjGJNnIvWuvGLh3BtYLuusxteAFoTkCoI31oG+4Mq+AYwU41lzzgTmSl8UtT71xTGZpxGUr5XPbyH7qcnT7o1ir/m09+JanvfvTmYBq9F79m1g/3HwOsDpvv9LpP0F7gqXXFp/Vn3JZ81q5WQeY9wJaw==
   </data>
  </layer>
  <layer name="objects" width="20" height="12" visible="0">
   <data encoding="base64" compression="zlib">
-   eJyNkksKwCAQQ8XLaD/bfvbtvr3/aTqFimmIn4GAzsRHFJ3LFfxfvfV6o/Azr5eZeOhP5wfT2OBN1p+/WfRZireYVpozd7P97nMu5kXKU7s395GXCvk4q51lBcFT3F7hXbnHeXitMiMPGaV/gKzDdBY4/E6qx9ku093IpaTeqOWtMXt56HkAnzkdTg==
+   eJydkskKgDAMRHtPXa4ud73r/3+bKVgchumCgQchSR9paQhfGNEbaTYW6n+c2WdUSwzO2PBNzvzmEVC+xVmpz97N2WEv9uUcz5fuzXX05UA/9mpnGRM+5e3FhIvvq/ylndGHDgz8B+g6nLPg4XdSNd7tcu7GXgr1Rq3ZmrPXhzMPB+oIrg==
   </data>
  </layer>
  <objectgroup name="hitbox">

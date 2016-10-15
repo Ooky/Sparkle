@@ -66,7 +66,7 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
                 + "\nCredits for background music goes to artisticdude from opengameart.org"
                 + "\nCredits for bonfire sound goes to AntumDeluge from opengameart.org"
                 + "\nCredits for test-assets and for inspiration goes to Kenny from kenney.nl"
-                + "\nProbably Email?"
+                + "\n\nIf you want to contact us: creatiftrue [@] gmail.com"
                 + "\nProbably copyright?", font);
         Label supportUSTitle = new Label("WANT TO SUPPORT US?", font);
         Label supportUS = new Label("This is our first released game. It would help us a lot if you donate something."
@@ -156,6 +156,10 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
     @Override
     public void dispose() {
         stage.dispose();
+        bitmapFont.dispose();
+        buttonAtlas.dispose();
+        game.dispose();
+        skin.dispose();
     }
 
 }

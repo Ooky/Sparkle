@@ -9,19 +9,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
 import com.coldpixel.sparkle.scenes.Hud;
-import com.coldpixel.sparkle.sprites.BonFire;
+import com.coldpixel.sparkle.sprites.Fire;
 import com.coldpixel.sparkle.sprites.Enemy;
 import com.coldpixel.sparkle.tools.AssetHelper;
 import com.coldpixel.sparkle.tools.B2WorldCreator;
@@ -53,7 +51,6 @@ public class PlayScreen implements Screen {
 
     //Box2d variables
     private World world;
-    private Box2DDebugRenderer b2DebugRenderer;
     private B2WorldCreator b2WorldCreator;
 
     //light
@@ -63,7 +60,6 @@ public class PlayScreen implements Screen {
 
     //Character
     private Player player;
-    private TextureAtlas atlas;
 
     //DayNightCycle
     private long startTime;
@@ -82,7 +78,6 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Main main) {
 
-        atlas = new TextureAtlas("Player_and_Enemies.pack");
         startTime = 0;
         ambientLight = 0.8f;
         isDay = true;
@@ -100,7 +95,6 @@ public class PlayScreen implements Screen {
         cam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, 0), true);//zero-gravity, sleep=true
-        b2DebugRenderer = new Box2DDebugRenderer();
 
         player = new Player(this);
         waveHandler = new Wave(this, player);
@@ -111,7 +105,7 @@ public class PlayScreen implements Screen {
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.8f);
 
-        for (BonFire boneFire : b2WorldCreator.getBonFires()) {
+        for (Fire boneFire : b2WorldCreator.getBonFires()) {
             pointLight = new PointLight(rayHandler, 100, Color.ORANGE, boneFire.getWidth() / Main.PPM * 4, 0, 0);
             pointLight.setSoftnessLength(0.5f);
             pointLight.attachToBody(boneFire.getBody(), 0, 0);
@@ -127,9 +121,7 @@ public class PlayScreen implements Screen {
 
     private void update(float dt) {
         player.handleInput(hud.cooldownValue);
-        //hud.setCooldownReady(player.getCooldownReady());
         world.step(1 / 60f, 6, 2);//60 times a second
-//        rayHandler.update();
         player.update(dt);
         waveHandler.update(this);
         for (Soldier enemy : soldiersArray) {
@@ -141,7 +133,7 @@ public class PlayScreen implements Screen {
             enemy.update(dt, hud);
         }
         //bonfire animation
-        for (BonFire boneFire : b2WorldCreator.getBonFires()) {
+        for (Fire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.update(dt);
         }
         for (Shard shard : player.getIceShards()) {
@@ -161,7 +153,7 @@ public class PlayScreen implements Screen {
     }
 
     private void dayNightCycle() {
-        if (TimeUtils.timeSinceNanos(cycleTime) > 10*50000000L && !isDay) {//15Min  900000000000L
+        if (TimeUtils.timeSinceNanos(cycleTime) > 10 * 50000000L && !isDay) {//15Min  900000000000L
             if (TimeUtils.timeSinceNanos(startTime) > 50000000L) {//1Sec= 1000000000
                 ambientLight += 0.001f;
                 rayHandler.setAmbientLight(ambientLight);
@@ -172,7 +164,7 @@ public class PlayScreen implements Screen {
                     cycleTime = TimeUtils.nanoTime();
                 }
             }
-        } else if (TimeUtils.timeSinceNanos(cycleTime) > 10*50000000L && isDay) {//7.5Min  450000000000L
+        } else if (TimeUtils.timeSinceNanos(cycleTime) > 10 * 50000000L && isDay) {//7.5Min  450000000000L
             if (TimeUtils.timeSinceNanos(startTime) > 50000000L) {
                 ambientLight -= 0.0005f;
                 rayHandler.setAmbientLight(ambientLight);
@@ -194,7 +186,6 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         renderer.render();
         //render Box2DDebugLines
-        b2DebugRenderer.render(world, cam.combined);
 
         main.batch.setProjectionMatrix(cam.combined);
         rayHandler.setCombinedMatrix(cam);
@@ -216,7 +207,7 @@ public class PlayScreen implements Screen {
         main.batch.end();
         rayHandler.updateAndRender();
         main.batch.begin();
-        for (BonFire boneFire : b2WorldCreator.getBonFires()) {
+        for (Fire boneFire : b2WorldCreator.getBonFires()) {
             boneFire.draw(main.batch);
         }
         for (Shard ice : player.getIceShards()) {
@@ -263,17 +254,12 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
         map.dispose();
-        renderer.dispose();
         world.dispose();
-        b2DebugRenderer.dispose();
         hud.dispose();
-        rayHandler.dispose();
         assetHelper.dispose();
-    }
-
-    public TextureAtlas getAtlas() {
-        return atlas;
-
+        main.dispose();
+        pointLight.dispose();
+        renderer.dispose();
     }
 
     public TiledMap getMap() {
@@ -283,7 +269,6 @@ public class PlayScreen implements Screen {
     public World getWorld() {
         return world;
     }
-
 
     public Player getPlayer() {
         return player;
