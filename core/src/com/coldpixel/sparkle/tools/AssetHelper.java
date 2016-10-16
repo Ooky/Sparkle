@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coldpixel.sparkle.tools;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -106,11 +101,9 @@ public final class AssetHelper extends AssetManager {
         //Shard
         initializeAllAnimationsShard();
         generateFramesShard();
-        //Soldier
-//        initializeAllAnimationsSoldier();
     }
 
-    public AssetHelper(Main.elementType element) {
+    public AssetHelper(Main.elementType element) {//Soldier
         initializeAllAnimationsSoldier();
         this.element = element;
     }

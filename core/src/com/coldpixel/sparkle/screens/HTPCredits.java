@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coldpixel.sparkle.screens;
 
 import com.badlogic.gdx.Game;
@@ -12,7 +7,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -38,12 +35,15 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
     private BitmapFont bitmapFont = new BitmapFont();
     private TextureAtlas buttonAtlas = new TextureAtlas(Gdx.files.internal("Buttons/pack.atlas"));
     private Skin skin = new Skin();
+    private Texture howToPlayTexture = new Texture("Graphics/HowToPlay/HowToPlay.png");
+    private SpriteBatch batch = new SpriteBatch();
+    TextButtonStyle buttonStyleDonate = new TextButton.TextButtonStyle();
+    TextButton buttonDonate;
 
     public HTPCredits(final Game game) {
         this.game = game;
         viewport = new FitViewport(Main.V_WIDTH, Main.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((Main) game).batch);
-
         Label.LabelStyle font = new Label.LabelStyle(bitmapFont, Color.WHITE);
 
         Table table = new Table();
@@ -64,27 +64,24 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
         Label creditsTitle = new Label("CREDITS", font);
         Label credits = new Label("We did barely all on our own except the background music and sound."
                 + "\nCredits for background music goes to artisticdude from opengameart.org"
-                + "\nCredits for bonfire sound goes to AntumDeluge from opengameart.org"
-                + "\nCredits for test-assets and for inspiration goes to Kenny from kenney.nl"
-                + "\n\nIf you want to contact us: creatiftrue [@] gmail.com"
-                + "\nProbably copyright?", font);
+                + "\nCredits for fire sound goes to AntumDeluge from opengameart.org"
+                + "\nCredits for test-assets and inspiration goes to Kenny from kenney.nl"
+                + "\n\nIf you want to contact us: creatiftrue [@] gmail.com", font);
         Label supportUSTitle = new Label("WANT TO SUPPORT US?", font);
         Label supportUS = new Label("This is our first released game. It would help us a lot if you donate something."
                 + "\nWe'd appreciate every amount.", font);
 
         skin.addRegions(buttonAtlas);
-        TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = new BitmapFont();
-        buttonStyle.up = skin.getDrawable("Blue");
-        buttonStyle.down = skin.getDrawable("Grey");
 
-        TextButton button = new TextButton("Donate", buttonStyle);
-        button.addListener(new ChangeListener() {
+        buttonStyleDonate.font = new BitmapFont();
+        buttonStyleDonate.up = skin.getDrawable("Blue");
+        buttonStyleDonate.down = skin.getDrawable("Grey");
+        buttonDonate = new TextButton("Donate", buttonStyleDonate);
+        buttonDonate.addListener(new ChangeListener() {
 
             @Override
             public void changed(ChangeListener.ChangeEvent ce, Actor actor) {
-                System.out.println("hi");
-                Gdx.net.openURI("https://www.google.com");
+                Gdx.net.openURI("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7RB6QGREK8Z2J");
             }
         });
 
@@ -94,7 +91,6 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
 
         Label escape = new Label("Press \"ESC\" or \"C\" to go back", font);
 
-//		table.setDebug(true);
         table.add(howToPlayTitle).expandX().padTop(50);
         table.row();
         table.add(stars1);
@@ -115,9 +111,10 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
         table.row();
         table.add(supportUS).expandX().padLeft(2);
         table.row();
-        table.add(button).expandX().padTop(100f);
+        table.add(buttonDonate).padTop(100f);
         table.row();
-        table.add(escape).expandX().padTop(120);
+        table.row();
+        table.add(escape).expandX().padTop(50);
 
         stage.addActor(table);
     }
@@ -131,6 +128,9 @@ public class HTPCredits implements Screen {//HowToPlayCredits Screen
             dispose();
         }
         stage.draw();
+        batch.begin();
+        batch.draw(howToPlayTexture, 500, 500, 100, 100);
+        batch.end();
     }
 
     @Override

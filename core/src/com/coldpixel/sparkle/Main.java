@@ -52,10 +52,3 @@ public class Main extends Game {
         assetHelper.dispose();
     }
 }
-
-//ToDo DISPOSE shit
-//paypal
-//Button should link to a paypal account
-//Credits->How to play->image with fire->green->air->water->fire..
-
-//day'night cycle->maybe change value? or switch it with a key instead of timer?

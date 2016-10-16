@@ -137,8 +137,6 @@ public class Hud implements Disposable {
         shaperenderer.rectLine(gap - 4, Constants.getWINDOW_HEIGTH() - lifebarHeight - 4, lifebarWidth + gap - 4, Constants.getWINDOW_HEIGTH() - lifebarHeight - 4, lifebarHeight);
         shaperenderer.end();
 
-//                System.out.println(playerLifeLabel.getMinWidth());
-//                System.out.println("Lifebar: " + lifebarWidth);
     }
 
     public void drawHUD(int playerHealth) {

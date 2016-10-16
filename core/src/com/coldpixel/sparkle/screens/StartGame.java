@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coldpixel.sparkle.screens;
 
 import com.badlogic.gdx.Game;
@@ -28,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coldpixel.sparkle.Main;
-import com.coldpixel.sparkle.tools.AssetHelper;
 
 /**
  *
@@ -68,7 +62,6 @@ public class StartGame implements Screen {
         BUTTON1, BUTTON2, BUTTON3
     }
     private buttonState currentButtonState = buttonState.BUTTON1;
-
 
     public StartGame(final Game game) {
         this.game = game;
@@ -141,6 +134,7 @@ public class StartGame implements Screen {
         shaperenderer.setColor(new Color(Color.GRAY));
         shaperenderer.setProjectionMatrix(stage.getCamera().combined);
         shaperenderer.begin(ShapeRenderer.ShapeType.Line);
+        Gdx.gl.glLineWidth(10);
         shaperenderer.rectLine(640, positionTop - 58, 640, positionTop, 167);
         shaperenderer.end();
         stage.draw();

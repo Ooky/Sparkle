@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -129,8 +124,7 @@ public class Soldier extends Enemy {
 
         fDef.filter.categoryBits = Main.ENEMY_BIT;
         fDef.filter.maskBits
-                = /*Main.GROUND_BIT |*/ //Do we need this?
-                Main.BONFIRE_BIT
+                = Main.BONFIRE_BIT
                 | Main.PLAYER_BIT
                 | Main.ENEMY_BIT
                 | Main.OBJECT_BIT

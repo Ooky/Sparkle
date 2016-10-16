@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.coldpixel.sparkle.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -26,7 +21,6 @@ import com.coldpixel.sparkle.Main;
  */
 public final class Crystal extends Sprite {
 
-
     private float posX;
     private float posY;
     private int width;
@@ -37,7 +31,6 @@ public final class Crystal extends Sprite {
     private Animation rotating;
     private float stateTimer;
     private Array<TextureRegion> frames;
-    
 
     public Crystal(PlayScreen screen, float x, float y) {
         this.world = screen.getWorld();
@@ -47,8 +40,8 @@ public final class Crystal extends Sprite {
         height = 80;
         radius = 250 / Main.PPM;
         defineCrystal();
-        
-        setBounds(0, 0, width / Main.PPM , height / Main.PPM);
+
+        setBounds(0, 0, width / Main.PPM, height / Main.PPM);
         setPosition(b2Body.getPosition().x - (width / 2 / Main.PPM), b2Body.getPosition().y - (height / 2 / Main.PPM));
         stateTimer = 0;
         frames = new Array<TextureRegion>();
@@ -71,8 +64,8 @@ public final class Crystal extends Sprite {
 
         fDef.filter.categoryBits = Main.OBJECT_BIT;
         fDef.shape = rectangleShape;
-        b2Body.createFixture(fDef).setUserData(new Rectangle(posX - width / 2 ,posY - height / 2 ,width ,height));
-        
+        b2Body.createFixture(fDef).setUserData(new Rectangle(posX - width / 2, posY - height / 2, width, height));
+
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(radius);
         fDef.filter.categoryBits = Main.CRYSTAL_BIT;
@@ -93,5 +86,3 @@ public final class Crystal extends Sprite {
         return region;
     }
 }
-
-
