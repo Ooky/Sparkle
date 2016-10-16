@@ -112,6 +112,7 @@ public class StartGame implements Screen {
         addListener();
 
         stage.addActor(table);
+        Gdx.gl.glLineWidth(10);
 
     }
 
@@ -134,7 +135,6 @@ public class StartGame implements Screen {
         shaperenderer.setColor(new Color(Color.GRAY));
         shaperenderer.setProjectionMatrix(stage.getCamera().combined);
         shaperenderer.begin(ShapeRenderer.ShapeType.Line);
-        Gdx.gl.glLineWidth(10);
         shaperenderer.rectLine(640, positionTop - 58, 640, positionTop, 167);
         shaperenderer.end();
         stage.draw();

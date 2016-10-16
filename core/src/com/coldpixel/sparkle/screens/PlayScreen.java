@@ -117,6 +117,7 @@ public class PlayScreen implements Screen {
         assetHelper = new AssetHelper();
         assetHelper.musicBackground(true);
         assetHelper.soundBonfire(true);
+        Gdx.gl.glLineWidth(1);
     }
 
     private void update(float dt) {
